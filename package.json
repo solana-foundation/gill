@@ -10,6 +10,7 @@
     "url": "https://github.com/nickfrosty/gill"
   },
   "scripts": {
+    "prebuild": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} build --filter=gill",
     "build": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} build",
     "test": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} test:unit:node test:unit:browser",
     "test:treeshakability:native": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} test:treeshakability:native",
