@@ -36,13 +36,14 @@ export function createSolanaClient({
   if (typeof urlOrMoniker == "string") {
     try {
       urlOrMoniker = new URL(urlOrMoniker);
-    } catch (err) {}
-    try {
-      urlOrMoniker = new URL(
-        getPublicSolanaRpcUrl(urlOrMoniker as SolanaClusterMoniker),
-      );
     } catch (err) {
-      throw new Error("Invalid URL or cluster moniker");
+      try {
+        urlOrMoniker = new URL(
+          getPublicSolanaRpcUrl(urlOrMoniker as SolanaClusterMoniker),
+        );
+      } catch (err) {
+        throw new Error("Invalid URL or cluster moniker");
+      }
     }
   }
 
