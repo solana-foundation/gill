@@ -1,0 +1,66 @@
+name: Version & Publish Packages
+
+on:
+  workflow_dispatch:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+env:
+  # Among other things, opts out of Turborepo telemetry
+  # See https://consoledonottrack.com/
+  DO_NOT_TRACK: "1"
+  # Some tasks slow down considerably on GitHub Actions runners when concurrency is high
+  TURBO_CONCURRENCY: 1
+  # Enables Turborepo Remote Caching.
+  TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+jobs:
+  build-and-publish-to-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        uses: ./.github/workflows/actions/install-dependencies
+
+      - name: Configure NPM token
+        run: |
+          pnpm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create Changesets Pull Request or Trigger an NPM Publish
+        id: changesets
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Pre-Build Step
+        run: pnpm prebuild --force=true
+
+      - name: Choose Build Step
+        id: build-step-decider
+        run:
+          echo "step-name=${{ steps.changesets.outputs.hasChangesets == 'false' && 'publish-packages
+          --concurrency=${TURBO_CONCURRENCY:-1}' || 'build' }}" >> $GITHUB_OUTPUT
+
+      - name: Run Build Step (force)
+        run: pnpm turbo ${{ steps.build-step-decider.outputs.step-name }} --force=true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PUBLISH_TAG: next
+
+      # - name: Push Git Tag
+      #   if: steps.changesets.outputs.hasChangesets == 'false'
+      #   run: |
+      #     VERSION_TAG=v$(cd packages/library/ && pnpm pkg get version | sed -n '2p' | grep -o '"\([^"]\)\+"$' | tr -d \")
+      #     if ! git ls-remote --tags | grep -q "$VERSION_TAG"; then git tag $VERSION_TAG && git push --tags; fi
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

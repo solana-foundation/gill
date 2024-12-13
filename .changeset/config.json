@@ -2,10 +2,15 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.4/schema.json",
   "access": "public",
   "baseBranch": "master",
-  "changelog": "@changesets/cli/changelog",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "nickfrosty/gill"
+    }
+  ],
   "commit": false,
-  "fixed": [],
+  "ignore": ["gill-vue", "gill-svelte"],
+  "fixed": [["gill-!({build-scripts,test-*,tsconfig})"]],
   "linked": [],
-  "ignore": [],
   "updateInternalDependencies": "patch"
 }

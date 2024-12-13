@@ -8,14 +8,18 @@
       "dependsOn": ["compile:js", "compile:typedefs"],
       "outputs": ["dist/**"]
     },
+    "test": {
+      "dependsOn": ["build", "test:typecheck", "test:unit:browser", "test:unit:node"],
+      "outputs": ["dist/**"]
+    },
+    "publish-packages": {
+      "cache": false,
+      "dependsOn": ["build", "test"],
+      "passThroughEnv": ["GH_TOKEN", "NPM_TOKEN", "PUBLISH_TAG"]
+    },
     "compile:js": {
       "dependsOn": ["^compile:js"],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "tsconfig.*",
-        "src/**",
-        "../build-scripts/*.ts"
-      ],
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.*", "src/**", "../build-scripts/*.ts"],
       "outputs": ["dist/**"]
     },
     "compile:typedefs": {
@@ -26,6 +30,11 @@
     "style:fix": {
       "inputs": ["$TURBO_DEFAULT$", "*"],
       "outputs": ["*"]
+    },
+    "test:typecheck": {
+      "dependsOn": ["^compile:typedefs"],
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.*", "src/**"],
+      "outputs": []
     },
     "test:unit:browser": {
       "dependsOn": ["^compile:js"],

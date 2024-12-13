@@ -15,7 +15,7 @@ export function getPublicSolanaRpcUrl(cluster: SolanaClusterMoniker): string {
     case "devnet":
       return "https://api.devnet.solana.com";
     case "testnet":
-      return "https://api.tesnet.solana.com";
+      return "https://api.testnet.solana.com";
     case "mainnet-beta":
       return "https://api.mainnet-beta.solana.com";
     case "localnet":
@@ -36,13 +36,14 @@ export function createSolanaClient({
   if (typeof urlOrMoniker == "string") {
     try {
       urlOrMoniker = new URL(urlOrMoniker);
-    } catch (err) {}
-    try {
-      urlOrMoniker = new URL(
-        getPublicSolanaRpcUrl(urlOrMoniker as SolanaClusterMoniker),
-      );
     } catch (err) {
-      throw new Error("Invalid URL or cluster moniker");
+      try {
+        urlOrMoniker = new URL(
+          getPublicSolanaRpcUrl(urlOrMoniker as SolanaClusterMoniker),
+        );
+      } catch (err) {
+        throw new Error("Invalid URL or cluster moniker");
+      }
     }
   }
 

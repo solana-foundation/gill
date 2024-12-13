@@ -37,5 +37,8 @@ jobs:
         with:
           version: ${{ matrix.node }}
 
-      - name: Build & Test
+      - name: Build (with prebuild)
         run: pnpm build # Don't add --concurrency here; it's already baked in
+
+      - name: Test
+        run: pnpm test # Don't add --concurrency here; it's already baked in
