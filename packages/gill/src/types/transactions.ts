@@ -21,7 +21,7 @@ export type CreateTransactionInput = {
    * Latest blockhash (aka transaction lifetime) for this transaction to
    * accepted for execution on the Solana network
    * */
-  latestBlockhash: Readonly<{
+  latestBlockhash?: Readonly<{
     blockhash: Blockhash;
     lastValidBlockHeight: bigint;
   }>;

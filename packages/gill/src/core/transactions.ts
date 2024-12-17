@@ -21,11 +21,13 @@ export function createTransaction({
   return pipe(
     createTransactionMessage({ version }),
     (tx) => {
+      if (latestBlockhash) {
+        tx = setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx);
+      }
       if ("address" in feePayer && isTransactionSigner(feePayer)) {
         return setTransactionMessageFeePayerSigner(feePayer, tx);
       } else return setTransactionMessageFeePayer(feePayer, tx);
     },
-    (tx) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
     (tx) => appendTransactionMessageInstructions(instructions, tx),
   );
 }
