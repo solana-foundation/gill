@@ -19,6 +19,16 @@ pnpm add gill @solana/web3.js@2
 yarn add gill @solana/web3.js@2
 ```
 
+## Quick start
+
+- [Create a Solana RPC connection](#create-a-solana-rpc-connection)
+- [Create a transaction](#create-a-transaction)
+- [Get a Solana Explorer link](#create-a-transaction)
+
+You can also find some [Node specific helpers](#node-specific-imports):
+
+- [Loading a keypair from a file](#loading-a-keypair-from-a-file)
+
 ### Create a Solana RPC connection
 
 Create a Solana `rpc` and `rpcSubscriptions` client for any RPC URL or standard Solana network
