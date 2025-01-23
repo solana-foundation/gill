@@ -24,7 +24,7 @@ export function createTransaction({
       if (latestBlockhash) {
         tx = setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx);
       }
-      if ("address" in feePayer && isTransactionSigner(feePayer)) {
+      if (typeof feePayer !== "string" && "address" in feePayer && isTransactionSigner(feePayer)) {
         return setTransactionMessageFeePayerSigner(feePayer, tx);
       } else return setTransactionMessageFeePayer(feePayer, tx);
     },
