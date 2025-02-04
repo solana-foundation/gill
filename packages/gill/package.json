@@ -36,12 +36,17 @@
       "import": "./dist/index.browser.mjs",
       "require": "./dist/index.browser.cjs"
     },
+    "./react-native": "./dist/index.native.mjs",
     "./node": {
       "types": "./dist/node/index.d.ts",
       "import": "./dist/node/index.node.mjs",
       "require": "./dist/node/index.node.cjs"
     },
-    "./react-native": "./dist/index.native.mjs",
+    "./programs": {
+      "types": "./dist/programs/index.d.ts",
+      "import": "./dist/programs/index.node.mjs",
+      "require": "./dist/programs/index.node.cjs"
+    },
     "./types": "./dist/index.d.ts"
   },
   "browser": {

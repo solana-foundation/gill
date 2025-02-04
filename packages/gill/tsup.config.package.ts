@@ -11,6 +11,14 @@ export default defineConfig((options = {}) => [
       "node/index": "src/node/index.ts",
     },
   }),
+  // some program clients have symbol collision, so this helps avoid those
+  ...getBaseConfig("node", ["cjs", "esm"], {
+    ...options,
+    entry: {
+      index: "src/programs/index.ts",
+      "programs/index": "src/programs/index.ts",
+    },
+  }),
   ...getBaseConfig("browser", ["cjs", "esm"], options),
   ...getBaseConfig("native", ["esm"], options),
 ]);

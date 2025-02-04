@@ -22,20 +22,10 @@ export type {
   RpcResponseTransformer,
 } from "@solana/rpc-spec-types";
 export { createRpcMessage } from "@solana/rpc-spec-types";
-// export type { Nonce as SystemNonce } from '@solana-program/system';
-
-// export type { Nonce as SystemNonce } from "@solana-program/system";
-// // export type { Omit<T, K extends keyof any>, Pick<T, K extends keyof T> } from 'typescript';
-
-// // export type { Omit<'Nonce'> } from '@solana-program/system';
-// import { Nonce } from "@solana-program/system";
-// export type {Nonce as NonceState}
-
-export {} from "@solana-program/system";
-// import * as packageB from "@solana-program/system";
-
-// export default { ...packageA, ...packageB };
 
 export * from "./kit";
 export * from "./types";
 export * from "./core";
+
+// Node has a special export for the node JS specific
+// export * from "./node"; // DO NOT EXPORT HERE
