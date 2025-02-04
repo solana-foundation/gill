@@ -16,7 +16,6 @@
     "test:treeshakability:node": "agadoo dist/index.node.mjs && agadoo dist/node/index.node.mjs"
   },
   "exports": {
-    "./types": "./dist/index.d.ts",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.node.mjs",
@@ -42,7 +41,8 @@
       "import": "./dist/node/index.node.mjs",
       "require": "./dist/node/index.node.cjs"
     },
-    "./react-native": "./dist/index.native.mjs"
+    "./react-native": "./dist/index.native.mjs",
+    "./types": "./dist/index.d.ts"
   },
   "browser": {
     "./dist/index.node.cjs": "./dist/index.browser.cjs",
@@ -78,6 +78,9 @@
     "node": ">=20.18.0"
   },
   "dependencies": {
+    "@solana-program/compute-budget": "^0.6.1",
+    "@solana-program/memo": "^0.6.1",
+    "@solana-program/system": "^0.6.2",
     "@solana/accounts": "^2.0.0",
     "@solana/addresses": "^2.0.0",
     "@solana/codecs": "^2.0.0",
@@ -92,6 +95,7 @@
     "@solana/rpc-subscriptions": "^2.0.0",
     "@solana/rpc-types": "^2.0.0",
     "@solana/signers": "^2.0.0",
+    "@solana/transaction-confirmation": "^2.0.0",
     "@solana/transaction-messages": "^2.0.0",
     "@solana/transactions": "^2.0.0"
   }
