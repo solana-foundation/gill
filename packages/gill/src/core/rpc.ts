@@ -61,13 +61,17 @@ export function createSolanaClient<TCluster extends SolanaClusterMoniker>({
     }
   }
 
-  const rpc = createSolanaRpc(urlOrMoniker.toString() as any, rpcConfig);
+  if (!urlOrMoniker.protocol.match(/^https?/i)) {
+    throw new Error("Unsupported protocol. Only HTTP and HTTPS are supported");
+  }
+
+  const rpc = createSolanaRpc(urlOrMoniker.toString(), rpcConfig);
 
   if (urlOrMoniker.protocol.endsWith("s")) urlOrMoniker.protocol = "wss";
   else urlOrMoniker.protocol = "ws";
 
   const rpcSubscriptions = createSolanaRpcSubscriptions(
-    urlOrMoniker.toString() as any,
+    urlOrMoniker.toString(),
     rpcSubscriptionsConfig,
   );
 
