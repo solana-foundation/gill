@@ -34,12 +34,13 @@ describe("getPublicSolanaRpcUrl", () => {
 });
 
 describe("createSolanaClient", () => {
-  test("supports major cluster monikers", () => {
+  test("supports major cluster monikers and urls", () => {
     assert.doesNotThrow(() => {
       createSolanaClient({ urlOrMoniker: "mainnet" });
       createSolanaClient({ urlOrMoniker: "devnet" });
       createSolanaClient({ urlOrMoniker: "testnet" });
       createSolanaClient({ urlOrMoniker: "localnet" });
+      createSolanaClient({ urlOrMoniker: "https://example-rpc.com" });
     });
   });
   test("throws on invalid moniker", () => {

@@ -1,10 +1,8 @@
 import type {
-  Rpc,
   createSolanaRpc,
-  SolanaRpcApiMainnet,
-  SolanaRpcApiDevnet,
-  SolanaRpcApiTestnet,
-  SolanaRpcApi,
+  RpcTransportFromClusterUrl,
+  SolanaRpcApiFromTransport,
+  RpcFromTransport,
 } from "@solana/rpc";
 import type {
   createSolanaRpcSubscriptions,
@@ -18,24 +16,25 @@ export type SolanaClusterMoniker = "mainnet" | "devnet" | "testnet" | "localnet"
 
 export type LocalnetUrl = string & { "~cluster": "localnet" };
 
-type GenericUrl = string & {};
+export type GenericUrl = string & {};
 
-export type ModifiedClusterUrl = MainnetUrl | DevnetUrl | TestnetUrl | LocalnetUrl;
+export type ModifiedClusterUrl = MainnetUrl | DevnetUrl | TestnetUrl | LocalnetUrl | GenericUrl;
 
-export type CreateSolanaClientArgs<TClusterUrl extends SolanaClusterMoniker> = {
+export type CreateSolanaClientArgs<
+  TClusterUrl extends ModifiedClusterUrl | SolanaClusterMoniker = GenericUrl,
+> = {
   /** Full RPC URL (for a private RPC endpoint) or the Solana moniker (for a public RPC endpoint) */
-  urlOrMoniker: TClusterUrl | URL | ModifiedClusterUrl | GenericUrl;
+  urlOrMoniker: SolanaClusterMoniker | TClusterUrl | URL | ModifiedClusterUrl;
   /** Configuration used to create the `rpc` client */
   rpcConfig?: Parameters<typeof createSolanaRpc>[1];
   /** Configuration used to create the `rpcSubscriptions` client */
   rpcSubscriptionsConfig?: Parameters<typeof createSolanaRpcSubscriptions>[1];
 };
 
-export type CreateSolanaClientResult<TCluster extends SolanaClusterMoniker> = {
-  rpc: Rpc<SolanaRpcApi | SolanaRpcApiDevnet | SolanaRpcApiMainnet | SolanaRpcApiTestnet> & {
-    "~cluster"?: TCluster;
-  };
-  rpcSubscriptions: RpcSubscriptions<SolanaRpcSubscriptionsApi> & {
-    "~cluster"?: TCluster;
-  };
+export type CreateSolanaClientResult<TClusterUrl extends ModifiedClusterUrl | string> = {
+  rpc: RpcFromTransport<
+    SolanaRpcApiFromTransport<RpcTransportFromClusterUrl<TClusterUrl>>,
+    RpcTransportFromClusterUrl<TClusterUrl>
+  >;
+  rpcSubscriptions: RpcSubscriptions<SolanaRpcSubscriptionsApi> & TClusterUrl;
 };

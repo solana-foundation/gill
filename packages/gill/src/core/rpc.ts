@@ -1,6 +1,6 @@
 import { createSolanaRpc } from "@solana/rpc";
 import { createSolanaRpcSubscriptions } from "@solana/rpc-subscriptions";
-import { devnet, mainnet, testnet } from "@solana/rpc-types";
+import { devnet, DevnetUrl, mainnet, MainnetUrl, testnet, TestnetUrl } from "@solana/rpc-types";
 
 import {
   LocalnetUrl,
@@ -40,10 +40,30 @@ export function getPublicSolanaRpcUrl(
 /**
  * Create a Solana `rpc` and `rpcSubscriptions` client
  */
-export function createSolanaClient<TCluster extends SolanaClusterMoniker>(
-  props: CreateSolanaClientArgs<TCluster>,
-): CreateSolanaClientResult<TCluster>;
-export function createSolanaClient<TCluster extends SolanaClusterMoniker>({
+export function createSolanaClient(
+  props: Omit<CreateSolanaClientArgs<MainnetUrl | "mainnet">, "urlOrMoniker"> & {
+    urlOrMoniker: "mainnet";
+  },
+): CreateSolanaClientResult<MainnetUrl>;
+export function createSolanaClient(
+  props: Omit<CreateSolanaClientArgs<DevnetUrl | "devnet">, "urlOrMoniker"> & {
+    urlOrMoniker: "devnet";
+  },
+): CreateSolanaClientResult<DevnetUrl>;
+export function createSolanaClient(
+  props: Omit<CreateSolanaClientArgs<TestnetUrl | "testnet">, "urlOrMoniker"> & {
+    urlOrMoniker: "testnet";
+  },
+): CreateSolanaClientResult<TestnetUrl>;
+export function createSolanaClient(
+  props: Omit<CreateSolanaClientArgs<LocalnetUrl | "localnet">, "urlOrMoniker"> & {
+    urlOrMoniker: "localnet";
+  },
+): CreateSolanaClientResult<LocalnetUrl>;
+export function createSolanaClient<TClusterUrl extends ModifiedClusterUrl>(
+  props: CreateSolanaClientArgs<TClusterUrl>,
+): CreateSolanaClientResult<TClusterUrl>;
+export function createSolanaClient<TCluster extends ModifiedClusterUrl>({
   urlOrMoniker,
   rpcConfig,
   rpcSubscriptionsConfig,
@@ -65,13 +85,13 @@ export function createSolanaClient<TCluster extends SolanaClusterMoniker>({
     throw new Error("Unsupported protocol. Only HTTP and HTTPS are supported");
   }
 
-  const rpc = createSolanaRpc(urlOrMoniker.toString(), rpcConfig);
+  const rpc = createSolanaRpc<TCluster>(urlOrMoniker.toString() as TCluster, rpcConfig);
 
   if (urlOrMoniker.protocol.endsWith("s")) urlOrMoniker.protocol = "wss";
   else urlOrMoniker.protocol = "ws";
 
-  const rpcSubscriptions = createSolanaRpcSubscriptions(
-    urlOrMoniker.toString(),
+  const rpcSubscriptions = createSolanaRpcSubscriptions<TCluster>(
+    urlOrMoniker.toString() as TCluster,
     rpcSubscriptionsConfig,
   );
 
