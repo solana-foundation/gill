@@ -189,7 +189,13 @@ To import any of these program clients:
 
 ```typescript
 import { ... } from "gill/programs";
+import { ... } from "gill/programs/token";
+import { ... } from "gill/programs/token22";
 ```
+
+> Note: Some client re-exported client program clients have a naming collision. As a result, they
+> may be re-exported under a subpath of `gill/programs`. For example, `gill/programs/token22` and
+> `gill/programs/token`.
 
 The program clients included inside `gill` are:
 
@@ -198,21 +204,19 @@ The program clients included inside `gill` are:
 - [Compute Budget program](https://github.com/solana-program/compute-budget) - re-exported from
   `@solana-program/compute-budget`
 - [Memo program](https://github.com/solana-program/memo) - re-exported from `@solana-program/memo`
+- [Token program](https://github.com/solana-program/token) - re-exported from
+  `@solana-program/token`
+- [Token Extension program (aka Token22)](https://github.com/solana-program/token-2022) -
+  re-exported from `@solana-program/token-2022`
 
-If one of the existing clients are not being exported from `gill/programs`, you can manually add
-their compatible client to your repo.
+If one of the existing clients are not being exported from `gill/programs` or a subpath therein, you
+can of course manually add their compatible client to your repo.
 
 ### Other compatible program clients
 
 From the [solana-program](https://github.com/solana-program/token) GitHub organization - formerly
 known as the Solana Program Library (SPL)
 
-- [Token program](https://github.com/solana-program/token) - re-exported from
-  `@solana-program/token`
-- [Token Extension program (aka Token22)](https://github.com/solana-program/token-2022) -
-  re-exported from `@solana-program/token-2022`
-- [Associated Token Account program](https://github.com/solana-program/associated-token-account) -
-  re-exported from `@solana-program/associated-token-account`
 - [Stake program](https://github.com/solana-program/stake) - re-exported from
   `@solana-program/stake`
 - [Address Lookup Table program](https://github.com/solana-program/address-lookup-table) -
