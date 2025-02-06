@@ -31,7 +31,7 @@ export type CreateSolanaClientArgs<
   rpcSubscriptionsConfig?: Parameters<typeof createSolanaRpcSubscriptions>[1];
 };
 
-export type CreateSolanaClientResult<TClusterUrl extends ModifiedClusterUrl | string> = {
+export type CreateSolanaClientResult<TClusterUrl extends ModifiedClusterUrl | string = string> = {
   rpc: RpcFromTransport<
     SolanaRpcApiFromTransport<RpcTransportFromClusterUrl<TClusterUrl>>,
     RpcTransportFromClusterUrl<TClusterUrl>
