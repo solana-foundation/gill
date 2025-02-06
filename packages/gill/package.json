@@ -48,6 +48,16 @@
       "import": "./dist/programs/index.node.mjs",
       "require": "./dist/programs/index.node.cjs"
     },
+    "./programs/token": {
+      "types": "./dist/programs/token.d.ts",
+      "import": "./dist/programs/token.node.mjs",
+      "require": "./dist/programs/token.node.cjs"
+    },
+    "./programs/token22": {
+      "types": "./dist/programs/token22.d.ts",
+      "import": "./dist/programs/token22.node.mjs",
+      "require": "./dist/programs/token22.node.cjs"
+    },
     "./types": "./dist/index.d.ts"
   },
   "browser": {
@@ -87,6 +97,8 @@
     "@solana-program/compute-budget": "^0.6.1",
     "@solana-program/memo": "^0.6.1",
     "@solana-program/system": "^0.6.2",
+    "@solana-program/token": "^0.4.1",
+    "@solana-program/token-2022": "^0.3.4",
     "@solana/accounts": "^2.0.0",
     "@solana/addresses": "^2.0.0",
     "@solana/codecs": "^2.0.0",
