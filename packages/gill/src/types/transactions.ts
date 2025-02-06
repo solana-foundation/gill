@@ -11,6 +11,7 @@ import { Simplify } from ".";
 
 export type CreateTransactionInput<
   TVersion extends TransactionVersion,
+  TFeePayer extends Address | TransactionSigner,
   TLifetimeConstraint extends
     | TransactionMessageWithBlockhashLifetime["lifetimeConstraint"]
     | undefined = undefined,
@@ -24,7 +25,7 @@ export type CreateTransactionInput<
   /** List of instructions for this transaction */
   instructions: IInstruction[];
   /** Address or Signer that will pay transaction fees */
-  feePayer: Address | TransactionSigner;
+  feePayer: TFeePayer;
   /**
    * Latest blockhash (aka transaction lifetime) for this transaction to
    * accepted for execution on the Solana network
@@ -38,8 +39,12 @@ export type CreateTransactionInput<
 
 export type FullTransaction<
   TVersion extends TransactionVersion,
-  TAddress extends string = string,
+  TFeePayer extends ITransactionMessageWithFeePayer | ITransactionMessageWithFeePayerSigner,
+  TBlockhashLifetime extends TransactionMessageWithBlockhashLifetime | undefined = undefined,
 > = Simplify<
   BaseTransactionMessage<TVersion> &
-    (ITransactionMessageWithFeePayer<TAddress> | ITransactionMessageWithFeePayerSigner<TAddress>)
+    TFeePayer &
+    (TBlockhashLifetime extends TransactionMessageWithBlockhashLifetime
+      ? TransactionMessageWithBlockhashLifetime
+      : {})
 >;
