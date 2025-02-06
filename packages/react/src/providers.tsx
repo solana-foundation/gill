@@ -18,7 +18,5 @@ export function GillProvider({
 }) {
   queryClient.setQueryData(GILL_HOOK_KEY_CONFIG, config);
 
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

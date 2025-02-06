@@ -10,6 +10,8 @@
     "url": "https://github.com/nickfrosty/gill"
   },
   "scripts": {
+    "clean": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} clean && pnpm clean:root",
+    "clean:root": "rimraf dist build node_modules .turbo",
     "prebuild": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} build --filter=gill",
     "build": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} build",
     "test": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} test",
@@ -55,6 +57,7 @@
     "jest-watch-typeahead": "^2.2.2",
     "jscodeshift": "^17.1.1",
     "prettier": "^3.3",
+    "rimraf": "5.0.10",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.5",
     "turbo": "^2.3.1"

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
+    "clean": "rimraf dist build node_modules .turbo",
     "compile:js": "tsup --config ./tsup.config.package.ts",
     "compile:typedefs": "tsc -p ./tsconfig.declarations.json",
     "prepublishOnly": "pnpm pkg delete devDependencies",

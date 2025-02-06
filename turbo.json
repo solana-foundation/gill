@@ -4,6 +4,10 @@
     "signature": true
   },
   "tasks": {
+    "clean": {
+      "inputs": ["$TURBO_DEFAULT$", "*"],
+      "outputs": ["*"]
+    },
     "build": {
       "dependsOn": ["compile:js", "compile:typedefs"],
       "outputs": ["dist/**"]

@@ -31,9 +31,7 @@ export function getBaseConfig(
                 __VERSION__: `"${env.npm_package_version}"`,
               },
               dts: true, // This enables .d.ts file generation
-              entry: optionsInput.entry
-                ? optionsInput.entry
-                : [`./src/index.ts`],
+              entry: optionsInput.entry ? optionsInput.entry : [`./src/index.ts`],
               esbuildOptions(options, context) {
                 const { format } = context;
                 options.minify = format === "iife" && !isDebugBuild;
@@ -60,13 +58,9 @@ export function getBaseConfig(
               outExtension({ format }) {
                 let extension;
                 if (format === "iife") {
-                  extension = `.${
-                    isDebugBuild ? "development" : "production.min"
-                  }.js`;
+                  extension = `.${isDebugBuild ? "development" : "production.min"}.js`;
                 } else {
-                  extension = `.${platform}.${
-                    format === "cjs" ? "cjs" : "mjs"
-                  }`;
+                  extension = `.${platform}.${format === "cjs" ? "cjs" : "mjs"}`;
                 }
                 return {
                   js: extension,

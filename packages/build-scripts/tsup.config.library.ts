@@ -11,8 +11,5 @@ export default defineConfig(async (options) => {
   const packageConfigOptions = Array.isArray(packageConfigOptionOrOptions)
     ? packageConfigOptionOrOptions
     : [packageConfigOptionOrOptions];
-  return [
-    ...packageConfigOptions,
-    ...getBaseConfig("browser", ["iife"], options),
-  ];
+  return [...packageConfigOptions, ...getBaseConfig("browser", ["iife"], options)];
 });

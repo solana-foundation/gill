@@ -1,6 +1,6 @@
 import assert from "node:assert";
 
-import { getPublicSolanaRpcUrl } from "../core/rpc";
+import { getPublicSolanaRpcUrl, createSolanaClient } from "../core/rpc";
 
 describe("getPublicSolanaRpcUrl", () => {
   test("getPublicSolanaRpcUrl returns mainnet-beta url", () => {
@@ -30,5 +30,27 @@ describe("getPublicSolanaRpcUrl", () => {
   test("getPublicSolanaRpcUrl show throw error on a url provided", () => {
     // @ts-expect-error - urls are not supported
     assert.throws(() => getPublicSolanaRpcUrl("https://google.com"), Error);
+  });
+});
+
+describe("createSolanaClient", () => {
+  test("supports major cluster monikers and urls", () => {
+    assert.doesNotThrow(() => {
+      createSolanaClient({ urlOrMoniker: "mainnet" });
+      createSolanaClient({ urlOrMoniker: "devnet" });
+      createSolanaClient({ urlOrMoniker: "testnet" });
+      createSolanaClient({ urlOrMoniker: "localnet" });
+      createSolanaClient({ urlOrMoniker: "https://example-rpc.com" });
+    });
+  });
+  test("throws on invalid moniker", () => {
+    assert.throws(() => createSolanaClient({ urlOrMoniker: "invalid" }), "Invalid moniker");
+  });
+  test("throws on invalid and unsupported urls", () => {
+    assert.throws(() => createSolanaClient({ urlOrMoniker: "http//invalid" }), "Invalid url");
+    assert.throws(
+      () => createSolanaClient({ urlOrMoniker: "ftp://invalid" }),
+      "Unsupported protocol",
+    );
   });
 });
