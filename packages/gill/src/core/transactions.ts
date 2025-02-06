@@ -4,19 +4,31 @@ import {
   createTransactionMessage,
   setTransactionMessageFeePayer,
   setTransactionMessageLifetimeUsingBlockhash,
+  TransactionMessageWithBlockhashLifetime,
+  TransactionVersion,
 } from "@solana/transaction-messages";
 import { isTransactionSigner, setTransactionMessageFeePayerSigner } from "@solana/signers";
-import type { CreateTransactionInput } from "../types/transactions";
+import type { FullTransaction, CreateTransactionInput } from "../types/transactions";
 
 /**
  * Simple interface for creating a Solana transaction
  */
-export function createTransaction({
+export function createTransaction<TVersion extends TransactionVersion, TFeePayer extends string>(
+  props: CreateTransactionInput<TVersion, undefined>,
+): FullTransaction<TVersion>;
+export function createTransaction<
+  TVersion extends TransactionVersion,
+  TFeePayer extends string,
+  TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
+>(
+  props: CreateTransactionInput<TVersion, TLifetimeConstraint>,
+): FullTransaction<TVersion, TFeePayer> & TransactionMessageWithBlockhashLifetime;
+export function createTransaction<TVersion extends TransactionVersion>({
   version,
   feePayer,
   instructions,
   latestBlockhash,
-}: CreateTransactionInput) {
+}: CreateTransactionInput<TVersion>): FullTransaction<TVersion> {
   return pipe(
     createTransactionMessage({ version }),
     (tx) => {

@@ -1,6 +1,6 @@
 export * from "./rpc";
 export * from "./explorer";
 
-export type Prettify<T> = {
+export type Simplify<T> = {
   [K in keyof T]: T[K];
 } & {};
