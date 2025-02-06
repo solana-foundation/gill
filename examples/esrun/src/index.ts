@@ -6,11 +6,18 @@ import {
   sendAndConfirmTransactionFactory,
 } from "gill";
 import { loadKeypairSignerFromFile } from "gill/node";
+import { SYSTEM_PROGRAM_ADDRESS } from "gill/programs";
+import { TOKEN_PROGRAM_ADDRESS } from "gill/programs/token";
+import { TOKEN_2022_PROGRAM_ADDRESS } from "gill/programs/token22";
 
 const signer = await loadKeypairSignerFromFile();
 
 console.log("address:", signer.address);
 console.log("LAMPORTS_PER_SOL:", LAMPORTS_PER_SOL);
+
+console.log(SYSTEM_PROGRAM_ADDRESS);
+console.log(TOKEN_PROGRAM_ADDRESS);
+console.log(TOKEN_2022_PROGRAM_ADDRESS);
 
 // @ts-ignore
 const rpc2 = createSolanaRpc("derp");
