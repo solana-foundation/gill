@@ -103,12 +103,19 @@ Craft a Solana Explorer link for transactions, accounts, or blocks on any cluste
 
 > When no `cluster` is provided, defaults to `mainnet`.
 
+To get an explorer link for a transaction (from its signatured or a signed transaction object):
+
 ```typescript
 import { getExplorerLink } from "gill";
 
-const link: URL = getExplorerLink({
+const link: string = getExplorerLink({
   transaction:
     "4nzNU7YxPtPsVzeg16oaZvLz4jMPtbAzavDfEFmemHNv93iYXKKYAaqBJzFCwEVxiULqTYYrbjPwQnA1d9ZCTELg",
+});
+
+let signedTransaction = await signTransactionMessageWithSigners(...);
+const link2: string = getExplorerLink({
+  transaction: signedTransaction,
 });
 ```
 
@@ -117,7 +124,7 @@ To get an explorer link for an account on Solana's devnet:
 ```typescript
 import { getExplorerLink } from "gill";
 
-const link: URL = getExplorerLink({
+const link: string = getExplorerLink({
   cluster: "devnet",
   account: "nick6zJc6HpW3kfBm4xS2dmbuVRyb5F3AnUvj5ymzR5",
 });
@@ -128,7 +135,7 @@ To get an explorer link for an account on your local test validator:
 ```typescript
 import { getExplorerLink } from "gill";
 
-const link: URL = getExplorerLink({
+const link: string = getExplorerLink({
   cluster: "localnet",
   account: "11111111111111111111111111111111",
 });
@@ -139,7 +146,7 @@ To get an explorer link for a block:
 ```typescript
 import { getExplorerLink } from "gill";
 
-const link: URL = getExplorerLink({
+const link: string = getExplorerLink({
   cluster: "mainnet",
   block: "242233124",
 });
