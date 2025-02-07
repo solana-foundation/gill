@@ -1,96 +1,99 @@
 import {
+  getExplorerLink,
+  createTransaction,
   createSolanaClient,
-  createSolanaRpc,
-  LAMPORTS_PER_SOL,
-  mainnet,
+  SolanaClusterMoniker,
+  getSignatureFromTransaction,
   sendAndConfirmTransactionFactory,
+  signTransactionMessageWithSigners,
 } from "gill";
 import { loadKeypairSignerFromFile } from "gill/node";
-import { SYSTEM_PROGRAM_ADDRESS } from "gill/programs";
-import { TOKEN_PROGRAM_ADDRESS } from "gill/programs/token";
-import { TOKEN_2022_PROGRAM_ADDRESS } from "gill/programs/token22";
+import { getAddMemoInstruction } from "gill/programs";
 
+/**
+ * Load a keypair signer from the local filesystem
+ *
+ * This defaults to the file path used by the Solana CLI: `~/.config/solana/id.json`
+ */
 const signer = await loadKeypairSignerFromFile();
-
 console.log("address:", signer.address);
-console.log("LAMPORTS_PER_SOL:", LAMPORTS_PER_SOL);
 
-console.log(SYSTEM_PROGRAM_ADDRESS);
-console.log(TOKEN_PROGRAM_ADDRESS);
-console.log(TOKEN_2022_PROGRAM_ADDRESS);
+/**
+ * Declare what Solana network cluster we want our code to interact with
+ */
+const cluster: SolanaClusterMoniker = "devnet";
 
-// @ts-ignore
-const rpc2 = createSolanaRpc("derp");
-// @ts-ignore
-const rpc3 = createSolanaRpc(mainnet("d"));
-
+/**
+ * Create a client connection to the Solana blockchain
+ *
+ * Note: `urlOrMoniker` can be either a Solana network moniker or a full URL of your RPC provider
+ */
 const { rpc, rpcSubscriptions } = createSolanaClient({
-  // urlOrMoniker: "devnet",
-  // urlOrMoniker: "d",
-  urlOrMoniker: "mainnet",
-  // urlOrMoniker: "",
+  urlOrMoniker: cluster,
 });
 
-// @ts-ignore
-const { rpc: mainnetRpc } = createSolanaClient({
-  urlOrMoniker: "mainnet",
-});
-// @ts-ignore
-const { rpc: devnetRpc } = createSolanaClient({
-  urlOrMoniker: "devnet",
-});
-
-const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
-console.log("latestBlockhash:", latestBlockhash);
-
-// @ts-ignore
+/**
+ * Initialize the transaction sender function with our RPC
+ */
 const sendAndConfirmTransaction = sendAndConfirmTransactionFactory({
   rpc,
   rpcSubscriptions,
 });
 
-// let tx = createTransaction({
-//   feePayer: signer,
-//   instructions: [],
-//   version: 0,
-//   latestBlockhash,
-// });
+/**
+ * Create a memo instruction to post a simple message onchain
+ * (the simplest of instruction types!)
+ */
+const memoIx = getAddMemoInstruction({
+  memo: "gm world!",
+});
 
-// console.log(tx);
+/**
+ * Get the latest blockhash (aka transaction lifetime). This acts as a recent timestamp
+ * for the blockchain to key on when processing your transaction
+ *
+ * Pro tip: only request this value just before you are going to use it your code
+ */
+const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+console.log("latestBlockhash:", latestBlockhash);
 
-// let signedTransaction = await signTransactionMessageWithSigners(tx);
-// signedTransaction = await signTransactionMessageWithSigners(
-//   setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
-// );
-// tx = setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx);
-// signedTransaction = await signTransactionMessageWithSigners(tx);
+/**
+ * Create a transaction to be sent to the blockchain
+ */
+let tx = createTransaction({
+  version: "legacy",
+  feePayer: signer,
+  instructions: [memoIx],
+  latestBlockhash,
+});
+console.log(tx);
 
-// console.log("signedTransaction");
-// console.log(signedTransaction);
+/**
+ * Sign the transaction with the provided `signer` when it was created
+ */
+let signedTransaction = await signTransactionMessageWithSigners(tx);
+console.log("signedTransaction");
+console.log(signedTransaction);
 
-// let signature = getSignatureFromTransaction(signedTransaction);
-// console.log("signature:", signature);
+/**
+ * Log the Solana Explorer link for the
+ */
+console.log(
+  getExplorerLink({
+    cluster,
+    transaction: getSignatureFromTransaction(signedTransaction),
+  }),
+);
 
-// try {
-//   await sendAndConfirmTransaction(signedTransaction, {
-//     commitment: "confirmed",
-//   });
-
-//   console.log(`https://explorer.solana.com/tx/${signature}?cluster=devnet`);
-// } catch (e) {
-//   // console.error("Unable to send and confirm");
-//   // console.error(err);
-
-//   if (isSolanaError(e, SOLANA_ERROR__JSON_RPC__SERVER_ERROR_SEND_TRANSACTION_PREFLIGHT_FAILURE)) {
-//     const preflightErrorContext = e.context;
-//     const preflightErrorMessage = e.message;
-//     const errorDetailMessage = isSystemError(e.cause, transaction)
-//       ? getSystemErrorMessage(e.cause.context.code)
-//       : e.cause?.message;
-//     console.error(preflightErrorContext, " - ", preflightErrorMessage);
-//     console.log();
-//     console.log(errorDetailMessage);
-//   } else {
-//     throw e;
-//   }
-// }
+try {
+  /**
+   * Actually send the transaction to the blockchain and confirm it
+   */
+  await sendAndConfirmTransaction(signedTransaction, {
+    commitment: "confirmed",
+  });
+  console.log("Transaction confirmed!");
+} catch (err) {
+  console.error("Unable to send and confirm the transaction");
+  console.error(err);
+}
