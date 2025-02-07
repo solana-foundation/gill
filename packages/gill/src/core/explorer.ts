@@ -1,9 +1,10 @@
 import { GetExplorerLinkArgs } from "../types";
+import { getSignatureFromTransaction } from "@solana/transactions";
 
 /**
  * Craft a Solana Explorer link on any cluster
  */
-export function getExplorerLink(props: GetExplorerLinkArgs): URL {
+export function getExplorerLink(props: GetExplorerLinkArgs): string {
   let url: URL | null = null;
 
   // default to mainnet / mainnet-beta
@@ -12,7 +13,13 @@ export function getExplorerLink(props: GetExplorerLinkArgs): URL {
   if ("address" in props) {
     url = new URL(`https://explorer.solana.com/address/${props.address}`);
   } else if ("transaction" in props) {
-    url = new URL(`https://explorer.solana.com/tx/${props.transaction}`);
+    if (typeof props.transaction == "string") {
+      url = new URL(`https://explorer.solana.com/tx/${props.transaction}`);
+    } else {
+      url = new URL(
+        `https://explorer.solana.com/tx/${getSignatureFromTransaction(props.transaction)}`,
+      );
+    }
   } else if ("block" in props) {
     url = new URL(`https://explorer.solana.com/block/${props.block}`);
   }
@@ -29,5 +36,5 @@ export function getExplorerLink(props: GetExplorerLinkArgs): URL {
     }
   }
 
-  return url;
+  return url.toString();
 }
