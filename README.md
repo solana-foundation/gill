@@ -23,6 +23,8 @@ yarn add gill
 
 - [Create a Solana RPC connection](#create-a-solana-rpc-connection)
 - [Create a transaction](#create-a-transaction)
+- [Signing transactions](#signing-transactions)
+- [Get a transaction signature](#get-the-signature-from-a-signed-transaction)
 - [Get a Solana Explorer link](#get-a-solana-explorer-link-for-transactions-accounts-or-blocks)
 
 You can also find some [NodeJS specific helpers](#node-specific-imports) like:
@@ -97,13 +99,62 @@ const transaction = createTransaction({
 
 The `feePayer` can be either an `Address` or `TransactionSigner`.
 
+### Signing transactions
+
+If your transaction already has the latest blockhash lifetime set via `createTransaction`:
+
+```typescript
+import {
+  signTransactionMessageWithSigners,
+  setTransactionMessageLifetimeUsingBlockhash,
+} from "gill";
+
+const signedTransaction = await signTransactionMessageWithSigners(transaction);
+```
+
+If your transaction does NOT have the latest blockhash lifetime set via `createTransaction`, you
+must set the latest blockhash lifetime before (or during) the signing operation:
+
+```typescript
+import {
+  signTransactionMessageWithSigners,
+  setTransactionMessageLifetimeUsingBlockhash,
+} from "gill";
+
+const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+const signedTransaction = await signTransactionMessageWithSigners(
+  setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
+);
+```
+
+### Get the signature from a signed transaction
+
+After you already have a partially or fully signed transaction, you can get the transaction
+signature as follows:
+
+```typescript
+import { getSignatureFromTransaction } from "gill";
+
+const signature: string = getSignatureFromTransaction(signedTransaction);
+console.log(signature);
+// Example output: 4nzNU7YxPtPsVzeg16oaZvLz4jMPtbAzavDfEFmemHNv93iYXKKYAaqBJzFCwEVxiULqTYYrbjPwQnA1d9ZCTELg
+```
+
+> Note: After a transaction has been signed by at least one Signer, it will have a transaction
+> signature (aka transaction id). This is due to Solana transaction ids are the first item in the
+> transaction's `signatures` array. Therefore, client applications can know the signature before it
+> is even sent to the network for confirmation.
+
 ### Get a Solana Explorer link for transactions, accounts, or blocks
 
 Craft a Solana Explorer link for transactions, accounts, or blocks on any cluster.
 
-> When no `cluster` is provided, defaults to `mainnet`.
+> When no `cluster` is provided in the `getExplorerLink` function, it defaults to `mainnet`.
 
-To get an explorer link for a transaction (from its signatured or a signed transaction object):
+#### Get a Solana Explorer link for a transaction
+
+To get an explorer link for a transaction's signature (aka transaction id):
 
 ```typescript
 import { getExplorerLink } from "gill";
@@ -112,12 +163,25 @@ const link: string = getExplorerLink({
   transaction:
     "4nzNU7YxPtPsVzeg16oaZvLz4jMPtbAzavDfEFmemHNv93iYXKKYAaqBJzFCwEVxiULqTYYrbjPwQnA1d9ZCTELg",
 });
+```
 
-let signedTransaction = await signTransactionMessageWithSigners(...);
-const link2: string = getExplorerLink({
-  transaction: signedTransaction,
+If you have a partially or fully signed transaction, you can get the Explorer link before even
+sending the transaction to the network:
+
+```typescript
+import {
+  getExplorerLink,
+  getSignatureFromTransaction
+  signTransactionMessageWithSigners,
+} from "gill";
+
+const signedTransaction = await signTransactionMessageWithSigners(...);
+const link: string = getExplorerLink({
+  transaction: getSignatureFromTransaction(signedTransaction),
 });
 ```
+
+#### Get a Solana Explorer link for an account
 
 To get an explorer link for an account on Solana's devnet:
 
@@ -140,6 +204,8 @@ const link: string = getExplorerLink({
   account: "11111111111111111111111111111111",
 });
 ```
+
+#### Get a Solana Explorer link for a block
 
 To get an explorer link for a block:
 

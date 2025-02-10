@@ -1,11 +1,10 @@
-import { FullySignedTransaction } from "@solana/transactions";
 import { SolanaClusterMoniker } from "./rpc";
 
 type ExplorerLinkAccount = {
   address: string;
 };
 type ExplorerLinkTransaction = {
-  transaction: string | FullySignedTransaction;
+  transaction: string;
 };
 type ExplorerLinkBlock = {
   block: string;

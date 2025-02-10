@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { FullySignedTransaction } from "@solana/transactions";
+import { FullySignedTransaction, getSignatureFromTransaction } from "@solana/transactions";
 
 import { getExplorerLink } from "../../src/core/explorer";
 
@@ -72,8 +72,14 @@ describe("getExplorerLink", () => {
       },
     } as unknown as FullySignedTransaction;
 
+    const signature = getSignatureFromTransaction(signedTx);
+    assert.equal(
+      signature,
+      "2YhzivV92fw9oT6RjTBWSdqR8Sc9FTWxzPMwAzeqiWutXfEgiwhXz3iCnayt9P8nmKwwGn2wDYsGRCSdeoxTJCDX",
+    );
+
     const link = getExplorerLink({
-      transaction: signedTx,
+      transaction: signature,
     });
     assert.equal(
       link,
