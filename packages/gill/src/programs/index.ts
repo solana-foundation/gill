@@ -3,5 +3,7 @@
  */
 
 export * from "@solana-program/system";
-export * from "@solana-program/compute-budget";
 export * from "@solana-program/memo";
+
+export * from "@solana-program/compute-budget";
+export * from "./compute-budget";
