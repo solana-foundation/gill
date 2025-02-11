@@ -8,9 +8,11 @@ import {
 import {
     FullySignedTransaction,
     getBase64EncodedWireTransaction,
+    getSignatureFromTransaction,
     TransactionWithBlockhashLifetime,
     TransactionWithDurableNonceLifetime,
 } from '@solana/transactions';
+import { debug, getExplorerLink } from '../core';
 
 interface SendAndConfirmDurableNonceTransactionConfig
     extends SendTransactionBaseConfig,
@@ -79,6 +81,7 @@ export async function sendTransaction_INTERNAL_ONLY_DO_NOT_EXPORT({
     transaction,
     ...sendTransactionConfig
 }: SendTransactionBaseConfig): Promise<Signature> {
+    debug(`Sending transaction: ${getExplorerLink({transaction: getSignatureFromTransaction(transaction)})}`)
     const base64EncodedWireTransaction = getBase64EncodedWireTransaction(transaction);
     return await rpc
         .sendTransaction(base64EncodedWireTransaction, {
