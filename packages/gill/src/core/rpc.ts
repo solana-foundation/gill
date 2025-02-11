@@ -9,6 +9,7 @@ import {
   CreateSolanaClientArgs,
   CreateSolanaClientResult,
 } from "../types/rpc";
+import { sendAndConfirmTransactionFactory } from "../kit";
 
 export function localnet(putativeString: string): LocalnetUrl {
   return putativeString as LocalnetUrl;
@@ -95,8 +96,12 @@ export function createSolanaClient<TCluster extends ModifiedClusterUrl>({
     rpcSubscriptionsConfig,
   );
 
+  // @ts-ignore
+  const sendAndConfirmTransaction = sendAndConfirmTransactionFactory({ rpc, rpcSubscriptions });
+
   return {
     rpc,
     rpcSubscriptions,
+    sendAndConfirmTransaction,
   };
 }
