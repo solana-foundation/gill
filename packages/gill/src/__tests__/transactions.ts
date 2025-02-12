@@ -75,6 +75,7 @@ describe("createTransaction", () => {
     });
 
     assert.equal(tx.version, "legacy");
+    assert.equal(tx.instructions.length, 1);
     assert.equal(hasSetComputeLimitInstruction(tx), true);
     assert.equal(hasSetComputeUnitPriceInstruction(tx), false);
   });
@@ -88,11 +89,12 @@ describe("createTransaction", () => {
     });
 
     assert.equal(tx.version, "legacy");
+    assert.equal(tx.instructions.length, 1);
     assert.equal(hasSetComputeLimitInstruction(tx), false);
     assert.equal(hasSetComputeUnitPriceInstruction(tx), true);
   });
 
-  test("create a legacy transaction with a both compute budget instructions", () => {
+  test("create a legacy transaction with both compute budget instructions", () => {
     const tx = createTransaction({
       version: "legacy",
       feePayer: signer.address,
@@ -102,6 +104,7 @@ describe("createTransaction", () => {
     });
 
     assert.equal(tx.version, "legacy");
+    assert.equal(tx.instructions.length, 2);
     assert.equal(hasSetComputeLimitInstruction(tx), true);
     assert.equal(hasSetComputeUnitPriceInstruction(tx), true);
   });
@@ -136,6 +139,7 @@ describe("createTransaction", () => {
     });
 
     assert.equal(tx.version, 0);
+    assert.equal(tx.instructions.length, 1);
     assert.equal(hasSetComputeLimitInstruction(tx), true);
     assert.equal(hasSetComputeUnitPriceInstruction(tx), false);
   });
@@ -149,11 +153,12 @@ describe("createTransaction", () => {
     });
 
     assert.equal(tx.version, 0);
+    assert.equal(tx.instructions.length, 1);
     assert.equal(hasSetComputeLimitInstruction(tx), false);
     assert.equal(hasSetComputeUnitPriceInstruction(tx), true);
   });
 
-  test("create a version 0 transaction with a both compute budget instructions", () => {
+  test("create a version 0 transaction with both compute budget instructions", () => {
     const tx = createTransaction({
       version: 0,
       feePayer: signer.address,
@@ -163,6 +168,7 @@ describe("createTransaction", () => {
     });
 
     assert.equal(tx.version, 0);
+    assert.equal(tx.instructions.length, 2);
     assert.equal(hasSetComputeLimitInstruction(tx), true);
     assert.equal(hasSetComputeUnitPriceInstruction(tx), true);
   });
