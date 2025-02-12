@@ -421,7 +421,7 @@ console itself.
 Some examples of the existing debug logs that `gill` has sprinkled in:
 
 - log the Solana Explorer link for transactions as you are sending them
-- base64 transaction string to troubleshoot via
+- log the base64 transaction string to troubleshoot via
   [`mucho inspect`](https://github.com/solana-developers/mucho?tab=readme-ov-file#inspect) or Solana
   Explorer's [Transaction Inspector](https://explorer.solana.com/tx/inspector)
 
@@ -441,6 +441,13 @@ following (default: `info`):
 - `global.__GILL_DEBUG_LEVEL__`
 - `window.__GILL_DEBUG_LEVEL__` (i.e. in your web browser's console)
 
+The log levels supported (in order of priority):
+
+- `debug` (lowest)
+- `info` (default)
+- `warn`
+- `error`
+
 ### Custom debug logs
 
 Gill also exports the same debug functions it uses internally, allowing you to implement your own
@@ -450,7 +457,7 @@ debug logic related to your Solana transactions and use the same controller for 
 - `debug()` - print debug message if the set log level is reached
 
 ```typescript
-import { debug, isDebugEnabled } from "gill/node";
+import { debug, isDebugEnabled } from "gill";
 
 if (isDebugEnabled()) {
   // your custom logic
@@ -461,6 +468,12 @@ debug("custom message");
 
 // log this message if the "debug" or above log level is enabled
 debug("custom message", "debug");
+
+// log this message if the "warn" or above log level is enabled
+debug("custom message", "warn");
+
+// log this message if the "warn" or above log level is enabled
+debug("custom message", "warn");
 ```
 
 ## Program clients
