@@ -4,7 +4,6 @@ import {
   createSolanaClient,
   SolanaClusterMoniker,
   getSignatureFromTransaction,
-  sendAndConfirmTransactionFactory,
   signTransactionMessageWithSigners,
 } from "gill";
 import { loadKeypairSignerFromFile } from "gill/node";
@@ -28,16 +27,8 @@ const cluster: SolanaClusterMoniker = "devnet";
  *
  * Note: `urlOrMoniker` can be either a Solana network moniker or a full URL of your RPC provider
  */
-const { rpc, rpcSubscriptions } = createSolanaClient({
+const { rpc, sendAndConfirmTransaction } = createSolanaClient({
   urlOrMoniker: cluster,
-});
-
-/**
- * Initialize the transaction sender function with our RPC
- */
-const sendAndConfirmTransaction = sendAndConfirmTransactionFactory({
-  rpc,
-  rpcSubscriptions,
 });
 
 /**
@@ -66,22 +57,29 @@ let tx = createTransaction({
   instructions: [memoIx],
   latestBlockhash,
 });
+console.log("Transaction:");
 console.log(tx);
 
 /**
  * Sign the transaction with the provided `signer` when it was created
  */
 let signedTransaction = await signTransactionMessageWithSigners(tx);
-console.log("signedTransaction");
+console.log("signedTransaction:");
 console.log(signedTransaction);
+
+/**
+ * Get the transaction signature after it has been signed by at least one signer
+ */
+let signature = getSignatureFromTransaction(signedTransaction);
 
 /**
  * Log the Solana Explorer link for the
  */
+console.log("Explorer Link:");
 console.log(
   getExplorerLink({
     cluster,
-    transaction: getSignatureFromTransaction(signedTransaction),
+    transaction: signature,
   }),
 );
 
@@ -89,10 +87,15 @@ try {
   /**
    * Actually send the transaction to the blockchain and confirm it
    */
-  await sendAndConfirmTransaction(signedTransaction, {
-    commitment: "confirmed",
-  });
-  console.log("Transaction confirmed!");
+  await sendAndConfirmTransaction(signedTransaction);
+
+  // await sendAndConfirmTransaction(signedTransaction, {
+  //   commitment: "confirmed",
+  //   skipPreflight: true,
+  //   maxRetries: 10n,
+  // });
+
+  console.log("Transaction confirmed!", signature);
 } catch (err) {
   console.error("Unable to send and confirm the transaction");
   console.error(err);
