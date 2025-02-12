@@ -73,6 +73,8 @@ const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient(
 
 Quickly create a Solana transaction:
 
+> Note: The `feePayer` can be either an `Address` or `TransactionSigner`.
+
 ```typescript
 import { createTransaction } from "gill";
 
@@ -80,6 +82,9 @@ const transaction = createTransaction({
   version,
   feePayer,
   instructions,
+  // the compute budget values are HIGHLY recommend to be set in order to maximize your transaction landing rate
+  // computeUnitLimit: number,
+  // computeUnitPrice: number,
 });
 ```
 
@@ -95,10 +100,29 @@ const transaction = createTransaction({
   feePayer,
   instructions,
   latestBlockhash,
+  // the compute budget values are HIGHLY recommend to be set in order to maximize your transaction landing rate
+  // computeUnitLimit: number,
+  // computeUnitPrice: number,
 });
 ```
 
-The `feePayer` can be either an `Address` or `TransactionSigner`.
+To create a transaction while setting the latest blockhash:
+
+```typescript
+import { createTransaction } from "gill";
+
+const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+const transaction = createTransaction({
+  version,
+  feePayer,
+  instructions,
+  latestBlockhash,
+  // the compute budget values are HIGHLY recommend to be set in order to maximize your transaction landing rate
+  // computeUnitLimit: number,
+  // computeUnitPrice: number,
+});
+```
 
 ### Signing transactions
 
