@@ -1,9 +1,31 @@
-# gill
+<h1 align="center">
+  gill
+</h1>
 
-Welcome to gill, a [Solana web3.js v2](https://github.com/anza-xyz/solana-web3.js) compatible helper
-library for building Solana apps in Node, web, and React Native.
+<p align="center">
+  javascript/typescript client library for interacting with the Solana blockchain
+</p>
 
-## Get started
+<p align="center">
+  <a href="https://github.com/solana-foundation/gill/actions/workflows/publish-packages.yml"><img src="https://img.shields.io/github/actions/workflow/status/solana-foundation/gill/publish-packages.yml?logo=GitHub" /></a>
+  <a href="https://www.npmjs.com/package/gill"><img src="https://img.shields.io/npm/v/gill?logo=npm&color=377CC0" /></a>
+</p>
+
+<p align="center">
+  <img width="600" alt="gill" src="https://raw.githubusercontent.com/solana-foundation/gill/refs/heads/master/media/cover.png" />
+</p>
+
+## Overview
+
+Welcome to `gill`, a JavaScript/TypeScript client library for interacting with the
+[Solana](http://solana.com/) blockchain. You can use it to build Solana apps in Node, web, React
+Native, or just about any other JavaScript environment.
+
+Gill is built on top of the modern javascript libraries for Solana built by Anza and used in
+([@solana/web3.js v2](https://github.com/anza-xyz/solana-web3.js)). By utilizing the same types and
+functions under the hood, `gill` is compatible with web3.js.
+
+## Installation
 
 Install `gill` with your package manager of choice:
 
@@ -22,15 +44,23 @@ yarn add gill
 ## Quick start
 
 - [Create a Solana RPC connection](#create-a-solana-rpc-connection)
+- [Making Solana RPC calls](#making-solana-rpc-calls)
 - [Create a transaction](#create-a-transaction)
 - [Signing transactions](#signing-transactions)
 - [Sending and confirming transaction](#sending-and-confirming-transactions)
 - [Get a transaction signature](#get-the-signature-from-a-signed-transaction)
 - [Get a Solana Explorer link](#get-a-solana-explorer-link-for-transactions-accounts-or-blocks)
+- [Calculate minimum rent balance for an account](#calculate-minimum-rent-for-an-account)
 
 You can also find some [NodeJS specific helpers](#node-specific-imports) like:
 
 - [Loading a keypair from a file](#loading-a-keypair-from-a-file)
+
+For troubleshooting and debugging your Solana transactions, see [Debug mode](#debug-mode) below.
+
+> You can also consult the documentation for Anza's
+> [JavaScript client](https://github.com/anza-xyz/solana-web3.js) library for more information and
+> helpful resources.
 
 ### Create a Solana RPC connection
 
@@ -67,6 +97,47 @@ import { createSolanaClient } from "gill";
 const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
   urlOrMoniker: "https://private-solana-rpc-provider.com",
 });
+```
+
+### Making Solana RPC calls
+
+After you have a Solana `rpc` connection, you can make all the
+[JSON RPC method](https://solana.com/docs/rpc) calls directly off of it.
+
+```typescript
+import { createSolanaClient } from "gill";
+
+const { rpc } = createSolanaClient({ urlOrMoniker: "devnet" });
+
+// get slot
+const slot = await rpc.getSlot().send();
+
+// get the latest blockhash
+const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+```
+
+> The `rpc` client requires you to call `.send()` on the RPC method in order to actually send the
+> request to your RPC provider and get a response.
+
+You can also include custom configuration settings on your RPC calls, like using a JavaScript
+[AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController), by passing it
+into `send()`:
+
+```typescript
+import { createSolanaClient } from "gill";
+
+const { rpc } = createSolanaClient({ urlOrMoniker: "devnet" });
+
+// Create a new AbortController.
+const abortController = new AbortController();
+
+// Abort the request when the user navigates away from the current page.
+function onUserNavigateAway() {
+  abortController.abort();
+}
+
+// The request will be aborted if and only if the user navigates away from the page.
+const slot = await rpc.getSlot().send({ abortSignal: abortController.signal });
 ```
 
 ### Create a transaction
@@ -276,6 +347,33 @@ const link: string = getExplorerLink({
 });
 ```
 
+### Calculate minimum rent for an account
+
+To calculate the minimum rent balance for an account (aka data storage deposit fee):
+
+```typescript
+import { getMinimumBalanceForRentExemption } from "gill";
+
+// when not `space` argument is provided: defaults to `0`
+const rent: bigint = getMinimumBalanceForRentExemption();
+// Expected value: 890_880n
+
+// same as
+// getMinimumBalanceForRentExemption(0);
+```
+
+```typescript
+import { getMinimumBalanceForRentExemption } from "gill";
+
+const rent: bigint = getMinimumBalanceForRentExemption(50 /* 50 bytes */);
+// Expected value: 1_238_880n
+```
+
+> Note: At this time, the minimum rent amount for an account is calculated based on static values in
+> the Solana runtime. While you can use the `getMinimumBalanceForRentExemption` RPC call on your
+> [connection](#create-a-solana-rpc-connection) to fetch this value, it will result in a network
+> call and subject to latency.
+
 ## Node specific imports
 
 The `gill` package has specific imports for use in NodeJS server backends and/or serverless
@@ -308,6 +406,61 @@ import { loadKeypairSignerFromFile } from "gill/node";
 
 const signer = await loadKeypairSignerFromFile("/path/to/your/keypair.json");
 console.log("address:", signer.address);
+```
+
+## Debug mode
+
+Within `gill`, you can enable "debug mode" to automatically log additional information that will be
+helpful in troubleshooting your transactions.
+
+Debug mode is disabled by default to minimize additional logs for your application. But with its
+flexible debug controller, you can enable it from the most common places your code will be run.
+Including your code itself, NodeJS backends, serverless functions, and even the in web browser
+console itself.
+
+Some examples of the existing debug logs that `gill` has sprinkled in:
+
+- log the Solana Explorer link for transactions as you are sending them
+- base64 transaction string to troubleshoot via
+  [`mucho inspect`](https://github.com/solana-developers/mucho?tab=readme-ov-file#inspect) or Solana
+  Explorer's [Transaction Inspector](https://explorer.solana.com/tx/inspector)
+
+### How to enable debug mode
+
+To enable debug mode, set any of the following to `true` or `1`:
+
+- `process.env.GILL_DEBUG`
+- `global.__GILL_DEBUG__`
+- `window.__GILL_DEBUG__` (i.e. in your web browser's console)
+- or manually set any debug log level (see below)
+
+To set a desired level of logs to be output in your application, set the value of one of the
+following (default: `info`):
+
+- `process.env.GILL_DEBUG_LEVEL`
+- `global.__GILL_DEBUG_LEVEL__`
+- `window.__GILL_DEBUG_LEVEL__` (i.e. in your web browser's console)
+
+### Custom debug logs
+
+Gill also exports the same debug functions it uses internally, allowing you to implement your own
+debug logic related to your Solana transactions and use the same controller for it as `gill` does.
+
+- `isDebugEnabled()` - check if debug mode is enabled or not
+- `debug()` - print debug message if the set log level is reached
+
+```typescript
+import { debug, isDebugEnabled } from "gill/node";
+
+if (isDebugEnabled()) {
+  // your custom logic
+}
+
+// log this message if the "info" or above log level is enabled
+debug("custom message");
+
+// log this message if the "debug" or above log level is enabled
+debug("custom message", "debug");
 ```
 
 ## Program clients
