@@ -1,5 +1,7 @@
+import { Simplify } from "../types";
 import { pipe } from "@solana/functional";
 import {
+  appendTransactionMessageInstruction,
   appendTransactionMessageInstructions,
   createTransactionMessage,
   ITransactionMessageWithFeePayer,
@@ -16,7 +18,10 @@ import {
 } from "@solana/signers";
 import type { FullTransaction, CreateTransactionInput } from "../types/transactions";
 import { Address } from "@solana/addresses";
-import { Simplify } from "../types";
+import {
+  getSetComputeUnitLimitInstruction,
+  getSetComputeUnitPriceInstruction,
+} from "@solana-program/compute-budget";
 
 /**
  * Simple interface for creating a Solana transaction
@@ -64,6 +69,8 @@ export function createTransaction<
   feePayer,
   instructions,
   latestBlockhash,
+  computeUnitLimit,
+  computeUnitPrice,
 }: CreateTransactionInput<TVersion, TFeePayer>): FullTransaction<
   TVersion,
   ITransactionMessageWithFeePayer | ITransactionMessageWithFeePayerSigner
@@ -78,6 +85,22 @@ export function createTransaction<
         return setTransactionMessageFeePayerSigner(feePayer, tx);
       } else return setTransactionMessageFeePayer(feePayer, tx);
     },
-    (tx) => appendTransactionMessageInstructions(instructions, tx),
+    (tx) => {
+      if (typeof computeUnitLimit !== "undefined") {
+        tx = appendTransactionMessageInstruction(
+          getSetComputeUnitLimitInstruction({ units: Number(computeUnitLimit) }),
+          tx,
+        );
+      }
+
+      if (typeof computeUnitPrice !== "undefined") {
+        tx = appendTransactionMessageInstruction(
+          getSetComputeUnitPriceInstruction({ microLamports: Number(computeUnitPrice) }),
+          tx,
+        );
+      }
+
+      return appendTransactionMessageInstructions(instructions, tx);
+    },
   );
 }

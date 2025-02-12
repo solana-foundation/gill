@@ -27,6 +27,8 @@ import { createTransaction } from "../core";
       version: "legacy",
       feePayer: feePayer,
       instructions: [ix],
+      computeUnitLimit: 0,
+      computeUnitPrice: 0,
     }) satisfies BaseTransactionMessage<"legacy"> & ITransactionMessageWithFeePayer;
 
     createTransaction({
@@ -76,6 +78,8 @@ import { createTransaction } from "../core";
       version: 0,
       feePayer: feePayer,
       instructions: [ix],
+      computeUnitLimit: 0,
+      computeUnitPrice: 0,
     }) satisfies BaseTransactionMessage<0> & ITransactionMessageWithFeePayer;
 
     createTransaction({

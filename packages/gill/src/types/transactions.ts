@@ -31,11 +31,11 @@ export type CreateTransactionInput<
    * accepted for execution on the Solana network
    * */
   latestBlockhash?: TLifetimeConstraint;
+  /** Compute unit limit value to set on this transaction */
+  computeUnitLimit?: number | bigint;
+  /** Compute unit price (in micro-lamports) to set on this transaction */
+  computeUnitPrice?: number | bigint;
 };
-
-// TLifetimeConstraint extends
-//     | TransactionMessageWithBlockhashLifetime["lifetimeConstraint"]
-//     | {} = {}
 
 export type FullTransaction<
   TVersion extends TransactionVersion,

@@ -8,6 +8,7 @@ import {
   isInstructionForProgram,
   isInstructionWithData,
 } from "@solana/instructions";
+import { TransactionMessage } from "@solana/transaction-messages";
 
 /**
  * Check if a given instruction is a `SetComputeUnitLimit` instruction
@@ -24,6 +25,13 @@ export function isSetComputeLimitInstruction(
 }
 
 /**
+ * Check if a given transaction contains a `SetComputeUnitLimit` instruction
+ */
+export function hasSetComputeLimitInstruction(tx: TransactionMessage): boolean {
+  return tx.instructions.filter(isSetComputeLimitInstruction).length == 1;
+}
+
+/**
  * Check if a given instruction is a `SetComputeUnitPrice` instruction
  */
 export function isSetComputeUnitPriceInstruction(
@@ -35,4 +43,11 @@ export function isSetComputeUnitPriceInstruction(
     isInstructionWithData(instruction) &&
     instruction.data[0] === ComputeBudgetInstruction.SetComputeUnitPrice
   );
+}
+
+/**
+ * Check if a given transaction contains a `SetComputeUnitPrice` instruction
+ */
+export function hasSetComputeUnitPriceInstruction(tx: TransactionMessage): boolean {
+  return tx.instructions.filter(isSetComputeUnitPriceInstruction).length == 1;
 }
