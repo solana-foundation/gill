@@ -19,18 +19,18 @@ export type PrepareTransactionConfig = {
    **/
   rpc: Rpc<SimulateTransactionApi & GetLatestBlockhashApi>;
   /**
-   * Multiplier applied to the simulated compute unit value obtained
+   * Multiplier applied to the simulated compute unit value obtained from simulation
    *
    * Default: `1.1`
    **/
   computeUnitLimitMultiplier?: number;
   /**
-   * Whether or not you wish to force reset the compute unit limit value (if any is set)
+   * Whether or not you wish to force reset the compute unit limit value (if one is already set)
    * using the simulation response and `computeUnitLimitMultiplier`
    **/
   computeUnitLimitReset?: boolean;
   /**
-   * Whether or not you wish to force reset the latest blockhash (if any is set)
+   * Whether or not you wish to force reset the latest blockhash (if one is already set)
    *
    * Default: `true`
    **/
@@ -40,9 +40,9 @@ export type PrepareTransactionConfig = {
 /**
  * Prepare a Transaction to be signed and sent to the network. Including:
  * - setting a compute unit limit (if not already set)
- * - simulating and resetting (if desired)
  * - fetching the latest blockhash (if not already set)
- * - resetting latest blockhash to the most recent (if desired)
+ * - (optional) simulating and resetting the compute unit limit
+ * - (optional) resetting latest blockhash to the most recent
  */
 export async function prepareTransaction<
   TMessage extends CompilableTransactionMessage = CompilableTransactionMessage,
@@ -67,6 +67,7 @@ export async function prepareTransaction<
     // }
   });
 
+  // set a compute unit limit instruction
   if (computeBudgetIndex.limit < 0 || config.computeUnitLimitReset) {
     const units = await getComputeUnitEstimateForTransactionMessageFactory({ rpc: config.rpc })(
       transaction,
@@ -88,14 +89,19 @@ export async function prepareTransaction<
     }
   }
 
-  if ("lifetimeConstraint" in transaction == false) {
-    debug("Transaction missing latest blockhash, fetching one.", "debug");
+  // update the latest blockhash
+  if (config.blockhashReset || "lifetimeConstraint" in transaction == false) {
     const { value: latestBlockhash } = await config.rpc.getLatestBlockhash().send();
-    transaction = setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, transaction);
-  } else {
-    // todo: auto refresh existing latest blockhash
-    // debug("Auto refreshing latest blockhash, fetching a new one.", "debug");
-    // auto refresh will be especially helpful if we simulate multiple compute budget values or make other api calls
+    if ("lifetimeConstraint" in transaction == false) {
+      debug("Transaction missing latest blockhash, fetching one.", "debug");
+      transaction = setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, transaction);
+    } else if (config.blockhashReset) {
+      debug("Auto resetting the latest blockhash.", "debug");
+      transaction = Object.freeze({
+        ...transaction,
+        lifetimeConstraint: latestBlockhash,
+      } as typeof transaction);
+    }
   }
 
   debug(`Transaction as base64: ${transactionToBase64(transaction)}`);
