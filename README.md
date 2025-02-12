@@ -24,6 +24,7 @@ yarn add gill
 - [Create a Solana RPC connection](#create-a-solana-rpc-connection)
 - [Create a transaction](#create-a-transaction)
 - [Signing transactions](#signing-transactions)
+- [Sending and confirming transaction](#sending-and-confirming-transactions)
 - [Get a transaction signature](#get-the-signature-from-a-signed-transaction)
 - [Get a Solana Explorer link](#get-a-solana-explorer-link-for-transactions-accounts-or-blocks)
 
@@ -39,7 +40,7 @@ moniker (i.e. `devnet`, `localnet`, `mainnet` etc).
 ```typescript
 import { createSolanaClient } from "gill";
 
-const { rpc, rpcSubscriptions } = createSolanaClient({
+const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
   urlOrMoniker: "mainnet",
 });
 ```
@@ -53,7 +54,7 @@ To create an RPC client for your local test validator:
 ```typescript
 import { createSolanaClient } from "gill";
 
-const { rpc, rpcSubscriptions } = createSolanaClient({
+const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
   urlOrMoniker: "localnet",
 });
 ```
@@ -63,7 +64,7 @@ To create an RPC client for an custom RPC provider or service:
 ```typescript
 import { createSolanaClient } from "gill";
 
-const { rpc, rpcSubscriptions } = createSolanaClient({
+const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
   urlOrMoniker: "https://private-solana-rpc-provider.com",
 });
 ```
@@ -126,6 +127,39 @@ const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 const signedTransaction = await signTransactionMessageWithSigners(
   setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
 );
+```
+
+### Sending and confirming transactions
+
+To send and confirm a transaction to the blockchain, you can use the `sendAndConfirmTransaction`
+function initialized from `createSolanaClient`.
+
+```typescript
+import { createSolanaClient, createTransaction, signTransactionMessageWithSigners } from "gill";
+
+const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
+  urlOrMoniker: "mainnet",
+});
+
+const transaction = createTransaction(...);
+
+const signedTransaction = await signTransactionMessageWithSigners(transaction);
+const signature: string = getSignatureFromTransaction(signedTransaction);
+
+// default commitment level of `confirmed`
+await sendAndConfirmTransaction(signedTransaction)
+```
+
+If you would like more fine grain control over the configuration of the `sendAndConfirmTransaction`
+functionality, you can include configuration settings:
+
+```typescript
+await sendAndConfirmTransaction(signedTransaction, {
+  commitment: "confirmed",
+  skipPreflight: true,
+  maxRetries: 10n,
+  ...
+});
 ```
 
 ### Get the signature from a signed transaction
