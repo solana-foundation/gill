@@ -104,7 +104,7 @@ export async function prepareTransaction<
     }
   }
 
-  debug(`Transaction as base64: ${transactionToBase64(transaction)}`);
+  debug(`Transaction as base64: ${transactionToBase64(transaction)}`, "debug");
 
   return transaction;
 }

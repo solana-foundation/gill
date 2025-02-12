@@ -10,7 +10,7 @@ import type {
   SolanaRpcSubscriptionsApi,
 } from "@solana/rpc-subscriptions";
 import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/rpc-types";
-import { SendAndConfirmTransactionWithBlockhashLifetimeFunction } from "../kit";
+import type { SendAndConfirmTransactionWithBlockhashLifetimeFunction } from "../kit";
 
 /** Solana cluster moniker */
 export type SolanaClusterMoniker = "mainnet" | "devnet" | "testnet" | "localnet";
