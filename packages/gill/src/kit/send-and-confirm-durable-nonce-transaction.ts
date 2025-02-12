@@ -35,8 +35,12 @@ export function sendAndConfirmDurableNonceTransactionFactory({
     rpc,
     rpcSubscriptions,
 }: SendAndConfirmDurableNonceTransactionFactoryConfig<'mainnet'>): SendAndConfirmDurableNonceTransactionFunction;
+export function sendAndConfirmDurableNonceTransactionFactory({
+    rpc,
+    rpcSubscriptions,
+}: SendAndConfirmDurableNonceTransactionFactoryConfig<'localnet'>): SendAndConfirmDurableNonceTransactionFunction;
 export function sendAndConfirmDurableNonceTransactionFactory<
-    TCluster extends 'devnet' | 'mainnet' | 'testnet' | void = void,
+    TCluster extends 'devnet' | 'mainnet' | 'testnet' | 'localnet' | void = void,
 >({
     rpc,
     rpcSubscriptions,

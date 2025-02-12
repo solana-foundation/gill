@@ -35,7 +35,11 @@ export function sendAndConfirmTransactionFactory({
     rpc,
     rpcSubscriptions,
 }: SendAndConfirmTransactionWithBlockhashLifetimeFactoryConfig<'mainnet'>): SendAndConfirmTransactionWithBlockhashLifetimeFunction;
-export function sendAndConfirmTransactionFactory<TCluster extends 'devnet' | 'mainnet' | 'testnet' | void = void>({
+export function sendAndConfirmTransactionFactory({
+    rpc,
+    rpcSubscriptions,
+}: SendAndConfirmTransactionWithBlockhashLifetimeFactoryConfig<'localnet'>): SendAndConfirmTransactionWithBlockhashLifetimeFunction;
+export function sendAndConfirmTransactionFactory<TCluster extends 'devnet' | 'mainnet' | 'testnet' | 'localnet' | void = void>({
     rpc,
     rpcSubscriptions,
 }: SendAndConfirmTransactionWithBlockhashLifetimeFactoryConfig<TCluster>): SendAndConfirmTransactionWithBlockhashLifetimeFunction {

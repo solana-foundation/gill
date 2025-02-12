@@ -89,7 +89,7 @@ import {
 
   // Localnet cluster typechecks when the providing the moniker
   {
-    const { rpc: localnetRpc /*rpcSubscriptions: localnetRpcSubscriptions*/ } = createSolanaClient({
+    const { rpc: localnetRpc, rpcSubscriptions: localnetRpcSubscriptions } = createSolanaClient({
       urlOrMoniker: "localnet",
     });
     localnetRpc satisfies Rpc<SolanaRpcApi>;
@@ -101,14 +101,14 @@ import {
     //@ts-expect-error Should not be a mainnet RPC
     localnetRpc satisfies RpcMainnet<SolanaRpcApiMainnet>;
 
-    // sendAndConfirmTransactionFactory({
-    //   rpc: localnetRpc,
-    //   rpcSubscriptions: localnetRpcSubscriptions,
-    // });
-    // sendAndConfirmDurableNonceTransactionFactory({
-    //   rpc: localnetRpc,
-    //   rpcSubscriptions: localnetRpcSubscriptions,
-    // });
+    sendAndConfirmTransactionFactory({
+      rpc: localnetRpc,
+      rpcSubscriptions: localnetRpcSubscriptions,
+    });
+    sendAndConfirmDurableNonceTransactionFactory({
+      rpc: localnetRpc,
+      rpcSubscriptions: localnetRpcSubscriptions,
+    });
   }
 
   // Localnet cluster typechecks when the providing the moniker
