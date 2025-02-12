@@ -1,5 +1,53 @@
 # gill
 
+## 0.2.0
+
+### Minor Changes
+
+- [#21](https://github.com/solana-foundation/gill/pull/21)
+  [`cdefdcd`](https://github.com/solana-foundation/gill/commit/cdefdcd112b28a207b08b38aed810772a993bc4c)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added the `debug` logger to facilitate
+  common debug patterns
+
+- [#20](https://github.com/solana-foundation/gill/pull/20)
+  [`ee28853`](https://github.com/solana-foundation/gill/commit/ee288539b631b7e215421a217abc7156263b03fd)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added `transactionToBase64` function
+
+- [#17](https://github.com/solana-foundation/gill/pull/17)
+  [`f59381b`](https://github.com/solana-foundation/gill/commit/f59381b0b87e7670fd7e6debbd7827c0b98e73bd)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - re-export token and token22
+
+- [#22](https://github.com/solana-foundation/gill/pull/22)
+  [`3495a3c`](https://github.com/solana-foundation/gill/commit/3495a3cf70a6ae7933616059d54f40501712b931)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added `sendAndConfirmTransaction` to the
+  client creator
+
+- [#23](https://github.com/solana-foundation/gill/pull/23)
+  [`f0044ad`](https://github.com/solana-foundation/gill/commit/f0044aded5b1d5b86194361c0f5865f4d6475ffd)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - easily add compute budget instructions when
+  creating a transaction
+
+### Patch Changes
+
+- [#18](https://github.com/solana-foundation/gill/pull/18)
+  [`4b139da`](https://github.com/solana-foundation/gill/commit/4b139dab06a274777e15ff47c92fec001c2f6e93)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - getExplorerUrl to return a string and
+  accepted a signed transaction
+
+- [#13](https://github.com/solana-foundation/gill/pull/13)
+  [`1727586`](https://github.com/solana-foundation/gill/commit/17275861d0bbbfd1daf74a31e7445373c9612117)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - fixed types for the solana client and added
+  tests
+
+- [#16](https://github.com/solana-foundation/gill/pull/16)
+  [`33e8974`](https://github.com/solana-foundation/gill/commit/33e8974d0dc1ad5f877827a7964a61d02737048f)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - fixed types for createTransaction
+
+- [#19](https://github.com/solana-foundation/gill/pull/19)
+  [`81cbff6`](https://github.com/solana-foundation/gill/commit/81cbff68a44e569141ad844cb4e661b57da2b8c7)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - refactor getExplorerLink to not accept a
+  signed transaction
+
 ## 0.1.0
 
 ### Minor Changes
