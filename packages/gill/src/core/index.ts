@@ -1,5 +1,6 @@
 export { debug, isDebugEnabled } from "./debug";
 export * from "./const";
+export * from "./utils";
 export * from "./rpc";
 export * from "./explorer";
 export * from "./transactions";
