@@ -505,19 +505,20 @@ The program clients included inside `gill` are:
   `@solana-program/token`
 - [Token Extension program (aka Token22)](https://github.com/solana-program/token-2022) -
   re-exported from `@solana-program/token-2022`
+- [Address Lookup Table program](https://github.com/solana-program/address-lookup-table) -
+  re-exported from `@solana-program/address-lookup-table`
 
 If one of the existing clients are not being exported from `gill/programs` or a subpath therein, you
 can of course manually add their compatible client to your repo.
 
 ### Other compatible program clients
 
-From the [solana-program](https://github.com/solana-program/token) GitHub organization - formerly
-known as the Solana Program Library (SPL)
+From the [solana-program](https://github.com/solana-program/token) GitHub organization, formerly
+known as the Solana Program Library (SPL), you can find various other client libraries for specific
+programs. Install their respective package to use in conjunction with gill:
 
-- [Stake program](https://github.com/solana-program/stake) - re-exported from
-  `@solana-program/stake`
-- [Address Lookup Table program](https://github.com/solana-program/address-lookup-table) -
-  re-exported from `@solana-program/address-lookup-table`
+- [Stake program](https://github.com/solana-program/stake) - `@solana-program/stake`
+- [Vote program](https://github.com/solana-program/vote) - `@solana-program/vote`
 
 ### Generate a program client from an IDL
 
