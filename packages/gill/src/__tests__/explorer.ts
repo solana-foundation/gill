@@ -4,6 +4,49 @@ import { FullySignedTransaction, getSignatureFromTransaction } from "@solana/tra
 import { getExplorerLink } from "../core";
 
 describe("getExplorerLink", () => {
+  test("getExplorerLink returns the base explorer url", () => {
+    const link = getExplorerLink();
+    assert.equal(link, "https://explorer.solana.com/");
+  });
+
+  test("getExplorerLink returns the base explorer url for mainnet", () => {
+    const link = getExplorerLink({
+      cluster: "mainnet",
+    });
+    assert.equal(link, "https://explorer.solana.com/");
+  });
+
+  test("getExplorerLink returns the base explorer url for mainnet-beta", () => {
+    const link = getExplorerLink({
+      cluster: "mainnet-beta",
+    });
+    assert.equal(link, "https://explorer.solana.com/");
+  });
+
+  test("getExplorerLink returns the base explorer url for devnet", () => {
+    const link = getExplorerLink({
+      cluster: "devnet",
+    });
+    assert.equal(link, "https://explorer.solana.com/?cluster=devnet");
+  });
+
+  test("getExplorerLink returns the base explorer url for testnet", () => {
+    const link = getExplorerLink({
+      cluster: "testnet",
+    });
+    assert.equal(link, "https://explorer.solana.com/?cluster=testnet");
+  });
+
+  test("getExplorerLink returns the base explorer url for localnet", () => {
+    const link = getExplorerLink({
+      cluster: "localnet",
+    });
+    assert.equal(
+      link,
+      "https://explorer.solana.com/?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899",
+    );
+  });
+
   test("getExplorerLink works for a block on mainnet when no network is supplied", () => {
     const link = getExplorerLink({
       block: "242233124",

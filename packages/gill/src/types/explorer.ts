@@ -15,4 +15,4 @@ type ExplorerLinkBlock = {
  */
 export type GetExplorerLinkArgs = {
   cluster?: SolanaClusterMoniker | "mainnet-beta";
-} & (ExplorerLinkAccount | ExplorerLinkTransaction | ExplorerLinkBlock);
+} & (ExplorerLinkAccount | ExplorerLinkTransaction | ExplorerLinkBlock | {});

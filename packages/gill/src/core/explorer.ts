@@ -3,21 +3,21 @@ import { GetExplorerLinkArgs } from "../types";
 /**
  * Craft a Solana Explorer link on any cluster
  */
-export function getExplorerLink(props: GetExplorerLinkArgs): string {
+export function getExplorerLink(props: GetExplorerLinkArgs = {}): string {
   let url: URL | null = null;
 
   // default to mainnet / mainnet-beta
   if (!props.cluster || props.cluster == "mainnet") props.cluster = "mainnet-beta";
 
-  if ("address" in props) {
-    url = new URL(`https://explorer.solana.com/address/${props.address}`);
-  } else if ("transaction" in props) {
-    url = new URL(`https://explorer.solana.com/tx/${props.transaction}`);
-  } else if ("block" in props) {
-    url = new URL(`https://explorer.solana.com/block/${props.block}`);
-  }
+  url = new URL("https://explorer.solana.com");
 
-  if (!url) throw new Error("Invalid Solana Explorer URL created");
+  if ("address" in props) {
+    url.pathname = `/address/${props.address}`;
+  } else if ("transaction" in props) {
+    url.pathname = `/tx/${props.transaction}`;
+  } else if ("block" in props) {
+    url.pathname = `/block/${props.block}`;
+  }
 
   if (props.cluster !== "mainnet-beta") {
     if (props.cluster === "localnet") {
