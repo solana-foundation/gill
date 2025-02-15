@@ -16,3 +16,4 @@ export * from "./token-shared";
  * (and associated helpers for them)
  */
 export * from "./token-metadata";
+export * from "./create-token-instructions";
