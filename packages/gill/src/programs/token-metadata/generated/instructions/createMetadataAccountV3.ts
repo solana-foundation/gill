@@ -18,24 +18,26 @@ import {
   getU8Encoder,
   ReadonlyUint8Array,
   transformEncoder,
-  type Address,
   type Codec,
   type Decoder,
   type Encoder,
-  type IAccountMeta,
-  type IAccountSignerMeta,
-  type IInstruction,
-  type IInstructionWithAccounts,
-  type IInstructionWithData,
   type Option,
   type OptionOrNullable,
-  type ReadonlyAccount,
-  type ReadonlySignerAccount,
-  type TransactionSigner,
-  type WritableAccount,
-  type WritableSignerAccount,
-} from '../../../../index';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/codecs";
+import { type Address } from "@solana/addresses";
+import type {
+  IInstruction,
+  IInstructionWithAccounts,
+  IInstructionWithData,
+  ReadonlyAccount,
+  ReadonlySignerAccount,
+  WritableAccount,
+  WritableSignerAccount,
+  IAccountMeta,
+} from "@solana/instructions";
+import { type IAccountSignerMeta, type TransactionSigner } from "@solana/signers";
+
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 import {
   getCollectionDetailsDecoder,
   getCollectionDetailsEncoder,
@@ -45,14 +47,14 @@ import {
   type CollectionDetailsArgs,
   type DataV2,
   type DataV2Args,
-} from '../types';
+} from "../types";
 
 export const CREATE_METADATA_ACCOUNT_V3_DISCRIMINATOR = 33;
 
 export const TOKEN_METADATA_PROGRAM_ADDRESS =
-  'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' as Address<'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'>;
+  "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s" as Address<"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s">;
 
-export function getCreateMetadataAccountV3DiscriminatorBytes() : ReadonlyUint8Array {
+export function getCreateMetadataAccountV3DiscriminatorBytes(): ReadonlyUint8Array {
   return getU8Encoder().encode(CREATE_METADATA_ACCOUNT_V3_DISCRIMINATOR);
 }
 
@@ -63,28 +65,20 @@ export type CreateMetadataAccountV3Instruction<
   TAccountMintAuthority extends string | IAccountMeta<string> = string,
   TAccountPayer extends string | IAccountMeta<string> = string,
   TAccountUpdateAuthority extends string | IAccountMeta<string> = string,
-  TAccountSystemProgram extends
-    | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
+  TAccountSystemProgram extends string | IAccountMeta<string> = "11111111111111111111111111111111",
   TAccountRent extends string | IAccountMeta<string> | undefined = undefined,
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
   IInstructionWithAccounts<
     [
-      TAccountMetadata extends string
-        ? WritableAccount<TAccountMetadata>
-        : TAccountMetadata,
-      TAccountMint extends string
-        ? ReadonlyAccount<TAccountMint>
-        : TAccountMint,
+      TAccountMetadata extends string ? WritableAccount<TAccountMetadata> : TAccountMetadata,
+      TAccountMint extends string ? ReadonlyAccount<TAccountMint> : TAccountMint,
       TAccountMintAuthority extends string
-        ? ReadonlySignerAccount<TAccountMintAuthority> &
-            IAccountSignerMeta<TAccountMintAuthority>
+        ? ReadonlySignerAccount<TAccountMintAuthority> & IAccountSignerMeta<TAccountMintAuthority>
         : TAccountMintAuthority,
       TAccountPayer extends string
-        ? WritableSignerAccount<TAccountPayer> &
-            IAccountSignerMeta<TAccountPayer>
+        ? WritableSignerAccount<TAccountPayer> & IAccountSignerMeta<TAccountPayer>
         : TAccountPayer,
       TAccountUpdateAuthority extends string
         ? ReadonlyAccount<TAccountUpdateAuthority>
@@ -94,11 +88,7 @@ export type CreateMetadataAccountV3Instruction<
         : TAccountSystemProgram,
       ...(TAccountRent extends undefined
         ? []
-        : [
-            TAccountRent extends string
-              ? ReadonlyAccount<TAccountRent>
-              : TAccountRent,
-          ]),
+        : [TAccountRent extends string ? ReadonlyAccount<TAccountRent> : TAccountRent]),
       ...TRemainingAccounts,
     ]
   >;
@@ -119,24 +109,24 @@ export type CreateMetadataAccountV3InstructionDataArgs = {
 export function getCreateMetadataAccountV3InstructionDataEncoder(): Encoder<CreateMetadataAccountV3InstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['data', getDataV2Encoder()],
-      ['isMutable', getBooleanEncoder()],
-      ['collectionDetails', getOptionEncoder(getCollectionDetailsEncoder())],
+      ["discriminator", getU8Encoder()],
+      ["data", getDataV2Encoder()],
+      ["isMutable", getBooleanEncoder()],
+      ["collectionDetails", getOptionEncoder(getCollectionDetailsEncoder())],
     ]),
     (value) => ({
       ...value,
       discriminator: CREATE_METADATA_ACCOUNT_V3_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getCreateMetadataAccountV3InstructionDataDecoder(): Decoder<CreateMetadataAccountV3InstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['data', getDataV2Decoder()],
-    ['isMutable', getBooleanDecoder()],
-    ['collectionDetails', getOptionDecoder(getCollectionDetailsDecoder())],
+    ["discriminator", getU8Decoder()],
+    ["data", getDataV2Decoder()],
+    ["isMutable", getBooleanDecoder()],
+    ["collectionDetails", getOptionDecoder(getCollectionDetailsDecoder())],
   ]);
 }
 
@@ -146,7 +136,7 @@ export function getCreateMetadataAccountV3InstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getCreateMetadataAccountV3InstructionDataEncoder(),
-    getCreateMetadataAccountV3InstructionDataDecoder()
+    getCreateMetadataAccountV3InstructionDataDecoder(),
   );
 }
 
@@ -168,16 +158,14 @@ export type CreateMetadataAccountV3Input<
   /** payer */
   payer: TransactionSigner<TAccountPayer>;
   /** update authority info */
-  updateAuthority:
-    | Address<TAccountUpdateAuthority>
-    | TransactionSigner<TAccountUpdateAuthority>;
+  updateAuthority: Address<TAccountUpdateAuthority> | TransactionSigner<TAccountUpdateAuthority>;
   /** System program */
   systemProgram?: Address<TAccountSystemProgram>;
   /** Rent info */
   rent?: Address<TAccountRent>;
-  data: CreateMetadataAccountV3InstructionDataArgs['data'];
-  isMutable: CreateMetadataAccountV3InstructionDataArgs['isMutable'];
-  collectionDetails: CreateMetadataAccountV3InstructionDataArgs['collectionDetails'];
+  data: CreateMetadataAccountV3InstructionDataArgs["data"];
+  isMutable: CreateMetadataAccountV3InstructionDataArgs["isMutable"];
+  collectionDetails: CreateMetadataAccountV3InstructionDataArgs["collectionDetails"];
 };
 
 export function getCreateMetadataAccountV3Instruction<
@@ -199,23 +187,21 @@ export function getCreateMetadataAccountV3Instruction<
     TAccountSystemProgram,
     TAccountRent
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): CreateMetadataAccountV3Instruction<
   TProgramAddress,
   TAccountMetadata,
   TAccountMint,
   TAccountMintAuthority,
   TAccountPayer,
-  (typeof input)['updateAuthority'] extends TransactionSigner<TAccountUpdateAuthority>
-    ? ReadonlySignerAccount<TAccountUpdateAuthority> &
-        IAccountSignerMeta<TAccountUpdateAuthority>
+  (typeof input)["updateAuthority"] extends TransactionSigner<TAccountUpdateAuthority>
+    ? ReadonlySignerAccount<TAccountUpdateAuthority> & IAccountSignerMeta<TAccountUpdateAuthority>
     : TAccountUpdateAuthority,
   TAccountSystemProgram,
   TAccountRent
 > {
   // Program address.
-  const programAddress =
-    config?.programAddress ?? TOKEN_METADATA_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? TOKEN_METADATA_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -230,10 +216,7 @@ export function getCreateMetadataAccountV3Instruction<
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
     rent: { value: input.rent ?? null, isWritable: false },
   };
-  const accounts = originalAccounts as Record<
-    keyof typeof originalAccounts,
-    ResolvedAccount
-  >;
+  const accounts = originalAccounts as Record<keyof typeof originalAccounts, ResolvedAccount>;
 
   // Original args.
   const args = { ...input };
@@ -241,10 +224,10 @@ export function getCreateMetadataAccountV3Instruction<
   // Resolve default values.
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
+      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'omitted');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "omitted");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.metadata),
@@ -254,10 +237,10 @@ export function getCreateMetadataAccountV3Instruction<
       getAccountMeta(accounts.updateAuthority),
       getAccountMeta(accounts.systemProgram),
       getAccountMeta(accounts.rent),
-    ].filter(<T,>(x: T | undefined): x is T => x !== undefined),
+    ].filter(<T>(x: T | undefined): x is T => x !== undefined),
     programAddress,
     data: getCreateMetadataAccountV3InstructionDataEncoder().encode(
-      args as CreateMetadataAccountV3InstructionDataArgs
+      args as CreateMetadataAccountV3InstructionDataArgs,
     ),
   } as CreateMetadataAccountV3Instruction<
     TProgramAddress,
@@ -265,9 +248,8 @@ export function getCreateMetadataAccountV3Instruction<
     TAccountMint,
     TAccountMintAuthority,
     TAccountPayer,
-    (typeof input)['updateAuthority'] extends TransactionSigner<TAccountUpdateAuthority>
-      ? ReadonlySignerAccount<TAccountUpdateAuthority> &
-          IAccountSignerMeta<TAccountUpdateAuthority>
+    (typeof input)["updateAuthority"] extends TransactionSigner<TAccountUpdateAuthority>
+      ? ReadonlySignerAccount<TAccountUpdateAuthority> & IAccountSignerMeta<TAccountUpdateAuthority>
       : TAccountUpdateAuthority,
     TAccountSystemProgram,
     TAccountRent
@@ -306,11 +288,11 @@ export function parseCreateMetadataAccountV3Instruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedCreateMetadataAccountV3Instruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 6) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -335,8 +317,6 @@ export function parseCreateMetadataAccountV3Instruction<
       systemProgram: getNextAccount(),
       rent: getNextOptionalAccount(),
     },
-    data: getCreateMetadataAccountV3InstructionDataDecoder().decode(
-      instruction.data
-    ),
+    data: getCreateMetadataAccountV3InstructionDataDecoder().decode(instruction.data),
   };
 }

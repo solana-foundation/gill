@@ -6,15 +6,14 @@
  * @see https://github.com/codama-idl/codama
  */
 
-
 import {
+  Codec,
   combineCodec,
+  Decoder,
+  Encoder,
   getEnumDecoder,
   getEnumEncoder,
-  type Codec,
-  type Decoder,
-  type Encoder,
-} from '../../../../index';
+} from "@solana/codecs";
 
 export enum UseMethod {
   Burn,

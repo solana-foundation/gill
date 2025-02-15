@@ -6,19 +6,17 @@
  * @see https://github.com/codama-idl/codama
  */
 
+import { type Address, getAddressDecoder, getAddressEncoder } from "@solana/addresses";
 import {
   combineCodec,
-  getAddressDecoder,
-  getAddressEncoder,
   getBooleanDecoder,
   getBooleanEncoder,
   getStructDecoder,
   getStructEncoder,
-  type Address,
   type Codec,
   type Decoder,
   type Encoder,
-} from '../../../../index';
+} from "@solana/codecs";
 
 export type Collection = { verified: boolean; key: Address };
 
@@ -26,15 +24,15 @@ export type CollectionArgs = Collection;
 
 export function getCollectionEncoder(): Encoder<CollectionArgs> {
   return getStructEncoder([
-    ['verified', getBooleanEncoder()],
-    ['key', getAddressEncoder()],
+    ["verified", getBooleanEncoder()],
+    ["key", getAddressEncoder()],
   ]);
 }
 
 export function getCollectionDecoder(): Decoder<Collection> {
   return getStructDecoder([
-    ['verified', getBooleanDecoder()],
-    ['key', getAddressDecoder()],
+    ["verified", getBooleanDecoder()],
+    ["key", getAddressDecoder()],
   ]);
 }
 

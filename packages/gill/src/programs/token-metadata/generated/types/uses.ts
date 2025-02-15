@@ -7,21 +7,16 @@
  */
 
 import {
+  Codec,
   combineCodec,
+  Decoder,
+  Encoder,
   getStructDecoder,
   getStructEncoder,
   getU64Decoder,
   getU64Encoder,
-  type Codec,
-  type Decoder,
-  type Encoder,
-} from '../../../../index';
-import {
-  getUseMethodDecoder,
-  getUseMethodEncoder,
-  type UseMethod,
-  type UseMethodArgs,
-} from '.';
+} from "@solana/codecs";
+import { getUseMethodDecoder, getUseMethodEncoder, type UseMethod, type UseMethodArgs } from ".";
 
 export type Uses = { useMethod: UseMethod; remaining: bigint; total: bigint };
 
@@ -33,17 +28,17 @@ export type UsesArgs = {
 
 export function getUsesEncoder(): Encoder<UsesArgs> {
   return getStructEncoder([
-    ['useMethod', getUseMethodEncoder()],
-    ['remaining', getU64Encoder()],
-    ['total', getU64Encoder()],
+    ["useMethod", getUseMethodEncoder()],
+    ["remaining", getU64Encoder()],
+    ["total", getU64Encoder()],
   ]);
 }
 
 export function getUsesDecoder(): Decoder<Uses> {
   return getStructDecoder([
-    ['useMethod', getUseMethodDecoder()],
-    ['remaining', getU64Decoder()],
-    ['total', getU64Decoder()],
+    ["useMethod", getUseMethodDecoder()],
+    ["remaining", getU64Decoder()],
+    ["total", getU64Decoder()],
   ]);
 }
 
