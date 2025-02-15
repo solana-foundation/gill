@@ -3,7 +3,7 @@ export * from "./const";
 export * from "./utils";
 export * from "./rpc";
 export * from "./explorer";
-export * from "./transactions";
+export * from "./create-transaction";
 export * from "./base64-transactions";
 export * from "./prepare-transaction";
 export * from "./create-solana-client";
