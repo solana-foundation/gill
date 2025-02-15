@@ -11,7 +11,7 @@ import { Simplify } from ".";
 
 export type CreateTransactionInput<
   TVersion extends TransactionVersion,
-  TFeePayer extends Address | TransactionSigner,
+  TFeePayer extends Address | TransactionSigner = TransactionSigner,
   TLifetimeConstraint extends
     | TransactionMessageWithBlockhashLifetime["lifetimeConstraint"]
     | undefined = undefined,

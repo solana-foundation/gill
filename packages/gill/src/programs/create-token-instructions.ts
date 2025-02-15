@@ -10,6 +10,9 @@ import {
   TOKEN_2022_PROGRAM_ADDRESS,
   getMintSize,
   getInitializeMintInstruction as getInitializeMintInstructionToken22,
+  extension,
+  getInitializeMetadataPointerInstruction,
+  getInitializeTokenMetadataInstruction,
 } from "@solana-program/token-2022";
 
 export type CreateTokenInstructionsArgs = {
@@ -41,7 +44,7 @@ export type CreateTokenInstructionsArgs = {
    *
    * When not provided, defaults to: `payer`
    **/
-  updateAuthority?: Address | KeyPairSigner;
+  updateAuthority?: KeyPairSigner;
   /**
    * Optional (but highly recommended) metadata to attach to this token
    */
@@ -84,25 +87,51 @@ export async function createTokenInstructions(
     );
   }
 
-  // the token22 `getMintSize` is fully compatible with the original token program
-  const space: bigint = BigInt(getMintSize());
-
   if (!args.decimals) args.decimals = 9;
   if (!args.mintAuthority) args.mintAuthority = args.payer;
   if (!args.updateAuthority) args.updateAuthority = args.payer;
 
-  const ixs: IInstruction[] = [
-    getCreateAccountInstruction({
-      payer: args.payer,
-      newAccount: args.mint,
-      lamports: getMinimumBalanceForRentExemption(space),
-      space,
-      programAddress: args.tokenProgram,
-    }),
-  ];
-
   if (args.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
-    ixs.push(
+    // @ts-ignore FIXME(nick): errors due to not finding the valid overload
+    const metadataPointer = extension("MetadataPointer", {
+      metadataAddress: args.mint.address,
+      authority: args.updateAuthority.address,
+    });
+
+    // @ts-ignore FIXME(nick): errors due to not finding the valid overload
+    const metadataExtensionData = extension("TokenMetadata", {
+      updateAuthority: args.updateAuthority.address,
+      mint: args.mint.address,
+      name: args.metadata.name,
+      symbol: args.metadata.symbol,
+      uri: args.metadata.uri,
+      // todo: support token22 additional metadata
+      additionalMetadata: new Map(),
+    });
+
+    return [
+      getCreateAccountInstruction({
+        payer: args.payer,
+        newAccount: args.mint,
+        /**
+         * token22 requires only the pre-mint-initialization extensions (like metadata pointer)
+         * to be the `space`. then it will extend the account's space for each applicable extension
+         * */
+        space: BigInt(getMintSize([metadataPointer])),
+        /**
+         * token22 requires the total lamport balance for all extensions,
+         * including pre-initialization and post-initialization
+         */
+        lamports: getMinimumBalanceForRentExemption(
+          BigInt(getMintSize([metadataPointer, metadataExtensionData])),
+        ),
+        programAddress: args.tokenProgram,
+      }),
+      getInitializeMetadataPointerInstruction({
+        authority: args.mintAuthority.address,
+        metadataAddress: args.mint.address,
+        mint: args.mint.address,
+      }),
       getInitializeMintInstructionToken22({
         mint: args.mint.address,
         decimals: Number(args.decimals),
@@ -113,9 +142,29 @@ export async function createTokenInstructions(
             : args.freezeAuthority.address
           : null,
       }),
-    );
+      getInitializeTokenMetadataInstruction({
+        metadata: args.mint.address,
+        mint: args.mint.address,
+        mintAuthority: args.mintAuthority,
+        name: args.metadata.name,
+        symbol: args.metadata.symbol,
+        uri: args.metadata.uri,
+        updateAuthority: args.updateAuthority.address,
+      }),
+      // todo: support token22 additional metadata by adding that instruction(s) here
+    ];
   } else {
-    ixs.push(
+    // the token22 `getMintSize` is fully compatible with the original token program
+    const space: bigint = BigInt(getMintSize());
+
+    return [
+      getCreateAccountInstruction({
+        payer: args.payer,
+        newAccount: args.mint,
+        lamports: getMinimumBalanceForRentExemption(space),
+        space,
+        programAddress: args.tokenProgram,
+      }),
       getInitializeMintInstruction({
         mint: args.mint.address,
         decimals: Number(args.decimals),
@@ -126,29 +175,24 @@ export async function createTokenInstructions(
             : args.freezeAuthority.address
           : null,
       }),
-    );
+      getCreateMetadataAccountV3Instruction({
+        metadata: await getTokenMetadataAddress(args.mint),
+        mint: args.mint.address,
+        mintAuthority: args.mintAuthority,
+        payer: args.payer,
+        updateAuthority: args.updateAuthority,
+        data: {
+          name: args.metadata.name,
+          symbol: args.metadata.symbol,
+          uri: args.metadata.uri,
+          sellerFeeBasisPoints: 0,
+          creators: null,
+          collection: null,
+          uses: null,
+        },
+        isMutable: args.metadata.isMutable,
+        collectionDetails: null,
+      }),
+    ];
   }
-
-  ixs.push(
-    getCreateMetadataAccountV3Instruction({
-      metadata: await getTokenMetadataAddress(args.mint),
-      mint: args.mint.address,
-      mintAuthority: args.mintAuthority,
-      payer: args.payer,
-      updateAuthority: args.updateAuthority,
-      data: {
-        name: args.metadata.name,
-        symbol: args.metadata.symbol,
-        uri: args.metadata.uri,
-        sellerFeeBasisPoints: 0,
-        creators: null,
-        collection: null,
-        uses: null,
-      },
-      isMutable: args.metadata.isMutable,
-      collectionDetails: null,
-    }),
-  );
-
-  return ixs;
 }

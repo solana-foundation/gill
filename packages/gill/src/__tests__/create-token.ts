@@ -17,6 +17,9 @@ import {
   TOKEN_2022_PROGRAM_ADDRESS,
   getMintSize,
   getInitializeMintInstruction as getInitializeMintInstructionToken22,
+  extension,
+  getInitializeTokenMetadataInstruction,
+  getInitializeMetadataPointerInstruction,
 } from "@solana-program/token-2022";
 
 const MOCK_SPACE = 122n;
@@ -44,6 +47,9 @@ jest.mock("@solana-program/token-2022", () => ({
   TOKEN_2022_PROGRAM_ADDRESS: "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
   getMintSize: jest.fn(),
   getInitializeMintInstruction: jest.fn(),
+  extension: jest.fn(),
+  getInitializeMetadataPointerInstruction: jest.fn(),
+  getInitializeTokenMetadataInstruction: jest.fn(),
 }));
 
 describe("createTokenInstructions", () => {
@@ -55,8 +61,11 @@ describe("createTokenInstructions", () => {
 
   let mockCreateAccountInstruction: IInstruction;
   let mockInitializeMintInstruction: IInstruction;
-  let mockInitializeMintToken22Instruction: IInstruction;
   let mockCreateMetadataInstruction: IInstruction;
+
+  let mockInitializeMintToken22Instruction: IInstruction;
+  let mockInitializeMetadataPointerInstruction: IInstruction;
+  let mockInitializeTokenMetadataInstruction: IInstruction;
 
   const metadata: CreateTokenInstructionsArgs["metadata"] = {
     name: "Test Token",
@@ -85,21 +94,36 @@ describe("createTokenInstructions", () => {
     };
     mockInitializeMintToken22Instruction = {
       programAddress: "token22" as Address,
-      data: new Uint8Array([2]),
+      data: new Uint8Array([3]),
     };
     mockCreateMetadataInstruction = {
       programAddress: "metadata" as Address,
-      data: new Uint8Array([3]),
+      data: new Uint8Array([4]),
+    };
+    mockInitializeTokenMetadataInstruction = {
+      programAddress: "initMetadata" as Address,
+      data: new Uint8Array([5]),
+    };
+    mockInitializeMetadataPointerInstruction = {
+      programAddress: "initMetadataPointer" as Address,
+      data: new Uint8Array([6]),
     };
 
     (getCreateAccountInstruction as jest.Mock).mockReturnValue(mockCreateAccountInstruction);
     (getInitializeMintInstruction as jest.Mock).mockReturnValue(mockInitializeMintInstruction);
-    (getInitializeMintInstructionToken22 as jest.Mock).mockReturnValue(
-      mockInitializeMintToken22Instruction,
-    );
     (getCreateMetadataAccountV3Instruction as jest.Mock).mockReturnValue(
       mockCreateMetadataInstruction,
     );
+    (getInitializeMintInstructionToken22 as jest.Mock).mockReturnValue(
+      mockInitializeMintToken22Instruction,
+    );
+    (getInitializeMetadataPointerInstruction as jest.Mock).mockReturnValue(
+      mockInitializeMetadataPointerInstruction,
+    );
+    (getInitializeTokenMetadataInstruction as jest.Mock).mockReturnValue(
+      mockInitializeTokenMetadataInstruction,
+    );
+    (extension as jest.Mock).mockReturnValue("");
 
     (getMinimumBalanceForRentExemption as jest.Mock).mockReturnValue(MOCK_RENT);
     (getMintSize as jest.Mock).mockReturnValue(MOCK_SPACE);
@@ -277,8 +301,8 @@ describe("createTokenInstructions", () => {
       );
     });
 
-    it("should use custom update authority for metadata when provided", async () => {
-      const customUpdateAuthority = { address: "customUpdateAuth202" } as KeyPairSigner;
+    it("should use custom metadata update authority", async () => {
+      const customUpdateAuthority = { address: "customUpdateAuth" } as KeyPairSigner;
 
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
@@ -378,40 +402,41 @@ describe("createTokenInstructions", () => {
 
       const instructions = await createTokenInstructions(args);
 
-      expect(instructions).toHaveLength(3);
-      expect(instructions[1]).toBe(mockInitializeMintToken22Instruction);
-      expect(instructions[2]).toBe(mockCreateMetadataInstruction);
+      expect(instructions).toHaveLength(4);
+      expect(instructions[1]).toBe(mockInitializeMetadataPointerInstruction);
+      expect(instructions[2]).toBe(mockInitializeMintToken22Instruction);
+      expect(instructions[3]).toBe(mockInitializeTokenMetadataInstruction);
+
+      expect(getInitializeMetadataPointerInstruction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          mint: mockMint.address,
+          metadataAddress: mockMint.address,
+          authority: mockPayer.address,
+        }),
+      );
 
       expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
         expect.objectContaining({
           mint: mockMint.address,
+          mintAuthority: mockPayer.address,
         }),
       );
 
-      expect(getCreateMetadataAccountV3Instruction).toHaveBeenCalledWith(
+      expect(getInitializeTokenMetadataInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
-          metadata: "metadataAddress123",
           mint: mockMint.address,
+          metadata: mockMint.address,
           mintAuthority: mockPayer,
-          payer: mockPayer,
-          updateAuthority: mockPayer,
-          data: {
-            name: metadata.name,
-            symbol: metadata.symbol,
-            uri: metadata.uri,
-            sellerFeeBasisPoints: 0,
-            creators: null,
-            collection: null,
-            uses: null,
-          },
-          isMutable: metadata.isMutable,
-          collectionDetails: null,
+          updateAuthority: mockPayer.address,
+          name: metadata.name,
+          symbol: metadata.symbol,
+          uri: metadata.uri,
         }),
       );
     });
 
-    it("should use custom update authority for metadata when provided", async () => {
-      const customUpdateAuthority = { address: "customUpdateAuth202" } as KeyPairSigner;
+    it("should use custom metadata update authority", async () => {
+      const customUpdateAuthority = { address: "customUpdateAuth" } as KeyPairSigner;
 
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
@@ -423,19 +448,21 @@ describe("createTokenInstructions", () => {
 
       const instructions = await createTokenInstructions(args);
 
-      expect(instructions).toHaveLength(3);
-      expect(instructions[1]).toBe(mockInitializeMintToken22Instruction);
-      expect(instructions[2]).toBe(mockCreateMetadataInstruction);
+      expect(instructions).toHaveLength(4);
+      expect(instructions[1]).toBe(mockInitializeMetadataPointerInstruction);
+      expect(instructions[2]).toBe(mockInitializeMintToken22Instruction);
+      expect(instructions[3]).toBe(mockInitializeTokenMetadataInstruction);
 
-      expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
+      expect(getInitializeMetadataPointerInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
           mint: mockMint.address,
+          metadataAddress: mockMint.address,
         }),
       );
 
-      expect(getCreateMetadataAccountV3Instruction).toHaveBeenCalledWith(
+      expect(getInitializeTokenMetadataInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
-          updateAuthority: customUpdateAuthority,
+          updateAuthority: customUpdateAuthority.address,
         }),
       );
     });
