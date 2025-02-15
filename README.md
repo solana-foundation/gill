@@ -507,6 +507,8 @@ The program clients included inside `gill` are:
   re-exported from `@solana-program/token-2022`
 - [Address Lookup Table program](https://github.com/solana-program/address-lookup-table) -
   re-exported from `@solana-program/address-lookup-table`
+- [Token Metadata program](https://github.com/metaplex-foundation/mpl-token-metadata) from Metaplex
+  (only the v3 functionality)
 
 If one of the existing clients are not being exported from `gill/programs` or a subpath therein, you
 can of course manually add their compatible client to your repo.
