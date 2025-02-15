@@ -9,6 +9,8 @@ export * from "@solana-program/address-lookup-table";
 export * from "@solana-program/compute-budget";
 export * from "./compute-budget";
 
+export * from "./token-shared";
+
 /**
  * Codama generated clients, stored internally in this package
  * (and associated helpers for them)
