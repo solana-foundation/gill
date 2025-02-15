@@ -1,0 +1,96 @@
+import {
+  TransactionMessageWithBlockhashLifetime,
+  TransactionVersion,
+} from "@solana/transaction-messages";
+import { createTransaction } from "../core";
+import { CreateTransactionInput, Simplify } from "../types";
+import { createTokenInstructions, CreateTokenInstructionsArgs } from "./create-token-instructions";
+import { generateKeyPairSigner, KeyPairSigner, TransactionSigner } from "@solana/signers";
+import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
+import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
+
+type TransactionInput<
+  TVersion extends TransactionVersion = "legacy",
+  TFeePayer extends TransactionSigner = TransactionSigner,
+  TLifetimeConstraint extends
+    | TransactionMessageWithBlockhashLifetime["lifetimeConstraint"]
+    | undefined = undefined,
+> = Simplify<
+  Omit<
+    CreateTransactionInput<TVersion, TFeePayer, TLifetimeConstraint>,
+    "version" | "instructions" | "feePayer"
+  > &
+    Partial<Pick<CreateTransactionInput<TVersion, TFeePayer, TLifetimeConstraint>, "version">>
+>;
+
+type CreateTokenInput = Simplify<
+  Omit<CreateTokenInstructionsArgs, "mint"> & Partial<Pick<CreateTokenInstructionsArgs, "mint">>
+>;
+
+/**
+ * Create a transaction to create a token with metadata
+ *
+ * @argument transaction - Base transaction configuration
+ * - Default `version` = `legacy`
+ * - Default `computeUnitLimit`
+ *    - for TOKEN_PROGRAM_ADDRESS => `60_000`
+ *    - for TOKEN_2022_PROGRAM_ADDRESS => `10_000`
+ *
+ * @argument token - Information required to create a Solana Token
+ * - `mint` will be auto generated if not provided
+ */
+export async function createTokenTransaction<
+  TVersion extends TransactionVersion = "legacy",
+  TFeePayer extends TransactionSigner = TransactionSigner,
+  TLifetimeConstraint extends
+    | TransactionMessageWithBlockhashLifetime["lifetimeConstraint"]
+    | undefined = undefined,
+>(input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & CreateTokenInput) {
+  if (!input.mint) input.mint = await generateKeyPairSigner();
+
+  // default a reasonably low computeUnitLimit based on simulation data
+  if (!input.computeUnitLimit) {
+    if (input.tokenProgram === TOKEN_PROGRAM_ADDRESS) {
+      // creating the token's mint is around 3219cu (and stable?)
+      // token metadata is the rest... and fluctuates a lot based on the pda and amount of metadata
+      input.computeUnitLimit = 60_000;
+    } else if (input.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
+      // token22 token creation, with metadata is (seemingly stable) around 7647cu,
+      // but consume more with more metadata provided
+      input.computeUnitLimit = 10_000;
+    }
+  }
+
+  const instructions = await createTokenInstructions(
+    (({
+      decimals,
+      mintAuthority,
+      freezeAuthority,
+      updateAuthority,
+      metadata,
+      payer,
+      tokenProgram,
+      mint,
+    }: typeof input) => ({
+      mint: mint as KeyPairSigner,
+      payer,
+      metadata,
+      decimals,
+      mintAuthority,
+      freezeAuthority,
+      updateAuthority,
+      tokenProgram,
+    }))(input),
+  );
+
+  return createTransaction(
+    (({ payer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof input) => ({
+      feePayer: payer,
+      version: version || "legacy",
+      computeUnitLimit,
+      computeUnitPrice,
+      latestBlockhash,
+      instructions,
+    }))(input),
+  );
+}
