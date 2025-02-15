@@ -1,11 +1,15 @@
-import {
+import type {
+  ITransactionMessageWithFeePayer,
   TransactionMessageWithBlockhashLifetime,
   TransactionVersion,
 } from "@solana/transaction-messages";
 import { createTransaction } from "../core";
-import { CreateTransactionInput, Simplify } from "../types";
-import { createTokenInstructions, CreateTokenInstructionsArgs } from "./create-token-instructions";
-import { generateKeyPairSigner, KeyPairSigner, TransactionSigner } from "@solana/signers";
+import type { CreateTransactionInput, FullTransaction, Simplify } from "../types";
+import {
+  createTokenInstructions,
+  type CreateTokenInstructionsArgs,
+} from "./create-token-instructions";
+import { generateKeyPairSigner, type KeyPairSigner, type TransactionSigner } from "@solana/signers";
 import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 
@@ -42,9 +46,27 @@ type CreateTokenInput = Simplify<
 export async function createTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
+>(
+  input: TransactionInput<TVersion, TFeePayer> & CreateTokenInput,
+): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer>>;
+export async function createTokenTransaction<
+  TVersion extends TransactionVersion = "legacy",
+  TFeePayer extends TransactionSigner = TransactionSigner,
   TLifetimeConstraint extends
-    | TransactionMessageWithBlockhashLifetime["lifetimeConstraint"]
-    | undefined = undefined,
+    TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
+>(
+  input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & CreateTokenInput,
+): Promise<
+  FullTransaction<
+    TVersion,
+    ITransactionMessageWithFeePayer,
+    TransactionMessageWithBlockhashLifetime
+  >
+>;
+export async function createTokenTransaction<
+  TVersion extends TransactionVersion,
+  TFeePayer extends TransactionSigner,
+  TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & CreateTokenInput) {
   if (!input.mint) input.mint = await generateKeyPairSigner();
 
