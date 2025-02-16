@@ -6,7 +6,7 @@
       "path": "gill/dist/index.production.min.js"
     },
     {
-      "path": "**/dist/index.*.mjs"
+      "path": "**/dist/**/index.*.mjs"
     }
   ],
   "includeCommitMessage": true,
