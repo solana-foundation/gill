@@ -8,7 +8,7 @@ import type { CreateTransactionInput, FullTransaction, Simplify } from "../types
 import { type TransactionSigner } from "@solana/signers";
 import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
-import { checkedTokenProgramAddress, getTokenAccountAddress } from "./token-shared";
+import { checkedTokenProgramAddress, getAssociatedTokenAccountAddress } from "./token-shared";
 import {
   getMintTokensInstructions,
   type GetMintTokensInstructionsArgs,
@@ -97,7 +97,7 @@ export async function buildMintTokensTransaction<
   input.tokenProgram = checkedTokenProgramAddress(input.tokenProgram);
   input.mint = checkedAddress(input.mint);
 
-  if (!input.ata) input.ata = await getTokenAccountAddress(input.mint, input.destination);
+  if (!input.ata) input.ata = await getAssociatedTokenAccountAddress(input.mint, input.destination);
 
   // default a reasonably low computeUnitLimit based on simulation data
   if (!input.computeUnitLimit) {

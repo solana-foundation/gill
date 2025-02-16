@@ -13,7 +13,7 @@ import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
  * - (default) {@link TOKEN_PROGRAM_ADDRESS} - the original SPL Token Program
  * - {@link TOKEN_2022_PROGRAM_ADDRESS} - the SPL Token Extensions Program (aka Token22)
  */
-export async function getTokenAccountAddress(
+export async function getAssociatedTokenAccountAddress(
   mint: Address | KeyPairSigner,
   owner: Address | KeyPairSigner,
   tokenProgram?: Address,

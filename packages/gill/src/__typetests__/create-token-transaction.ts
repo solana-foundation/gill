@@ -7,9 +7,9 @@ import type {
 } from "@solana/transaction-messages";
 import { signTransactionMessageWithSigners } from "@solana/signers";
 
-import { GetCreateTokenInstructionsArgs, getCreateTokenTransaction } from "../programs";
+import { GetCreateTokenInstructionsArgs, buildCreateTokenTransaction } from "../programs";
 
-// [DESCRIBE] getCreateTokenTransaction
+// [DESCRIBE] buildCreateTokenTransaction
 async () => {
   const mint = null as unknown as KeyPairSigner;
   const signer = null as unknown as KeyPairSigner;
@@ -19,20 +19,20 @@ async () => {
 
   // Legacy transaction
   {
-    (await getCreateTokenTransaction({
+    (await buildCreateTokenTransaction({
       payer: signer,
       mint,
       metadata,
     })) satisfies BaseTransactionMessage<"legacy">;
 
-    (await getCreateTokenTransaction({
+    (await buildCreateTokenTransaction({
       payer: signer,
       version: "legacy",
       mint,
       metadata,
     })) satisfies BaseTransactionMessage<"legacy">;
 
-    const txNotSignable = (await getCreateTokenTransaction({
+    const txNotSignable = (await buildCreateTokenTransaction({
       payer: signer,
       version: "legacy",
       mint,
@@ -43,7 +43,7 @@ async () => {
     // @ts-expect-error Should not be a signable transaction
     signTransactionMessageWithSigners(txNotSignable);
 
-    const txSignable = (await getCreateTokenTransaction({
+    const txSignable = (await buildCreateTokenTransaction({
       payer: signer,
       version: "legacy",
       mint,
@@ -57,14 +57,14 @@ async () => {
 
   // Version 0 transaction
   {
-    (await getCreateTokenTransaction({
+    (await buildCreateTokenTransaction({
       payer: signer,
       version: 0,
       mint,
       metadata,
     })) satisfies BaseTransactionMessage<0>;
 
-    const txNotSignable = (await getCreateTokenTransaction({
+    const txNotSignable = (await buildCreateTokenTransaction({
       payer: signer,
       version: 0,
       mint,
@@ -75,7 +75,7 @@ async () => {
     // @ts-expect-error Should not be a signable transaction
     signTransactionMessageWithSigners(txNotSignable);
 
-    const txSignable = (await getCreateTokenTransaction({
+    const txSignable = (await buildCreateTokenTransaction({
       payer: signer,
       version: 0,
       mint,

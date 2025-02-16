@@ -48,7 +48,7 @@ type GetCreateTokenTransactionInput = Simplify<
  * ```
  * const mint = await generateKeyPairSigner();
  *
- * const transaction = await getCreateTokenTransaction({
+ * const transaction = await buildCreateTokenTransaction({
  *   payer: signer,
  *   latestBlockhash,
  *   mint,
@@ -63,13 +63,13 @@ type GetCreateTokenTransactionInput = Simplify<
  * });
  * ```
  */
-export async function getCreateTokenTransaction<
+export async function buildCreateTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
 >(
   input: TransactionInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
 ): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer>>;
-export async function getCreateTokenTransaction<
+export async function buildCreateTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
   TLifetimeConstraint extends
@@ -84,7 +84,7 @@ export async function getCreateTokenTransaction<
     TransactionMessageWithBlockhashLifetime
   >
 >;
-export async function getCreateTokenTransaction<
+export async function buildCreateTokenTransaction<
   TVersion extends TransactionVersion,
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],

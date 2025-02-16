@@ -53,7 +53,7 @@ export type GetMintTokensInstructionsArgs = {
  *   // if decimals=2 => this will mint 10.00 tokens
  *   // if decimals=4 => this will mint 0.100 tokens
  *   destination,
- *   ata: await getTokenAccountAddress(mint, destination),
+ *   ata: await getAssociatedTokenAccountAddress(mint, destination),
  *   // tokenProgram: TOKEN_PROGRAM_ADDRESS, // default
  *   // tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
  * });
