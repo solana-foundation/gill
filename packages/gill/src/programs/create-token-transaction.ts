@@ -30,28 +30,28 @@ type TransactionInput<
 >;
 
 type GetCreateTokenTransactionInput = Simplify<
-  Omit<GetCreateTokenInstructionsArgs, "mint" | "metadataAddress"> &
-    Partial<Pick<GetCreateTokenInstructionsArgs, "mint" | "metadataAddress">>
+  Omit<GetCreateTokenInstructionsArgs, "metadataAddress"> &
+    Partial<Pick<GetCreateTokenInstructionsArgs, "metadataAddress">>
 >;
 
 /**
  * Create a transaction to create a token with metadata
  *
- * @argument transaction - Base transaction configuration
+ * The transaction will has the following defaults:
  * - Default `version` = `legacy`
- * - Default `computeUnitLimit`
+ * - Default `computeUnitLimit`:
  *    - for TOKEN_PROGRAM_ADDRESS => `60_000`
  *    - for TOKEN_2022_PROGRAM_ADDRESS => `10_000`
- *
- * @argument token - Information required to create a Solana Token
- * - `mint` will be auto generated if not provided
  *
  * @example
  *
  * ```
+ * const mint = await generateKeyPairSigner();
+ *
  * const transaction = await getCreateTokenTransaction({
  *   payer: signer,
  *   latestBlockhash,
+ *   mint,
  *   metadata: {
  *     name: "Test Token",
  *     symbol: "TEST",
@@ -93,7 +93,6 @@ export async function getCreateTokenTransaction<
     GetCreateTokenTransactionInput,
 ) {
   input.tokenProgram = checkedTokenProgramAddress(input.tokenProgram);
-  if (!input.mint) input.mint = await generateKeyPairSigner();
 
   let metadataAddress = input.mint.address;
 

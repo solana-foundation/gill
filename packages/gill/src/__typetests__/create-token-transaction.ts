@@ -11,6 +11,7 @@ import { GetCreateTokenInstructionsArgs, getCreateTokenTransaction } from "../pr
 
 // [DESCRIBE] getCreateTokenTransaction
 async () => {
+  const mint = null as unknown as KeyPairSigner;
   const signer = null as unknown as KeyPairSigner;
   const latestBlockhash =
     null as unknown as TransactionMessageWithBlockhashLifetime["lifetimeConstraint"];
@@ -20,18 +21,21 @@ async () => {
   {
     (await getCreateTokenTransaction({
       payer: signer,
+      mint,
       metadata,
     })) satisfies BaseTransactionMessage<"legacy">;
 
     (await getCreateTokenTransaction({
-      version: "legacy",
       payer: signer,
+      version: "legacy",
+      mint,
       metadata,
     })) satisfies BaseTransactionMessage<"legacy">;
 
     const txNotSignable = (await getCreateTokenTransaction({
-      version: "legacy",
       payer: signer,
+      version: "legacy",
+      mint,
       metadata,
       // @ts-expect-error Should not have a Lifetime
     })) satisfies TransactionMessageWithBlockhashLifetime;
@@ -40,8 +44,9 @@ async () => {
     signTransactionMessageWithSigners(txNotSignable);
 
     const txSignable = (await getCreateTokenTransaction({
-      version: "legacy",
       payer: signer,
+      version: "legacy",
+      mint,
       metadata,
       latestBlockhash,
     })) satisfies BaseTransactionMessage<"legacy"> & TransactionMessageWithBlockhashLifetime;
@@ -53,14 +58,16 @@ async () => {
   // Version 0 transaction
   {
     (await getCreateTokenTransaction({
-      version: 0,
       payer: signer,
+      version: 0,
+      mint,
       metadata,
     })) satisfies BaseTransactionMessage<0>;
 
     const txNotSignable = (await getCreateTokenTransaction({
-      version: 0,
       payer: signer,
+      version: 0,
+      mint,
       metadata,
       // @ts-expect-error Should not have a Lifetime
     })) satisfies TransactionMessageWithBlockhashLifetime;
@@ -69,8 +76,9 @@ async () => {
     signTransactionMessageWithSigners(txNotSignable);
 
     const txSignable = (await getCreateTokenTransaction({
-      version: 0,
       payer: signer,
+      version: 0,
+      mint,
       metadata,
       latestBlockhash,
     })) satisfies BaseTransactionMessage<0> & TransactionMessageWithBlockhashLifetime;

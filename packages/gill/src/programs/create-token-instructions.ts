@@ -75,13 +75,10 @@ export type GetCreateTokenInstructionsArgs = {
    * */
   metadataAddress: Address;
   /**
-   * Token program used to create the token
+   * Token program used to create the token's `mint`
    *
-   * @default `TOKEN_PROGRAM_ADDRESS` - the original SPL Token Program
-   *
-   * Supported token programs:
-   * - `TOKEN_PROGRAM_ADDRESS` for the original SPL Token Program
-   * - `TOKEN_2022_PROGRAM_ADDRESS` for the SPL Token Extension Program (aka Token22)
+   * - (default) {@link TOKEN_PROGRAM_ADDRESS} - the original SPL Token Program
+   * - {@link TOKEN_2022_PROGRAM_ADDRESS} - the SPL Token Extensions Program (aka Token22)
    **/
   tokenProgram?: Address;
   // extensions // todo

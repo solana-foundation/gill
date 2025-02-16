@@ -4,16 +4,14 @@ import { findAssociatedTokenPda, TOKEN_PROGRAM_ADDRESS } from "@solana-program/t
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 
 /**
- * Derive the Token Metadata address from a token's Mint address
+ * Derive the Associated Token Account (ata) address for a wallet/owner and mint
  *
- * @argument `mint` - `Address` or `KeyPairSigner` of the token Mint
- * @argument `owner` - `Address` or `KeyPairSigner` of the owner's wallet address
- * @argument `tokenProgram` - `Address` of the owner's wallet address
+ * @argument `mint` - the token mint itself
+ * @argument `owner` - destination wallet address to own tokens from `mint`
+ * @argument `tokenProgram` - token program that the token `mint` was created with
  *
- * @summary
- * Commonly used token programs:
- * - `TOKEN_PROGRAM_ADDRESS` for the original SPL Token Program
- * - `TOKEN_2022_PROGRAM_ADDRESS` for the SPL Token Extension Program (aka Token22)
+ * - (default) {@link TOKEN_PROGRAM_ADDRESS} - the original SPL Token Program
+ * - {@link TOKEN_2022_PROGRAM_ADDRESS} - the SPL Token Extensions Program (aka Token22)
  */
 export async function getTokenAccountAddress(
   mint: Address | KeyPairSigner,

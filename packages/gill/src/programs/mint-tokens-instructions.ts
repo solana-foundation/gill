@@ -27,13 +27,10 @@ export type GetMintTokensInstructionsArgs = {
   /** Amount of tokens to issue to the `owner` and their `ata` */
   amount: bigint | number;
   /**
-   * Token program used to create the token
+   * Token program used to create the token's `mint`
    *
-   * @default `TOKEN_PROGRAM_ADDRESS` - the original SPL Token Program
-   *
-   * Supported token programs:
-   * - `TOKEN_PROGRAM_ADDRESS` for the original SPL Token Program
-   * - `TOKEN_2022_PROGRAM_ADDRESS` for the SPL Token Extension Program (aka Token22)
+   * - (default) {@link TOKEN_PROGRAM_ADDRESS} - the original SPL Token Program
+   * - {@link TOKEN_2022_PROGRAM_ADDRESS} - the SPL Token Extensions Program (aka Token22)
    **/
   tokenProgram?: Address;
 };
@@ -41,6 +38,23 @@ export type GetMintTokensInstructionsArgs = {
 /**
  * Create the instructions required to mint tokens to any wallet/owner,
  * including creating their ATA if it does not exist
+ *
+ * @example
+ *
+ * ```
+ * const mint = await generateKeyPairSigner();
+ * const destination = address("nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c");
+ * const instructions = getMintTokensInstructions({
+ *   mint,
+ *   payer: signer,
+ *   mintAuthority: signer,
+ *   amount: 1000, // note: be sure to account for the mint's `decimals` value
+ *   // if decimals=2 => this will mint 10.00 tokens
+ *   // if decimals=4 => this will mint 0.100 tokens
+ *   destination,
+ *   ata: await getTokenAccountAddress(mint, destination),
+ * });
+ * ```
  */
 export function getMintTokensInstructions(args: GetMintTokensInstructionsArgs): IInstruction[] {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
