@@ -1,5 +1,40 @@
 # gill
 
+## 0.3.0
+
+### Minor Changes
+
+- [#30](https://github.com/solana-foundation/gill/pull/30)
+  [`446a9d1`](https://github.com/solana-foundation/gill/commit/446a9d1a4ce1a74ce7e9d25865166bc1c08699a5)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added create token helpers
+
+- [#27](https://github.com/solana-foundation/gill/pull/27)
+  [`93674ab`](https://github.com/solana-foundation/gill/commit/93674ab32c9b25baccf7293775e84c0253130419)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added genesis hash constant and to moniker
+  function
+
+- [#25](https://github.com/solana-foundation/gill/pull/25)
+  [`a7c3ee4`](https://github.com/solana-foundation/gill/commit/a7c3ee44dfb4b0a97dcf71ae9f47d82b69da706e)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - add the address lookup table program as a
+  reexport
+
+- [#29](https://github.com/solana-foundation/gill/pull/29)
+  [`94c1210`](https://github.com/solana-foundation/gill/commit/94c12107ca22d07c1ffb59879c81a0027ebf10de)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added client for Metaplex's Token Metadata
+  program
+
+### Patch Changes
+
+- [#28](https://github.com/solana-foundation/gill/pull/28)
+  [`e28620c`](https://github.com/solana-foundation/gill/commit/e28620c075206c0df29e29406c3eaec2eb4008d2)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - allow `getExplorerLink` to return the base
+  transaction url for each cluster
+
+- [#32](https://github.com/solana-foundation/gill/pull/32)
+  [`7bf0137`](https://github.com/solana-foundation/gill/commit/7bf0137159e503c42241bc1ce7d25b30a240f726)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - fix prepareTransaction to correct return
+  type to always have a blockhash
+
 ## 0.2.0
 
 ### Minor Changes
