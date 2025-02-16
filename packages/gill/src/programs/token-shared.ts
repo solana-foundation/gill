@@ -2,6 +2,7 @@ import type { Address } from "@solana/addresses";
 import type { KeyPairSigner } from "@solana/signers";
 import { findAssociatedTokenPda, TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
+import { checkedAddress } from "../core/utils";
 
 /**
  * Derive the Associated Token Account (ata) address for a wallet/owner and mint
@@ -20,8 +21,8 @@ export async function getAssociatedTokenAccountAddress(
 ): Promise<Address> {
   return (
     await findAssociatedTokenPda({
-      mint: "address" in mint ? mint.address : mint,
-      owner: "address" in owner ? owner.address : owner,
+      mint: checkedAddress(mint),
+      owner: checkedAddress(owner),
       tokenProgram: checkedTokenProgramAddress(tokenProgram),
     })
   )[0];

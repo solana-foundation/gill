@@ -1,6 +1,7 @@
 import { Address, getAddressEncoder, getProgramDerivedAddress } from "@solana/addresses";
 import { TOKEN_METADATA_PROGRAM_ADDRESS } from "./generated/instructions";
 import { KeyPairSigner } from "@solana/signers";
+import { checkedAddress } from "../../core/utils";
 
 /**
  * Derive the Token Metadata address from a token's Mint address
@@ -14,7 +15,7 @@ export async function getTokenMetadataAddress(mint: Address | KeyPairSigner): Pr
       seeds: [
         Buffer.from("metadata"),
         getAddressEncoder().encode(TOKEN_METADATA_PROGRAM_ADDRESS),
-        getAddressEncoder().encode("address" in mint ? mint.address : mint),
+        getAddressEncoder().encode(checkedAddress(mint)),
       ],
     })
   )[0];
