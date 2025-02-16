@@ -4,7 +4,11 @@ import {
 } from "@solana-program/compute-budget";
 import {
   type CompilableTransactionMessage,
+  ITransactionMessageWithFeePayer,
+  TransactionMessage,
+  TransactionMessageWithBlockhashLifetime,
   appendTransactionMessageInstruction,
+  assertIsTransactionMessageWithBlockhashLifetime,
   setTransactionMessageLifetimeUsingBlockhash,
 } from "@solana/transaction-messages";
 import type { GetLatestBlockhashApi, Rpc, SimulateTransactionApi } from "@solana/rpc";
@@ -13,7 +17,15 @@ import { getComputeUnitEstimateForTransactionMessageFactory } from "../kit";
 import { debug } from "./debug";
 import { transactionToBase64 } from "./base64-transactions";
 
-export type PrepareTransactionConfig = {
+type PrepareCompilableTransactionMessage =
+  | CompilableTransactionMessage
+  | (ITransactionMessageWithFeePayer & TransactionMessage);
+
+export type PrepareTransactionConfig<TMessage extends PrepareCompilableTransactionMessage> = {
+  /**
+   * Transaction to prepare for sending to the blockchain
+   */
+  transaction: TMessage;
   /**
    * RPC client capable of simulating transactions and getting the latest blockhash
    **/
@@ -44,9 +56,9 @@ export type PrepareTransactionConfig = {
  * - (optional) simulating and resetting the compute unit limit
  * - (optional) resetting latest blockhash to the most recent
  */
-export async function prepareTransaction<
-  TMessage extends CompilableTransactionMessage = CompilableTransactionMessage,
->(transaction: TMessage, config: PrepareTransactionConfig) {
+export async function prepareTransaction<TMessage extends PrepareCompilableTransactionMessage>(
+  config: PrepareTransactionConfig<TMessage>,
+) {
   // set the config defaults
   if (!config.computeUnitLimitMultiplier) config.computeUnitLimitMultiplier = 1.1;
   if (config.blockhashReset !== false) config.blockhashReset = true;
@@ -56,7 +68,7 @@ export async function prepareTransaction<
     price: -1,
   };
 
-  transaction.instructions.map((ix, index) => {
+  config.transaction.instructions.map((ix, index) => {
     if (ix.programAddress != COMPUTE_BUDGET_PROGRAM_ADDRESS) return;
 
     if (isSetComputeLimitInstruction(ix)) {
@@ -70,7 +82,7 @@ export async function prepareTransaction<
   // set a compute unit limit instruction
   if (computeBudgetIndex.limit < 0 || config.computeUnitLimitReset) {
     const units = await getComputeUnitEstimateForTransactionMessageFactory({ rpc: config.rpc })(
-      transaction,
+      config.transaction,
     );
     debug(`Obtained compute units from simulation: ${units}`, "debug");
     const ix = getSetComputeUnitLimitInstruction({
@@ -78,33 +90,38 @@ export async function prepareTransaction<
     });
 
     if (computeBudgetIndex.limit < 0) {
-      transaction = appendTransactionMessageInstruction(ix, transaction);
+      config.transaction = appendTransactionMessageInstruction(ix, config.transaction);
     } else if (config.computeUnitLimitReset) {
-      const nextInstructions = [...transaction.instructions];
+      const nextInstructions = [...config.transaction.instructions];
       nextInstructions.splice(computeBudgetIndex.limit, 1, ix);
-      transaction = Object.freeze({
-        ...transaction,
+      config.transaction = Object.freeze({
+        ...config.transaction,
         instructions: nextInstructions,
-      } as typeof transaction);
+      } as typeof config.transaction);
     }
   }
 
   // update the latest blockhash
-  if (config.blockhashReset || "lifetimeConstraint" in transaction == false) {
+  if (config.blockhashReset || "lifetimeConstraint" in config.transaction == false) {
     const { value: latestBlockhash } = await config.rpc.getLatestBlockhash().send();
-    if ("lifetimeConstraint" in transaction == false) {
+    if ("lifetimeConstraint" in config.transaction == false) {
       debug("Transaction missing latest blockhash, fetching one.", "debug");
-      transaction = setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, transaction);
+      config.transaction = setTransactionMessageLifetimeUsingBlockhash(
+        latestBlockhash,
+        config.transaction,
+      );
     } else if (config.blockhashReset) {
       debug("Auto resetting the latest blockhash.", "debug");
-      transaction = Object.freeze({
-        ...transaction,
+      config.transaction = Object.freeze({
+        ...config.transaction,
         lifetimeConstraint: latestBlockhash,
-      } as typeof transaction);
+      } as typeof config.transaction & TransactionMessageWithBlockhashLifetime);
     }
   }
 
-  debug(`Transaction as base64: ${transactionToBase64(transaction)}`, "debug");
+  assertIsTransactionMessageWithBlockhashLifetime(config.transaction);
 
-  return transaction;
+  debug(`Transaction as base64: ${transactionToBase64(config.transaction)}`, "debug");
+
+  return config.transaction;
 }
