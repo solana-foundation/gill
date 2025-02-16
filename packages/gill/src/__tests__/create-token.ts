@@ -56,6 +56,8 @@ describe("createTokenInstructions", () => {
   let mockPayer: KeyPairSigner;
   let mockMint: KeyPairSigner;
 
+  let mockMetadataAddress = "mockMetadataAddress" as Address;
+
   let mockMintAuthority: KeyPairSigner;
   let mockFreezeAuthority: KeyPairSigner;
 
@@ -134,14 +136,15 @@ describe("createTokenInstructions", () => {
     jest.clearAllMocks();
   });
 
-  it("should create basic token instructions with default values", async () => {
+  it("should create basic token instructions with default values", () => {
     const args: CreateTokenInstructionsArgs = {
       payer: mockPayer,
       mint: mockMint,
+      metadataAddress: mockMetadataAddress,
       metadata,
     };
 
-    const instructions = await createTokenInstructions(args);
+    const instructions = createTokenInstructions(args);
 
     expect(instructions).toHaveLength(3);
     expect(instructions[0]).toBe(mockCreateAccountInstruction);
@@ -165,7 +168,7 @@ describe("createTokenInstructions", () => {
 
     expect(getCreateMetadataAccountV3Instruction).toHaveBeenCalledWith(
       expect.objectContaining({
-        metadata: "metadataAddress123",
+        metadata: mockMetadataAddress,
         mint: mockMint.address,
         mintAuthority: mockPayer,
         payer: mockPayer,
@@ -185,29 +188,31 @@ describe("createTokenInstructions", () => {
     );
   });
 
-  it("should throw error for unsupported token program", async () => {
+  it("should throw error for unsupported token program", () => {
     const args: CreateTokenInstructionsArgs = {
       payer: mockPayer,
       mint: mockMint,
-      tokenProgram: "UnsupportedProgramId" as Address,
+      metadataAddress: mockMetadataAddress,
       metadata,
+      tokenProgram: "UnsupportedProgramId" as Address,
     };
 
-    await expect(createTokenInstructions(args)).rejects.toThrow(
+    expect(() => createTokenInstructions(args)).toThrow(
       "Unsupported token program. Try 'TOKEN_PROGRAM_ADDRESS' or 'TOKEN_2022_PROGRAM_ADDRESS'",
     );
   });
 
   describe("should use original token program", () => {
-    it("should use original token program when specified", async () => {
+    it("should use original token program when specified", () => {
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
+        metadataAddress: mockMetadataAddress,
         tokenProgram: TOKEN_PROGRAM_ADDRESS,
         metadata,
       };
 
-      await createTokenInstructions(args);
+      createTokenInstructions(args);
 
       expect(getCreateAccountInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -223,15 +228,16 @@ describe("createTokenInstructions", () => {
       );
     });
 
-    it("should use custom decimals when provided", async () => {
+    it("should use custom decimals when provided", () => {
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
+        metadataAddress: mockMetadataAddress,
         mint: mockMint,
         decimals: 6,
         metadata,
       };
 
-      await createTokenInstructions(args);
+      createTokenInstructions(args);
 
       expect(getInitializeMintInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -241,16 +247,17 @@ describe("createTokenInstructions", () => {
       );
     });
 
-    it("should use custom mint and freeze authorities when provided", async () => {
+    it("should use custom mint and freeze authorities when provided", () => {
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
+        metadataAddress: mockMetadataAddress,
         metadata,
         mintAuthority: mockMintAuthority,
         freezeAuthority: mockFreezeAuthority.address,
       };
 
-      await createTokenInstructions(args);
+      createTokenInstructions(args);
 
       expect(getInitializeMintInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -260,7 +267,7 @@ describe("createTokenInstructions", () => {
       );
     });
 
-    it("should add metadata instruction when metadata is provided", async () => {
+    it("should add metadata instruction when metadata is provided", () => {
       const metadata: CreateTokenInstructionsArgs["metadata"] = {
         name: "Test Token",
         symbol: "TEST",
@@ -271,17 +278,18 @@ describe("createTokenInstructions", () => {
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
+        metadataAddress: mockMetadataAddress,
         metadata,
       };
 
-      const instructions = await createTokenInstructions(args);
+      const instructions = createTokenInstructions(args);
 
       expect(instructions).toHaveLength(3);
       expect(instructions[2]).toBe(mockCreateMetadataInstruction);
 
       expect(getCreateMetadataAccountV3Instruction).toHaveBeenCalledWith(
         expect.objectContaining({
-          metadata: "metadataAddress123",
+          metadata: mockMetadataAddress,
           mint: mockMint.address,
           mintAuthority: mockPayer,
           payer: mockPayer,
@@ -301,17 +309,18 @@ describe("createTokenInstructions", () => {
       );
     });
 
-    it("should use custom metadata update authority", async () => {
+    it("should use custom metadata update authority", () => {
       const customUpdateAuthority = { address: "customUpdateAuth" } as KeyPairSigner;
 
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
+        metadataAddress: mockMetadataAddress,
         updateAuthority: customUpdateAuthority,
         metadata,
       };
 
-      await createTokenInstructions(args);
+      createTokenInstructions(args);
 
       expect(getCreateMetadataAccountV3Instruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -322,15 +331,16 @@ describe("createTokenInstructions", () => {
   });
 
   describe("should use token22 program", () => {
-    it("should use Token-2022 program when specified", async () => {
+    it("should use Token-2022 program when specified", () => {
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
+        metadataAddress: mockMint.address,
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
         metadata,
       };
 
-      await createTokenInstructions(args);
+      createTokenInstructions(args);
 
       expect(getCreateAccountInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -346,16 +356,17 @@ describe("createTokenInstructions", () => {
       );
     });
 
-    it("should use custom decimals when provided", async () => {
+    it("should use custom decimals when provided", () => {
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
+        metadataAddress: mockMint.address,
         decimals: 6,
         metadata,
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
       };
 
-      await createTokenInstructions(args);
+      createTokenInstructions(args);
 
       expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -365,17 +376,18 @@ describe("createTokenInstructions", () => {
       );
     });
 
-    it("should use custom mint and freeze authorities when provided", async () => {
+    it("should use custom mint and freeze authorities when provided", () => {
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
+        metadataAddress: mockMint.address,
         metadata,
         mintAuthority: mockMintAuthority,
         freezeAuthority: mockFreezeAuthority.address,
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
       };
 
-      await createTokenInstructions(args);
+      createTokenInstructions(args);
 
       expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -385,7 +397,7 @@ describe("createTokenInstructions", () => {
       );
     });
 
-    it("should add metadata instruction when metadata is provided", async () => {
+    it("should add metadata instruction when metadata is provided", () => {
       const metadata: CreateTokenInstructionsArgs["metadata"] = {
         name: "Test Token22",
         symbol: "TEST",
@@ -396,11 +408,12 @@ describe("createTokenInstructions", () => {
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
+        metadataAddress: mockMint.address,
         metadata,
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
       };
 
-      const instructions = await createTokenInstructions(args);
+      const instructions = createTokenInstructions(args);
 
       expect(instructions).toHaveLength(4);
       expect(instructions[1]).toBe(mockInitializeMetadataPointerInstruction);
@@ -435,18 +448,19 @@ describe("createTokenInstructions", () => {
       );
     });
 
-    it("should use custom metadata update authority", async () => {
+    it("should use custom metadata update authority", () => {
       const customUpdateAuthority = { address: "customUpdateAuth" } as KeyPairSigner;
 
       const args: CreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
+        metadataAddress: mockMint.address,
         updateAuthority: customUpdateAuthority,
         metadata,
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
       };
 
-      const instructions = await createTokenInstructions(args);
+      const instructions = createTokenInstructions(args);
 
       expect(instructions).toHaveLength(4);
       expect(instructions[1]).toBe(mockInitializeMetadataPointerInstruction);

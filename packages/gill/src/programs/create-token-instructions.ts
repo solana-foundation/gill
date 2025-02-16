@@ -59,6 +59,22 @@ export type CreateTokenInstructionsArgs = {
     isMutable: boolean;
   };
   /**
+   * Metadata address for this token
+   *
+   * @example
+   * For `TOKEN_PROGRAM_ADDRESS` use the {@link getTokenMetadataAddress} function:
+   * ```
+   * metadataAddress: await getTokenMetadataAddress(mint.address);
+   * ```
+   *
+   * @example
+   * For `TOKEN_2022_PROGRAM_ADDRESS` use the Mint's address:
+   * ```
+   * metadataAddress: mint.address;
+   * ```
+   * */
+  metadataAddress: Address;
+  /**
    * Token program used to create the token
    *
    * @default `TOKEN_PROGRAM_ADDRESS` - the original SPL Token Program
@@ -74,9 +90,7 @@ export type CreateTokenInstructionsArgs = {
 /**
  * Create the instructions required to initialize a new token's Mint
  */
-export async function createTokenInstructions(
-  args: CreateTokenInstructionsArgs,
-): Promise<IInstruction[]> {
+export function createTokenInstructions(args: CreateTokenInstructionsArgs): IInstruction[] {
   if (!args.tokenProgram) args.tokenProgram = TOKEN_PROGRAM_ADDRESS;
   if (
     args.tokenProgram !== TOKEN_PROGRAM_ADDRESS &&
@@ -129,7 +143,7 @@ export async function createTokenInstructions(
       }),
       getInitializeMetadataPointerInstruction({
         authority: args.mintAuthority.address,
-        metadataAddress: args.mint.address,
+        metadataAddress: args.metadataAddress,
         mint: args.mint.address,
       }),
       getInitializeMintInstructionToken22({
@@ -176,7 +190,7 @@ export async function createTokenInstructions(
           : null,
       }),
       getCreateMetadataAccountV3Instruction({
-        metadata: await getTokenMetadataAddress(args.mint),
+        metadata: args.metadataAddress,
         mint: args.mint.address,
         mintAuthority: args.mintAuthority,
         payer: args.payer,

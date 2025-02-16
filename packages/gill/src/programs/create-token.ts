@@ -12,6 +12,7 @@ import {
 import { generateKeyPairSigner, type KeyPairSigner, type TransactionSigner } from "@solana/signers";
 import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
+import { getTokenMetadataAddress } from "./token-metadata";
 
 type TransactionInput<
   TVersion extends TransactionVersion = "legacy",
@@ -28,7 +29,8 @@ type TransactionInput<
 >;
 
 type CreateTokenInput = Simplify<
-  Omit<CreateTokenInstructionsArgs, "mint"> & Partial<Pick<CreateTokenInstructionsArgs, "mint">>
+  Omit<CreateTokenInstructionsArgs, "mint" | "metadataAddress"> &
+    Partial<Pick<CreateTokenInstructionsArgs, "mint" | "metadataAddress">>
 >;
 
 /**
@@ -70,20 +72,26 @@ export async function createTokenTransaction<
 >(input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & CreateTokenInput) {
   if (!input.mint) input.mint = await generateKeyPairSigner();
 
-  // default a reasonably low computeUnitLimit based on simulation data
-  if (!input.computeUnitLimit) {
-    if (input.tokenProgram === TOKEN_PROGRAM_ADDRESS) {
+  let metadataAddress = input.mint.address;
+
+  if (input.tokenProgram === TOKEN_PROGRAM_ADDRESS) {
+    metadataAddress = await getTokenMetadataAddress(input.mint);
+
+    // default a reasonably low computeUnitLimit based on simulation data
+    if (!input.computeUnitLimit) {
       // creating the token's mint is around 3219cu (and stable?)
       // token metadata is the rest... and fluctuates a lot based on the pda and amount of metadata
       input.computeUnitLimit = 60_000;
-    } else if (input.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
+    }
+  } else if (input.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
+    if (!input.computeUnitLimit) {
       // token22 token creation, with metadata is (seemingly stable) around 7647cu,
       // but consume more with more metadata provided
       input.computeUnitLimit = 10_000;
     }
   }
 
-  const instructions = await createTokenInstructions(
+  const instructions = createTokenInstructions(
     (({
       decimals,
       mintAuthority,
@@ -96,6 +104,7 @@ export async function createTokenTransaction<
     }: typeof input) => ({
       mint: mint as KeyPairSigner,
       payer,
+      metadataAddress,
       metadata,
       decimals,
       mintAuthority,
