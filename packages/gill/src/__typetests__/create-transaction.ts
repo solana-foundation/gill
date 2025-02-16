@@ -2,13 +2,13 @@
 
 import type { Address } from "@solana/addresses";
 import type { ITransactionMessageWithFeePayerSigner, KeyPairSigner } from "@solana/signers";
-
-import {
+import type {
   BaseTransactionMessage,
   ITransactionMessageWithFeePayer,
   TransactionMessageWithBlockhashLifetime,
 } from "@solana/transaction-messages";
-import { IInstruction } from "@solana/instructions";
+import type { IInstruction } from "@solana/instructions";
+import { signTransactionMessageWithSigners } from "@solana/signers";
 
 import { createTransaction } from "../core";
 
@@ -44,12 +44,15 @@ import { createTransaction } from "../core";
       // @ts-expect-error Should not have a Lifetime
     }) satisfies TransactionMessageWithBlockhashLifetime;
 
-    createTransaction({
+    const txNotSignable = createTransaction({
       version: "legacy",
       feePayer: signer,
       instructions: [ix],
       // @ts-expect-error Should not have a Lifetime
     }) satisfies TransactionMessageWithBlockhashLifetime;
+
+    // @ts-expect-error Should not be a signable transaction
+    signTransactionMessageWithSigners(txNotSignable);
 
     // Should be legacy with a Lifetime and Signer
     createTransaction({
@@ -62,7 +65,7 @@ import { createTransaction } from "../core";
       ITransactionMessageWithFeePayerSigner;
 
     // Should be legacy with a Lifetime and address (aka non Signer)
-    createTransaction({
+    const txSignable = createTransaction({
       version: "legacy",
       feePayer: feePayer,
       instructions: [ix],
@@ -70,6 +73,9 @@ import { createTransaction } from "../core";
     }) satisfies BaseTransactionMessage<"legacy"> &
       TransactionMessageWithBlockhashLifetime &
       ITransactionMessageWithFeePayer;
+
+    // Should be a signable transaction
+    signTransactionMessageWithSigners(txSignable);
   }
 
   // Version 0 transactions
@@ -88,12 +94,15 @@ import { createTransaction } from "../core";
       instructions: [ix],
     }) satisfies BaseTransactionMessage<0> & ITransactionMessageWithFeePayerSigner;
 
-    createTransaction({
+    const txNotSignable = createTransaction({
       version: 0,
       feePayer: feePayer,
       instructions: [ix],
       // @ts-expect-error Should not have a Lifetime
     }) satisfies TransactionMessageWithBlockhashLifetime;
+
+    // @ts-expect-error Should not be a signable transaction
+    signTransactionMessageWithSigners(txNotSignable);
 
     createTransaction({
       version: 0,
@@ -102,7 +111,7 @@ import { createTransaction } from "../core";
       // @ts-expect-error Should not have a Lifetime
     }) satisfies TransactionMessageWithBlockhashLifetime;
 
-    // Should be legacy with a Lifetime and Signer
+    // Should be version 0 with a Lifetime and Signer
     createTransaction({
       version: 0,
       feePayer: signer,
@@ -112,8 +121,8 @@ import { createTransaction } from "../core";
       TransactionMessageWithBlockhashLifetime &
       ITransactionMessageWithFeePayerSigner;
 
-    // Should be legacy with a Lifetime and address (aka non Signer)
-    createTransaction({
+    // Should be version 0 with a Lifetime and address (aka non Signer)
+    const txSignable = createTransaction({
       version: 0,
       feePayer: feePayer,
       instructions: [ix],
@@ -121,5 +130,8 @@ import { createTransaction } from "../core";
     }) satisfies BaseTransactionMessage<0> &
       TransactionMessageWithBlockhashLifetime &
       ITransactionMessageWithFeePayer;
+
+    // Should be a signable transaction
+    signTransactionMessageWithSigners(txSignable);
   }
 }
