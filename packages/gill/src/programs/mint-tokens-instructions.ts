@@ -20,9 +20,9 @@ export type GetMintTokensInstructionsArgs = {
    * Only for multi-sig authorities (like Squads Protocol), should you supply an `Address.
    * */
   mintAuthority: KeyPairSigner | Address;
-  /** Wallet address for the new associated token account (ata) */
-  owner: KeyPairSigner | Address;
-  /** Associated token account (ata) address to be created */
+  /** Wallet address to receive the tokens being minted to via their associated token account (ata) */
+  destination: KeyPairSigner | Address;
+  /** Associated token account (ata) address for `destination` */
   ata: Address;
   /** Amount of tokens to issue to the `owner` and their `ata` */
   amount: bigint | number;
@@ -49,7 +49,7 @@ export function getMintTokensInstructions(args: GetMintTokensInstructionsArgs): 
   return [
     // create idempotent will gracefully fail if the ata already exists. this is the gold standard!
     getCreateAssociatedTokenIdempotentInstruction({
-      owner: checkedAddress(args.owner),
+      owner: checkedAddress(args.destination),
       mint: args.mint,
       ata: args.ata,
       payer: args.payer,
