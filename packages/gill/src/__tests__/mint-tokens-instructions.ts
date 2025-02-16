@@ -170,6 +170,8 @@ describe("getMintTokensInstructions", () => {
       tokenProgram: "UnsupportedProgramId" as Address,
     };
 
-    expect(() => getMintTokensInstructions(args)).toThrow();
+    expect(() => getMintTokensInstructions(args)).toThrow(
+      "Unsupported token program. Try 'TOKEN_PROGRAM_ADDRESS' or 'TOKEN_2022_PROGRAM_ADDRESS'",
+    );
   });
 });
