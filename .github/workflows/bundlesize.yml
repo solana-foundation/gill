@@ -19,7 +19,7 @@ jobs:
           version: current
 
       - name: Build
-        run: pnpm turbo compile:js --concurrency=${TURBO_CONCURRENCY:-1}
+        run: pnpm build
 
       - name: BundleMon
         uses: lironer/bundlemon-action@v1
