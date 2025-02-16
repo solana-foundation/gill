@@ -44,6 +44,23 @@ type CreateTokenInput = Simplify<
  *
  * @argument token - Information required to create a Solana Token
  * - `mint` will be auto generated if not provided
+ *
+ * @example
+ *
+ * ```
+ * const transaction = await createTokenTransaction({
+ *   payer: signer,
+ *   latestBlockhash,
+ *   metadata: {
+ *     name: "Test Token",
+ *     symbol: "TEST",
+ *     uri: "https://example.com/metadata.json",
+ *     isMutable: true,
+ *   },
+ *   // tokenProgram: TOKEN_PROGRAM_ADDRESS, // default
+ *   // tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
+ * });
+ * ```
  */
 export async function createTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
