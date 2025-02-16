@@ -44,6 +44,7 @@ export type GetMintTokensInstructionsArgs = {
  * ```
  * const mint = await generateKeyPairSigner();
  * const destination = address("nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c");
+ *
  * const instructions = getMintTokensInstructions({
  *   mint,
  *   payer: signer,
@@ -53,6 +54,8 @@ export type GetMintTokensInstructionsArgs = {
  *   // if decimals=4 => this will mint 0.100 tokens
  *   destination,
  *   ata: await getTokenAccountAddress(mint, destination),
+ *   // tokenProgram: TOKEN_PROGRAM_ADDRESS, // default
+ *   // tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
  * });
  * ```
  */

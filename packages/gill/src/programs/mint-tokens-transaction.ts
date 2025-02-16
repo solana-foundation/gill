@@ -3,17 +3,17 @@ import type {
   TransactionMessageWithBlockhashLifetime,
   TransactionVersion,
 } from "@solana/transaction-messages";
-import { createTransaction } from "../core";
+import { checkedAddress, createTransaction } from "../core";
 import type { CreateTransactionInput, FullTransaction, Simplify } from "../types";
-import {
-  getCreateTokenInstructions,
-  type GetCreateTokenInstructionsArgs,
-} from "./create-token-instructions";
-import { type KeyPairSigner, type TransactionSigner } from "@solana/signers";
+import { type TransactionSigner } from "@solana/signers";
 import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
-import { getTokenMetadataAddress } from "./token-metadata";
-import { checkedTokenProgramAddress } from "./token-shared";
+import { checkedTokenProgramAddress, getTokenAccountAddress } from "./token-shared";
+import {
+  getMintTokensInstructions,
+  type GetMintTokensInstructionsArgs,
+} from "./mint-tokens-instructions";
+import { Address } from "@solana/addresses";
 
 type TransactionInput<
   TVersion extends TransactionVersion = "legacy",
@@ -30,12 +30,12 @@ type TransactionInput<
 >;
 
 type GetCreateTokenTransactionInput = Simplify<
-  Omit<GetCreateTokenInstructionsArgs, "metadataAddress"> &
-    Partial<Pick<GetCreateTokenInstructionsArgs, "metadataAddress">>
+  Omit<GetMintTokensInstructionsArgs, "ata"> & Partial<Pick<GetMintTokensInstructionsArgs, "ata">>
 >;
 
 /**
- * Create a transaction to create a token with metadata
+ * Create a transaction to mint tokens to any wallet/owner,
+ * including creating their ATA if it does not exist
  *
  * The transaction will has the following defaults:
  * - Default `version` = `legacy`
@@ -46,30 +46,32 @@ type GetCreateTokenTransactionInput = Simplify<
  * @example
  *
  * ```
- * const mint = await generateKeyPairSigner();
+ * const destination = address("nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c");
  *
- * const transaction = await getCreateTokenTransaction({
+ * const mint = address(...);
+ * // or mint can be a keypair from a freshly created token
+ *
+ * const transaction = await buildMintTokensTransaction({
  *   payer: signer,
  *   latestBlockhash,
  *   mint,
- *   metadata: {
- *     name: "Test Token",
- *     symbol: "TEST",
- *     uri: "https://example.com/metadata.json",
- *     isMutable: true,
- *   },
+ *   mintAuthority: signer,
+ *   amount: 1000, // note: be sure to account for the mint's `decimals` value
+ *   // if decimals=2 => this will mint 10.00 tokens
+ *   // if decimals=4 => this will mint 0.100 tokens
+ *   destination,
  *   // tokenProgram: TOKEN_PROGRAM_ADDRESS, // default
  *   // tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
  * });
  * ```
  */
-export async function getCreateTokenTransaction<
+export async function buildMintTokensTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
 >(
   input: TransactionInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
 ): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer>>;
-export async function getCreateTokenTransaction<
+export async function buildMintTokensTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
   TLifetimeConstraint extends
@@ -84,7 +86,7 @@ export async function getCreateTokenTransaction<
     TransactionMessageWithBlockhashLifetime
   >
 >;
-export async function getCreateTokenTransaction<
+export async function buildMintTokensTransaction<
   TVersion extends TransactionVersion,
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
@@ -93,23 +95,20 @@ export async function getCreateTokenTransaction<
     GetCreateTokenTransactionInput,
 ) {
   input.tokenProgram = checkedTokenProgramAddress(input.tokenProgram);
+  input.mint = checkedAddress(input.mint);
 
-  let metadataAddress = input.mint.address;
+  if (!input.ata) input.ata = await getTokenAccountAddress(input.mint, input.destination);
 
-  if (input.tokenProgram === TOKEN_PROGRAM_ADDRESS) {
-    metadataAddress = await getTokenMetadataAddress(input.mint);
-
-    // default a reasonably low computeUnitLimit based on simulation data
-    if (!input.computeUnitLimit) {
+  // default a reasonably low computeUnitLimit based on simulation data
+  if (!input.computeUnitLimit) {
+    if (input.tokenProgram === TOKEN_PROGRAM_ADDRESS) {
       // creating the token's mint is around 3219cu (and stable?)
       // token metadata is the rest... and fluctuates a lot based on the pda and amount of metadata
-      input.computeUnitLimit = 60_000;
-    }
-  } else if (input.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
-    if (!input.computeUnitLimit) {
+      // input.computeUnitLimit = 60_000;
+    } else if (input.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
       // token22 token creation, with metadata is (seemingly stable) around 7647cu,
       // but consume more with more metadata provided
-      input.computeUnitLimit = 10_000;
+      // input.computeUnitLimit = 10_000;
     }
   }
 
@@ -120,26 +119,23 @@ export async function getCreateTokenTransaction<
       computeUnitLimit,
       computeUnitPrice,
       latestBlockhash,
-      instructions: getCreateTokenInstructions(
+      instructions: getMintTokensInstructions(
         (({
-          decimals,
-          mintAuthority,
-          freezeAuthority,
-          updateAuthority,
-          metadata,
-          payer,
           tokenProgram,
+          payer,
           mint,
-        }: typeof input) => ({
-          mint: mint as KeyPairSigner,
-          payer,
-          metadataAddress,
-          metadata,
-          decimals,
+          ata,
           mintAuthority,
-          freezeAuthority,
-          updateAuthority,
+          amount,
+          destination,
+        }: typeof input) => ({
           tokenProgram,
+          payer,
+          mint,
+          mintAuthority,
+          ata: ata as Address,
+          amount,
+          destination,
         }))(input),
       ),
     }))(input),
