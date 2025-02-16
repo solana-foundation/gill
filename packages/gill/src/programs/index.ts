@@ -18,3 +18,4 @@ export * from "./token-shared";
 export * from "./token-metadata";
 export * from "./create-token-instructions";
 export * from "./create-token";
+export * from "./token-mint-instructions";

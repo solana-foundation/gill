@@ -6,13 +6,14 @@ import type {
 import { createTransaction } from "../core";
 import type { CreateTransactionInput, FullTransaction, Simplify } from "../types";
 import {
-  createTokenInstructions,
-  type CreateTokenInstructionsArgs,
+  getCreateTokenInstructions,
+  type GetCreateTokenInstructionsArgs,
 } from "./create-token-instructions";
 import { generateKeyPairSigner, type KeyPairSigner, type TransactionSigner } from "@solana/signers";
 import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 import { getTokenMetadataAddress } from "./token-metadata";
+import { checkedTokenProgramAddress } from "./token-shared";
 
 type TransactionInput<
   TVersion extends TransactionVersion = "legacy",
@@ -28,9 +29,9 @@ type TransactionInput<
     Partial<Pick<CreateTransactionInput<TVersion, TFeePayer, TLifetimeConstraint>, "version">>
 >;
 
-type CreateTokenInput = Simplify<
-  Omit<CreateTokenInstructionsArgs, "mint" | "metadataAddress"> &
-    Partial<Pick<CreateTokenInstructionsArgs, "mint" | "metadataAddress">>
+type GetCreateTokenTransactionInput = Simplify<
+  Omit<GetCreateTokenInstructionsArgs, "mint" | "metadataAddress"> &
+    Partial<Pick<GetCreateTokenInstructionsArgs, "mint" | "metadataAddress">>
 >;
 
 /**
@@ -48,7 +49,7 @@ type CreateTokenInput = Simplify<
  * @example
  *
  * ```
- * const transaction = await createTokenTransaction({
+ * const transaction = await getCreateTokenTransaction({
  *   payer: signer,
  *   latestBlockhash,
  *   metadata: {
@@ -62,19 +63,20 @@ type CreateTokenInput = Simplify<
  * });
  * ```
  */
-export async function createTokenTransaction<
+export async function getCreateTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
 >(
-  input: TransactionInput<TVersion, TFeePayer> & CreateTokenInput,
+  input: TransactionInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
 ): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer>>;
-export async function createTokenTransaction<
+export async function getCreateTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
   TLifetimeConstraint extends
     TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & CreateTokenInput,
+  input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> &
+    GetCreateTokenTransactionInput,
 ): Promise<
   FullTransaction<
     TVersion,
@@ -82,11 +84,15 @@ export async function createTokenTransaction<
     TransactionMessageWithBlockhashLifetime
   >
 >;
-export async function createTokenTransaction<
+export async function getCreateTokenTransaction<
   TVersion extends TransactionVersion,
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
->(input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & CreateTokenInput) {
+>(
+  input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> &
+    GetCreateTokenTransactionInput,
+) {
+  input.tokenProgram = checkedTokenProgramAddress(input.tokenProgram);
   if (!input.mint) input.mint = await generateKeyPairSigner();
 
   let metadataAddress = input.mint.address;
@@ -108,29 +114,6 @@ export async function createTokenTransaction<
     }
   }
 
-  const instructions = createTokenInstructions(
-    (({
-      decimals,
-      mintAuthority,
-      freezeAuthority,
-      updateAuthority,
-      metadata,
-      payer,
-      tokenProgram,
-      mint,
-    }: typeof input) => ({
-      mint: mint as KeyPairSigner,
-      payer,
-      metadataAddress,
-      metadata,
-      decimals,
-      mintAuthority,
-      freezeAuthority,
-      updateAuthority,
-      tokenProgram,
-    }))(input),
-  );
-
   return createTransaction(
     (({ payer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof input) => ({
       feePayer: payer,
@@ -138,7 +121,28 @@ export async function createTokenTransaction<
       computeUnitLimit,
       computeUnitPrice,
       latestBlockhash,
-      instructions,
+      instructions: getCreateTokenInstructions(
+        (({
+          decimals,
+          mintAuthority,
+          freezeAuthority,
+          updateAuthority,
+          metadata,
+          payer,
+          tokenProgram,
+          mint,
+        }: typeof input) => ({
+          mint: mint as KeyPairSigner,
+          payer,
+          metadataAddress,
+          metadata,
+          decimals,
+          mintAuthority,
+          freezeAuthority,
+          updateAuthority,
+          tokenProgram,
+        }))(input),
+      ),
     }))(input),
   );
 }

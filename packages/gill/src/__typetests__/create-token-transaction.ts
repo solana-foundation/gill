@@ -7,29 +7,29 @@ import type {
 } from "@solana/transaction-messages";
 import { signTransactionMessageWithSigners } from "@solana/signers";
 
-import { CreateTokenInstructionsArgs, createTokenTransaction } from "../programs";
+import { GetCreateTokenInstructionsArgs, getCreateTokenTransaction } from "../programs";
 
-// [DESCRIBE] createTokenTransaction
+// [DESCRIBE] getCreateTokenTransaction
 async () => {
   const signer = null as unknown as KeyPairSigner;
   const latestBlockhash =
     null as unknown as TransactionMessageWithBlockhashLifetime["lifetimeConstraint"];
-  const metadata = {} as unknown as CreateTokenInstructionsArgs["metadata"];
+  const metadata = {} as unknown as GetCreateTokenInstructionsArgs["metadata"];
 
   // Legacy transaction
   {
-    (await createTokenTransaction({
+    (await getCreateTokenTransaction({
       payer: signer,
       metadata,
     })) satisfies BaseTransactionMessage<"legacy">;
 
-    (await createTokenTransaction({
+    (await getCreateTokenTransaction({
       version: "legacy",
       payer: signer,
       metadata,
     })) satisfies BaseTransactionMessage<"legacy">;
 
-    const txNotSignable = (await createTokenTransaction({
+    const txNotSignable = (await getCreateTokenTransaction({
       version: "legacy",
       payer: signer,
       metadata,
@@ -39,7 +39,7 @@ async () => {
     // @ts-expect-error Should not be a signable transaction
     signTransactionMessageWithSigners(txNotSignable);
 
-    const txSignable = (await createTokenTransaction({
+    const txSignable = (await getCreateTokenTransaction({
       version: "legacy",
       payer: signer,
       metadata,
@@ -52,13 +52,13 @@ async () => {
 
   // Version 0 transaction
   {
-    (await createTokenTransaction({
+    (await getCreateTokenTransaction({
       version: 0,
       payer: signer,
       metadata,
     })) satisfies BaseTransactionMessage<0>;
 
-    const txNotSignable = (await createTokenTransaction({
+    const txNotSignable = (await getCreateTokenTransaction({
       version: 0,
       payer: signer,
       metadata,
@@ -68,7 +68,7 @@ async () => {
     // @ts-expect-error Should not be a signable transaction
     signTransactionMessageWithSigners(txNotSignable);
 
-    const txSignable = (await createTokenTransaction({
+    const txSignable = (await getCreateTokenTransaction({
       version: 0,
       payer: signer,
       metadata,

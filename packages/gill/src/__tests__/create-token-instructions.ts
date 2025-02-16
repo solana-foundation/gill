@@ -3,13 +3,10 @@ import { Address } from "@solana/addresses";
 import { IInstruction } from "@solana/instructions";
 import { getCreateAccountInstruction } from "@solana-program/system";
 import { getMinimumBalanceForRentExemption } from "../core";
+import { getCreateMetadataAccountV3Instruction } from "../programs/token-metadata";
 import {
-  getCreateMetadataAccountV3Instruction,
-  getTokenMetadataAddress,
-} from "../programs/token-metadata";
-import {
-  createTokenInstructions,
-  CreateTokenInstructionsArgs,
+  getCreateTokenInstructions,
+  GetCreateTokenInstructionsArgs,
 } from "../programs/create-token-instructions";
 
 import { TOKEN_PROGRAM_ADDRESS, getInitializeMintInstruction } from "@solana-program/token";
@@ -17,7 +14,6 @@ import {
   TOKEN_2022_PROGRAM_ADDRESS,
   getMintSize,
   getInitializeMintInstruction as getInitializeMintInstructionToken22,
-  extension,
   getInitializeTokenMetadataInstruction,
   getInitializeMetadataPointerInstruction,
 } from "@solana-program/token-2022";
@@ -26,11 +22,14 @@ const MOCK_SPACE = 122n;
 const MOCK_RENT = 10000n;
 
 jest.mock("../core", () => ({
+  // preserve all real implementations to only change the desired ones
+  ...jest.requireActual("../core"),
   getMinimumBalanceForRentExemption: jest.fn(),
 }));
 
 jest.mock("../programs/token-metadata", () => ({
-  getTokenMetadataAddress: jest.fn(),
+  // preserve all real implementations to only change the desired ones
+  ...jest.requireActual("../programs/token-metadata"),
   getCreateMetadataAccountV3Instruction: jest.fn(),
 }));
 
@@ -39,20 +38,21 @@ jest.mock("@solana-program/system", () => ({
 }));
 
 jest.mock("@solana-program/token", () => ({
-  TOKEN_PROGRAM_ADDRESS: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+  // preserve all real implementations to only change the desired ones
+  ...jest.requireActual("@solana-program/token"),
   getInitializeMintInstruction: jest.fn(),
 }));
 
 jest.mock("@solana-program/token-2022", () => ({
-  TOKEN_2022_PROGRAM_ADDRESS: "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+  // preserve all real implementations to only change the desired ones
+  ...jest.requireActual("@solana-program/token-2022"),
   getMintSize: jest.fn(),
   getInitializeMintInstruction: jest.fn(),
-  extension: jest.fn(),
   getInitializeMetadataPointerInstruction: jest.fn(),
   getInitializeTokenMetadataInstruction: jest.fn(),
 }));
 
-describe("createTokenInstructions", () => {
+describe("getCreateTokenInstructions", () => {
   let mockPayer: KeyPairSigner;
   let mockMint: KeyPairSigner;
 
@@ -69,7 +69,7 @@ describe("createTokenInstructions", () => {
   let mockInitializeMetadataPointerInstruction: IInstruction;
   let mockInitializeTokenMetadataInstruction: IInstruction;
 
-  const metadata: CreateTokenInstructionsArgs["metadata"] = {
+  const metadata: GetCreateTokenInstructionsArgs["metadata"] = {
     name: "Test Token",
     symbol: "TEST",
     uri: "https://example.com/metadata.json",
@@ -125,11 +125,9 @@ describe("createTokenInstructions", () => {
     (getInitializeTokenMetadataInstruction as jest.Mock).mockReturnValue(
       mockInitializeTokenMetadataInstruction,
     );
-    (extension as jest.Mock).mockReturnValue("");
 
     (getMinimumBalanceForRentExemption as jest.Mock).mockReturnValue(MOCK_RENT);
     (getMintSize as jest.Mock).mockReturnValue(MOCK_SPACE);
-    (getTokenMetadataAddress as jest.Mock).mockResolvedValue("metadataAddress123");
   });
 
   afterEach(() => {
@@ -137,14 +135,14 @@ describe("createTokenInstructions", () => {
   });
 
   it("should create basic token instructions with default values", () => {
-    const args: CreateTokenInstructionsArgs = {
+    const args: GetCreateTokenInstructionsArgs = {
       payer: mockPayer,
       mint: mockMint,
       metadataAddress: mockMetadataAddress,
       metadata,
     };
 
-    const instructions = createTokenInstructions(args);
+    const instructions = getCreateTokenInstructions(args);
 
     expect(instructions).toHaveLength(3);
     expect(instructions[0]).toBe(mockCreateAccountInstruction);
@@ -189,7 +187,7 @@ describe("createTokenInstructions", () => {
   });
 
   it("should throw error for unsupported token program", () => {
-    const args: CreateTokenInstructionsArgs = {
+    const args: GetCreateTokenInstructionsArgs = {
       payer: mockPayer,
       mint: mockMint,
       metadataAddress: mockMetadataAddress,
@@ -197,14 +195,14 @@ describe("createTokenInstructions", () => {
       tokenProgram: "UnsupportedProgramId" as Address,
     };
 
-    expect(() => createTokenInstructions(args)).toThrow(
+    expect(() => getCreateTokenInstructions(args)).toThrow(
       "Unsupported token program. Try 'TOKEN_PROGRAM_ADDRESS' or 'TOKEN_2022_PROGRAM_ADDRESS'",
     );
   });
 
   describe("should use original token program", () => {
     it("should use original token program when specified", () => {
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMetadataAddress,
@@ -212,7 +210,7 @@ describe("createTokenInstructions", () => {
         metadata,
       };
 
-      createTokenInstructions(args);
+      getCreateTokenInstructions(args);
 
       expect(getCreateAccountInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -229,7 +227,7 @@ describe("createTokenInstructions", () => {
     });
 
     it("should use custom decimals when provided", () => {
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         metadataAddress: mockMetadataAddress,
         mint: mockMint,
@@ -237,7 +235,7 @@ describe("createTokenInstructions", () => {
         metadata,
       };
 
-      createTokenInstructions(args);
+      getCreateTokenInstructions(args);
 
       expect(getInitializeMintInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -248,7 +246,7 @@ describe("createTokenInstructions", () => {
     });
 
     it("should use custom mint and freeze authorities when provided", () => {
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMetadataAddress,
@@ -257,7 +255,7 @@ describe("createTokenInstructions", () => {
         freezeAuthority: mockFreezeAuthority.address,
       };
 
-      createTokenInstructions(args);
+      getCreateTokenInstructions(args);
 
       expect(getInitializeMintInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -268,21 +266,21 @@ describe("createTokenInstructions", () => {
     });
 
     it("should add metadata instruction when metadata is provided", () => {
-      const metadata: CreateTokenInstructionsArgs["metadata"] = {
+      const metadata: GetCreateTokenInstructionsArgs["metadata"] = {
         name: "Test Token",
         symbol: "TEST",
         uri: "https://example.com/metadata.json",
         isMutable: false,
       };
 
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMetadataAddress,
         metadata,
       };
 
-      const instructions = createTokenInstructions(args);
+      const instructions = getCreateTokenInstructions(args);
 
       expect(instructions).toHaveLength(3);
       expect(instructions[2]).toBe(mockCreateMetadataInstruction);
@@ -312,7 +310,7 @@ describe("createTokenInstructions", () => {
     it("should use custom metadata update authority", () => {
       const customUpdateAuthority = { address: "customUpdateAuth" } as KeyPairSigner;
 
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMetadataAddress,
@@ -320,7 +318,7 @@ describe("createTokenInstructions", () => {
         metadata,
       };
 
-      createTokenInstructions(args);
+      getCreateTokenInstructions(args);
 
       expect(getCreateMetadataAccountV3Instruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -332,7 +330,7 @@ describe("createTokenInstructions", () => {
 
   describe("should use token22 program", () => {
     it("should use Token-2022 program when specified", () => {
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
@@ -340,7 +338,7 @@ describe("createTokenInstructions", () => {
         metadata,
       };
 
-      createTokenInstructions(args);
+      getCreateTokenInstructions(args);
 
       expect(getCreateAccountInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -357,7 +355,7 @@ describe("createTokenInstructions", () => {
     });
 
     it("should use custom decimals when provided", () => {
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
@@ -366,7 +364,7 @@ describe("createTokenInstructions", () => {
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
       };
 
-      createTokenInstructions(args);
+      getCreateTokenInstructions(args);
 
       expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -377,7 +375,7 @@ describe("createTokenInstructions", () => {
     });
 
     it("should use custom mint and freeze authorities when provided", () => {
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
@@ -387,7 +385,7 @@ describe("createTokenInstructions", () => {
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
       };
 
-      createTokenInstructions(args);
+      getCreateTokenInstructions(args);
 
       expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -398,14 +396,14 @@ describe("createTokenInstructions", () => {
     });
 
     it("should add metadata instruction when metadata is provided", () => {
-      const metadata: CreateTokenInstructionsArgs["metadata"] = {
+      const metadata: GetCreateTokenInstructionsArgs["metadata"] = {
         name: "Test Token22",
         symbol: "TEST",
         uri: "https://example.com/metadata.json",
         isMutable: false,
       };
 
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
@@ -413,7 +411,7 @@ describe("createTokenInstructions", () => {
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
       };
 
-      const instructions = createTokenInstructions(args);
+      const instructions = getCreateTokenInstructions(args);
 
       expect(instructions).toHaveLength(4);
       expect(instructions[1]).toBe(mockInitializeMetadataPointerInstruction);
@@ -451,7 +449,7 @@ describe("createTokenInstructions", () => {
     it("should use custom metadata update authority", () => {
       const customUpdateAuthority = { address: "customUpdateAuth" } as KeyPairSigner;
 
-      const args: CreateTokenInstructionsArgs = {
+      const args: GetCreateTokenInstructionsArgs = {
         payer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
@@ -460,7 +458,7 @@ describe("createTokenInstructions", () => {
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
       };
 
-      const instructions = createTokenInstructions(args);
+      const instructions = getCreateTokenInstructions(args);
 
       expect(instructions).toHaveLength(4);
       expect(instructions[1]).toBe(mockInitializeMetadataPointerInstruction);

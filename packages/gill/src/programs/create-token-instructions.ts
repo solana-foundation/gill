@@ -2,7 +2,7 @@ import type { IInstruction } from "@solana/instructions";
 import type { Address } from "@solana/addresses";
 import type { KeyPairSigner } from "@solana/signers";
 import { getCreateAccountInstruction } from "@solana-program/system";
-import { getMinimumBalanceForRentExemption } from "../core";
+import { checkedAddress, getMinimumBalanceForRentExemption } from "../core";
 import { getTokenMetadataAddress, getCreateMetadataAccountV3Instruction } from "./token-metadata";
 
 import { TOKEN_PROGRAM_ADDRESS, getInitializeMintInstruction } from "@solana-program/token";
@@ -15,7 +15,7 @@ import {
   getInitializeTokenMetadataInstruction,
 } from "@solana-program/token-2022";
 
-export type CreateTokenInstructionsArgs = {
+export type GetCreateTokenInstructionsArgs = {
   /** Signer that will pay for the rent storage deposit fee */
   payer: KeyPairSigner;
   /** Token Mint to be created (aka token address) */
@@ -90,7 +90,7 @@ export type CreateTokenInstructionsArgs = {
 /**
  * Create the instructions required to initialize a new token's Mint
  */
-export function createTokenInstructions(args: CreateTokenInstructionsArgs): IInstruction[] {
+export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs): IInstruction[] {
   if (!args.tokenProgram) args.tokenProgram = TOKEN_PROGRAM_ADDRESS;
   if (
     args.tokenProgram !== TOKEN_PROGRAM_ADDRESS &&
@@ -104,6 +104,7 @@ export function createTokenInstructions(args: CreateTokenInstructionsArgs): IIns
   if (!args.decimals) args.decimals = 9;
   if (!args.mintAuthority) args.mintAuthority = args.payer;
   if (!args.updateAuthority) args.updateAuthority = args.payer;
+  if (args.freezeAuthority) args.freezeAuthority = checkedAddress(args.freezeAuthority);
 
   if (args.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
     // @ts-ignore FIXME(nick): errors due to not finding the valid overload
@@ -150,11 +151,7 @@ export function createTokenInstructions(args: CreateTokenInstructionsArgs): IIns
         mint: args.mint.address,
         decimals: Number(args.decimals),
         mintAuthority: args.mintAuthority.address,
-        freezeAuthority: args.freezeAuthority
-          ? typeof args.freezeAuthority == "string"
-            ? args.freezeAuthority
-            : args.freezeAuthority.address
-          : null,
+        freezeAuthority: args.freezeAuthority || null,
       }),
       getInitializeTokenMetadataInstruction({
         metadata: args.mint.address,
@@ -183,11 +180,7 @@ export function createTokenInstructions(args: CreateTokenInstructionsArgs): IIns
         mint: args.mint.address,
         decimals: Number(args.decimals),
         mintAuthority: args.mintAuthority.address,
-        freezeAuthority: args.freezeAuthority
-          ? typeof args.freezeAuthority == "string"
-            ? args.freezeAuthority
-            : args.freezeAuthority.address
-          : null,
+        freezeAuthority: args.freezeAuthority || null,
       }),
       getCreateMetadataAccountV3Instruction({
         metadata: args.metadataAddress,
