@@ -89,6 +89,7 @@ try {
    */
   await sendAndConfirmTransaction(signedTransaction);
 
+  // you can also manually define additional settings for sending your transaction
   // await sendAndConfirmTransaction(signedTransaction, {
   //   commitment: "confirmed",
   //   skipPreflight: true,
