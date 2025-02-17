@@ -74,9 +74,9 @@ console.log("latestBlockhash:", latestBlockhash);
  * - this will use the original SPL token by default (`TOKEN_PROGRAM_ADDRESS`)
  */
 const createTokenTx = await buildCreateTokenTransaction({
-  mint,
-  latestBlockhash,
   feePayer: signer,
+  latestBlockhash,
+  mint,
   // mintAuthority, // default=same as the `feePayer`
   metadata: {
     isMutable: true, // if the `updateAuthority` can change this metadata in the future
@@ -84,8 +84,13 @@ const createTokenTx = await buildCreateTokenTransaction({
     symbol: "OPOS",
     uri: "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/Climate/metadata.json",
   },
+  // updateAuthority, // default=same as the `feePayer`
   decimals: 2, // default=9,
-  tokenProgram, //default=TOKEN_PROGRAM_ADDRESS
+  tokenProgram, // default=TOKEN_PROGRAM_ADDRESS, token22 also supported
+  // default cu limit set to be optimized, but can be overriden here
+  // computeUnitLimit?: number,
+  // obtain from your favorite priority fee api
+  // computeUnitPrice?: number, // no default set
 });
 
 /**
@@ -137,7 +142,12 @@ const mintTokensTx = await buildMintTokensTransaction({
   // if decimals=2 => this will mint 10.00 tokens
   // if decimals=4 => this will mint 0.100 tokens
   destination,
+  // use the correct token program for the `mint`
   tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
+  // default cu limit set to be optimized, but can be overriden here
+  // computeUnitLimit?: number,
+  // obtain from your favorite priority fee api
+  // computeUnitPrice?: number, // no default set
 });
 
 console.log("Transaction to mint tokens:");
