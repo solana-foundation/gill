@@ -1,5 +1,5 @@
 {
-  "name": "gill-examples-esrun",
+  "name": "gill-examples-basic",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -10,8 +10,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "gill": "workspace:*",
-    "dotenv": "^16.4.5"
+    "@solana/web3.js": "2",
+    "dotenv": "^16.4.5",
+    "gill": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.9.0",

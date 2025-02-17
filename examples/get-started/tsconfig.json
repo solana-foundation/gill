@@ -6,7 +6,7 @@
     "noEmit": true,
     "target": "ESNext"
   },
-  "display": "gill-examples-esrun",
+  "display": "gill-examples-basic",
   "extends": "../../packages/tsconfig/base.json",
   "include": ["src"]
 }

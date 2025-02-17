@@ -124,6 +124,25 @@ importers:
         specifier: ^5.6.3
         version: 5.6.3
 
+  examples/get-started:
+    dependencies:
+      '@solana/web3.js':
+        specifier: '2'
+        version: 2.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.7
+      gill:
+        specifier: workspace:*
+        version: link:../../packages/gill
+    devDependencies:
+      '@types/node':
+        specifier: ^22.9.0
+        version: 22.9.1
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
+
   packages/build-scripts:
     devDependencies:
       '@types/jscodeshift':
