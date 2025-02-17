@@ -200,10 +200,9 @@ const transaction = createTransaction({
 If your transaction already has the latest blockhash lifetime set via `createTransaction`:
 
 ```typescript
-import {
-  signTransactionMessageWithSigners,
-  setTransactionMessageLifetimeUsingBlockhash,
-} from "gill";
+import { createTransaction, signTransactionMessageWithSigners } from "gill";
+
+const transaction = createTransaction(...);
 
 const signedTransaction = await signTransactionMessageWithSigners(transaction);
 ```
@@ -213,14 +212,19 @@ must set the latest blockhash lifetime before (or during) the signing operation:
 
 ```typescript
 import {
+  createTransaction,
+  createSolanaClient,
   signTransactionMessageWithSigners,
   setTransactionMessageLifetimeUsingBlockhash,
 } from "gill";
 
+const { rpc } = createSolanaClient(...);
+const transaction = createTransaction(...);
+
 const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 
 const signedTransaction = await signTransactionMessageWithSigners(
-  setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
+  setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, transaction),
 );
 ```
 
@@ -230,9 +234,9 @@ To send and confirm a transaction to the blockchain, you can use the `sendAndCon
 function initialized from `createSolanaClient`.
 
 ```typescript
-import { createSolanaClient, createTransaction, signTransactionMessageWithSigners } from "gill";
+import { ... } from "gill";
 
-const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
+const { sendAndConfirmTransaction } = createSolanaClient({
   urlOrMoniker: "mainnet",
 });
 
@@ -240,6 +244,8 @@ const transaction = createTransaction(...);
 
 const signedTransaction = await signTransactionMessageWithSigners(transaction);
 const signature: string = getSignatureFromTransaction(signedTransaction);
+
+console.log(getExplorerLink({ transaction: signature }));
 
 // default commitment level of `confirmed`
 await sendAndConfirmTransaction(signedTransaction)
@@ -360,6 +366,9 @@ const rent: bigint = getMinimumBalanceForRentExemption();
 
 // same as
 // getMinimumBalanceForRentExemption(0);
+
+// same as, but this requires a network call
+// const rent = await rpc.getMinimumBalanceForRentExemption(0n).send();
 ```
 
 ```typescript
@@ -367,6 +376,9 @@ import { getMinimumBalanceForRentExemption } from "gill";
 
 const rent: bigint = getMinimumBalanceForRentExemption(50 /* 50 bytes */);
 // Expected value: 1_238_880n
+
+// same as, but this requires a network call
+// const rent = await rpc.getMinimumBalanceForRentExemption(50n).send();
 ```
 
 > Note: At this time, the minimum rent amount for an account is calculated based on static values in

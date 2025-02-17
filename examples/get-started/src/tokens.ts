@@ -15,7 +15,21 @@ import {
 } from "gill/programs/token";
 
 /** Turn on debug mode */
+global.__GILL_DEBUG__ = true;
+
+/** Set the debug mode log level (default: `info`) */
 global.__GILL_DEBUG_LEVEL__ = "debug";
+
+/**
+ * With debug mode enabled and the log level of `debug`:
+ *
+ * `sendAndConfirmTransaction` will now auto log the following:
+ * - explorer link to view the transaction
+ * - serialized base64 transaction, to inspect on the Solana Explorer's Inspector
+ *   https://explorer.solana.com/tx/inspector
+ *
+ * This can greatly assist troubleshooting efforts
+ */
 
 /**
  * Load a keypair signer from the local filesystem
@@ -135,7 +149,9 @@ console.log(mintTokensTx);
 signedTransaction = await signTransactionMessageWithSigners(mintTokensTx);
 signature = getSignatureFromTransaction(signedTransaction);
 
-console.log("\nExplorer Link (for minting the tokens to the destination wallet):");
+console.log(
+  "\nExplorer Link (for minting the tokens to the destination wallet):",
+);
 console.log(
   getExplorerLink({
     cluster,
