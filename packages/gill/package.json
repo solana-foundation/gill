@@ -1,7 +1,7 @@
 {
   "name": "gill",
   "version": "0.2.0",
-  "description": "",
+  "description": "a modern javascript/typescript client library for interacting with the Solana blockchain",
   "scripts": {
     "clean": "rimraf dist build node_modules .turbo",
     "compile:js": "tsup --config ./tsup.config.package.ts",
@@ -71,7 +71,14 @@
   "keywords": [
     "blockchain",
     "solana",
-    "web3"
+    "web3",
+    "web3js v2",
+    "solana kit",
+    "wallet",
+    "dapps",
+    "solana helpers",
+    "@solana-developers/helpers",
+    "treeshake"
   ],
   "author": "Solana Foundation DevRel <devrel@solana.org>",
   "homepage": "https://github.com/solana-foundation/gill#readme",
