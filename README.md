@@ -487,31 +487,35 @@ To import any of these program clients:
 ```typescript
 import { ... } from "gill/programs";
 import { ... } from "gill/programs/token";
-import { ... } from "gill/programs/token22";
 ```
 
 > Note: Some client re-exported client program clients have a naming collision. As a result, they
-> may be re-exported under a subpath of `gill/programs`. For example, `gill/programs/token22` and
-> `gill/programs/token`.
+> may be re-exported under a subpath of `gill/programs`. For example, `gill/programs/token`.
 
 The program clients included inside `gill` are:
 
-- [System program](https://github.com/solana-program/system) - re-exported from
-  `@solana-program/system`
-- [Compute Budget program](https://github.com/solana-program/compute-budget) - re-exported from
-  `@solana-program/compute-budget`
-- [Memo program](https://github.com/solana-program/memo) - re-exported from `@solana-program/memo`
-- [Token program](https://github.com/solana-program/token) - re-exported from
-  `@solana-program/token`
-- [Token Extension program (aka Token22)](https://github.com/solana-program/token-2022) -
-  re-exported from `@solana-program/token-2022`
-- [Address Lookup Table program](https://github.com/solana-program/address-lookup-table) -
-  re-exported from `@solana-program/address-lookup-table`
-- [Token Metadata program](https://github.com/metaplex-foundation/mpl-token-metadata) from Metaplex
-  (only the v3 functionality)
+- System program - re-exported from
+  [`@solana-program/system`](https://github.com/solana-program/system)
+- Compute Budget program- re-exported from
+  [`@solana-program/compute-budget`](https://github.com/solana-program/compute-budget)
+- Memo program - re-exported from [`@solana-program/memo`](https://github.com/solana-program/memo)
+- Token Program and Token Extensions program (aka Token22) - re-exported from
+  [`@solana-program/token-2022`](https://github.com/solana-program/token-2022), which is a fully
+  backwards compatible client
+- Address Lookup Table program - re-exported from
+  [`@solana-program/address-lookup-table`](https://github.com/solana-program/address-lookup-table)
+- Token Metadata program from Metaplex (only the v3 functionality) - generated via Codama their IDL
+  ([source](https://github.com/metaplex-foundation/mpl-token-metadata))
 
 If one of the existing clients are not being exported from `gill/programs` or a subpath therein, you
 can of course manually add their compatible client to your repo.
+
+> Note: Since the Token Extensions program client is fully compatible with the original Token
+> Program client, `gill` only ships the `@solana-program/token-2022` client and the
+> `TOKEN_PROGRAM_ADDRESS` in order to remove all that redundant code from the library.
+>
+> To use the original Token Program, simply pass the `TOKEN_PROGRAM_ADDRESS` as the the program
+> address for any instructions
 
 ### Other compatible program clients
 
