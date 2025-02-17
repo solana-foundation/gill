@@ -25,6 +25,9 @@ Gill is built on top of the modern javascript libraries for Solana built by Anza
 ([@solana/web3.js v2](https://github.com/anza-xyz/solana-web3.js)). By utilizing the same types and
 functions under the hood, `gill` is compatible with web3.js.
 
+> For a comparison of using gill vs web3js v2, take a look at the
+> [comparison examples](https://github.com/solana-foundation/gill/tree/master/examples/get-started#comparison-of-gill-vs-web3js-v2).
+
 ## Installation
 
 Install `gill` with your package manager of choice:
@@ -55,6 +58,11 @@ yarn add gill
 You can also find some [NodeJS specific helpers](#node-specific-imports) like:
 
 - [Loading a keypair from a file](#loading-a-keypair-from-a-file)
+
+You can find [transaction builders](#transaction-builders) for common tasks, including:
+
+- [Creating a token with metadata](#create-a-token-with-metadata)
+- [Minting tokens to a destination wallet](#mint-tokens-to-a-destination-wallet)
 
 For troubleshooting and debugging your Solana transactions, see [Debug mode](#debug-mode) below.
 
@@ -418,6 +426,98 @@ import { loadKeypairSignerFromFile } from "gill/node";
 
 const signer = await loadKeypairSignerFromFile("/path/to/your/keypair.json");
 console.log("address:", signer.address);
+```
+
+## Transaction builders
+
+To simplify the creation of common transactions, gill includes various "transaction builders" to
+help easily assemble ready-to-sign transactions for these tasks, which often interact with multiple
+programs at once.
+
+Since each transaction builder is scoped to a single task, they can easily abstract away various
+pieces of boilerplate while also helping to create an optimized transaction, including:
+
+- sets/recommends a default compute unit limit (easily overridable of course) to optimize the
+  transaction and improve landing rates
+- auto derive required address where needed
+- generally recommend safe defaults and fallback settings
+
+All of the auto-filled information can also be manually overriden to ensure you always have escape
+hatches to achieve your desired functionality.
+
+As these transaction builders may not be for everyone, gill exposes a related "instruction builder"
+function for each which is used under the hood to craft the respective transactions. Developers can
+also completely forgo these builder abstractions and manually craft the same functionality.
+
+### Create a token with metadata
+
+Build a transaction that can create a token with metadata, either using the
+[original token](https://github.com/solana-program/token) or
+[token extensions (token22)](https://github.com/solana-program/token-2022) program.
+
+- Tokens created with the original token program (`TOKEN_PROGRAM_ADDRESS`, default) will use
+  Metaplex's Token Metadata program for onchain metadata
+- Tokens created with the token extensions program (`TOKEN_2022_PROGRAM_ADDRESS`) will use the
+  metadata pointer extensions
+
+Related instruction builder: `getCreateTokenInstructions`
+
+```typescript
+import { buildCreateTokenTransaction } from "gill/programs/token";
+
+const createTokenTx = await buildCreateTokenTransaction({
+  feePayer: signer,
+  latestBlockhash,
+  mint,
+  // mintAuthority, // default=same as the `feePayer`
+  metadata: {
+    isMutable: true, // if the `updateAuthority` can change this metadata in the future
+    name: "Only Possible On Solana",
+    symbol: "OPOS",
+    uri: "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/Climate/metadata.json",
+  },
+  // updateAuthority, // default=same as the `feePayer`
+  decimals: 2, // default=9,
+  tokenProgram, // default=TOKEN_PROGRAM_ADDRESS, token22 also supported
+  // default cu limit set to be optimized, but can be overriden here
+  // computeUnitLimit?: number,
+  // obtain from your favorite priority fee api
+  // computeUnitPrice?: number, // no default set
+});
+```
+
+### Mint tokens to a destination wallet
+
+Build a transaction that mints new tokens to the `destination` wallet address (raising the token's
+overall supply).
+
+- ensure you set the correct `tokenProgram` used by the `mint` itself
+- if the `destination` owner does not have an associated token account (ata) created for the `mint`,
+  one will be auto-created for them
+- ensure you take into account the `decimals` for the `mint` when setting the `amount` in this
+  transaction
+
+Related instruction builder: `getMintTokensInstructions`
+
+```typescript
+import { buildMintTokensTransaction } from "gill/programs/token";
+
+const mintTokensTx = await buildMintTokensTransaction({
+  feePayer: signer,
+  latestBlockhash,
+  mint,
+  mintAuthority: signer,
+  amount: 1000, // note: be sure to consider the mint's `decimals` value
+  // if decimals=2 => this will mint 10.00 tokens
+  // if decimals=4 => this will mint 0.100 tokens
+  destination,
+  // use the correct token program for the `mint`
+  tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
+  // default cu limit set to be optimized, but can be overriden here
+  // computeUnitLimit?: number,
+  // obtain from your favorite priority fee api
+  // computeUnitPrice?: number, // no default set
+});
 ```
 
 ## Debug mode
