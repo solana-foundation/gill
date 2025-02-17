@@ -501,7 +501,7 @@ The program clients included inside `gill` are:
 - Memo program - re-exported from [`@solana-program/memo`](https://github.com/solana-program/memo)
 - Token Program and Token Extensions program (aka Token22) - re-exported from
   [`@solana-program/token-2022`](https://github.com/solana-program/token-2022), which is a fully
-  backwards compatible client
+  backwards compatible client with the original Token Program
 - Address Lookup Table program - re-exported from
   [`@solana-program/address-lookup-table`](https://github.com/solana-program/address-lookup-table)
 - Token Metadata program from Metaplex (only the v3 functionality) - generated via Codama their IDL
