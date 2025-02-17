@@ -9,6 +9,7 @@ import {
 } from "gill";
 import { loadKeypairSignerFromFile } from "gill/node";
 import { buildCreateTokenTransaction, buildMintTokensTransaction } from "gill/programs";
+import { TOKEN_2022_PROGRAM_ADDRESS } from "gill/programs/token22";
 
 /** Turn on debug mode */
 global.__GILL_DEBUG_LEVEL__ = "debug";
@@ -36,6 +37,12 @@ const { rpc, sendAndConfirmTransaction } = createSolanaClient({
 });
 
 /**
+ * Declare our token mint and desired token program
+ */
+const tokenProgram = TOKEN_2022_PROGRAM_ADDRESS;
+const mint = await generateKeyPairSigner();
+
+/**
  * Get the latest blockhash (aka transaction lifetime). This acts as a recent timestamp
  * for the blockchain to key on when processing your transaction
  *
@@ -43,8 +50,6 @@ const { rpc, sendAndConfirmTransaction } = createSolanaClient({
  */
 const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 console.log("latestBlockhash:", latestBlockhash);
-
-const mint = await generateKeyPairSigner();
 
 /**
  * Create a transaction that will create a new token (with metadata)
@@ -62,7 +67,8 @@ const createTokenTx = await buildCreateTokenTransaction({
     symbol: "OPOS",
     uri: "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/Climate/metadata.json",
   },
-  decimals: 2, // default=9
+  decimals: 2, // default=9,
+  tokenProgram, //default=TOKEN_PROGRAM_ADDRESS
 });
 
 /**
@@ -114,8 +120,7 @@ const mintTokensTx = await buildMintTokensTransaction({
   // if decimals=2 => this will mint 10.00 tokens
   // if decimals=4 => this will mint 0.100 tokens
   destination,
-  // tokenProgram: TOKEN_PROGRAM_ADDRESS, // default
-  // tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
+  tokenProgram, //default=TOKEN_PROGRAM_ADDRESS
 });
 
 console.log("Transaction to mint tokens:");
