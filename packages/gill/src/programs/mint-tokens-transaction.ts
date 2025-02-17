@@ -32,7 +32,7 @@ type GetCreateTokenTransactionInput = Simplify<
 >;
 
 /**
- * Create a transaction to mint tokens to any wallet/owner,
+ * Create a transaction that can mint tokens to the desired wallet/owner,
  * including creating their ATA if it does not exist
  *
  * The transaction will has the following defaults:
@@ -45,7 +45,6 @@ type GetCreateTokenTransactionInput = Simplify<
  * - validating the ata onchain during creation results in a ~5000cu fluctuation
  *
  * @example
- *
  * ```
  * const destination = address("nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c");
  *
@@ -57,7 +56,7 @@ type GetCreateTokenTransactionInput = Simplify<
  *   latestBlockhash,
  *   mint,
  *   mintAuthority: signer,
- *   amount: 1000, // note: be sure to account for the mint's `decimals` value
+ *   amount: 1000, // note: be sure to consider the mint's `decimals` value
  *   // if decimals=2 => this will mint 10.00 tokens
  *   // if decimals=4 => this will mint 0.100 tokens
  *   destination,

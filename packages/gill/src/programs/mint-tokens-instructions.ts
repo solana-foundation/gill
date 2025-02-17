@@ -15,16 +15,26 @@ export type GetMintTokensInstructionsArgs = {
   /** Token mint to issue the tokens */
   mint: KeyPairSigner | Address;
   /**
-   * The mint's minting authority. This should normally by a `KeyPairSigner`.
+   * The authority address capable of authorizing minting of new tokens.
    *
-   * Only for multi-sig authorities (like Squads Protocol), should you supply an `Address.
+   * - this should normally by a `KeyPairSigner`
+   * - only for multi-sig authorities (like Squads Protocol), should you supply an `Address`
    * */
   mintAuthority: KeyPairSigner | Address;
-  /** Wallet address to receive the tokens being minted to via their associated token account (ata) */
+  /** Wallet address to receive the tokens being minted, via their associated token account (ata) */
   destination: KeyPairSigner | Address;
-  /** Associated token account (ata) address for `destination` */
+  /**
+   * Associated token account (ata) address for `destination` and this `mint`
+   *
+   * See {@link getAssociatedTokenAccountAddress}
+   *
+   * @example
+   * ```
+   * getAssociatedTokenAccountAddress(mint, destination, tokenProgram);
+   * ```
+   * */
   ata: Address;
-  /** Amount of tokens to issue to the `owner` and their `ata` */
+  /** Amount of tokens to mint to the `owner` via their `ata` */
   amount: bigint | number;
   /**
    * Token program used to create the token's `mint`
@@ -49,11 +59,12 @@ export type GetMintTokensInstructionsArgs = {
  *   mint,
  *   payer: signer,
  *   mintAuthority: signer,
- *   amount: 1000, // note: be sure to account for the mint's `decimals` value
+ *   amount: 1000, // note: be sure to consider the mint's `decimals` value
  *   // if decimals=2 => this will mint 10.00 tokens
  *   // if decimals=4 => this will mint 0.100 tokens
  *   destination,
- *   ata: await getAssociatedTokenAccountAddress(mint, destination),
+ *   // be sure to set the correct token program when getting the `ata`
+ *   ata: await getAssociatedTokenAccountAddress(mint, destination, tokenProgram),
  *   // tokenProgram: TOKEN_PROGRAM_ADDRESS, // default
  *   // tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
  * });

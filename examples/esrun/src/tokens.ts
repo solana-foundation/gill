@@ -72,7 +72,7 @@ const createTokenTx = await buildCreateTokenTransaction({
 });
 
 /**
- * Sign the transaction with the provided `signer` when it was created
+ * Sign the transaction with the provided `signer` from when it was created
  */
 let signedTransaction = await signTransactionMessageWithSigners(createTokenTx);
 console.log("signedTransaction:");
@@ -105,8 +105,8 @@ await sendAndConfirmTransaction(signedTransaction);
 const destination = address("nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c");
 
 /**
- * Create a transaction that mint new tokens to the `destination` wallet address
- * (raising the overall token's supply)
+ * Create a transaction that mints new tokens to the `destination` wallet address
+ * (raising the token's overall supply)
  *
  * - be sure to use the correct token program that the `mint` was created with
  * - ensure the `mintAuthority` is the correct signer in order to actually mint new tokens
@@ -116,18 +116,18 @@ const mintTokensTx = await buildMintTokensTransaction({
   latestBlockhash,
   mint,
   mintAuthority: signer,
-  amount: 1000, // note: be sure to account for the mint's `decimals` value
+  amount: 1000, // note: be sure to consider the mint's `decimals` value
   // if decimals=2 => this will mint 10.00 tokens
   // if decimals=4 => this will mint 0.100 tokens
   destination,
-  tokenProgram, //default=TOKEN_PROGRAM_ADDRESS
+  tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
 });
 
 console.log("Transaction to mint tokens:");
 console.log(mintTokensTx);
 
 /**
- * Sign the transaction with the provided `signer` when it was created
+ * Sign the transaction with the provided `signer` from when it was created
  */
 signedTransaction = await signTransactionMessageWithSigners(mintTokensTx);
 signature = getSignatureFromTransaction(signedTransaction);

@@ -5,7 +5,7 @@ import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 import { checkedAddress } from "../core/utils";
 
 /**
- * Derive the Associated Token Account (ata) address for a wallet/owner and mint
+ * Derive the associated token account (ata) address for an owner and mint/tokenProgram
  *
  * @argument `mint` - the token mint itself
  * @argument `owner` - destination wallet address to own tokens from `mint`

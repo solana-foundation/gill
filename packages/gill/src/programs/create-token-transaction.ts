@@ -35,7 +35,7 @@ type GetCreateTokenTransactionInput = Simplify<
 >;
 
 /**
- * Create a transaction to create a token with metadata
+ * Create a transaction that can create a token with metadata
  *
  * The transaction will has the following defaults:
  * - Default `version` = `legacy`
