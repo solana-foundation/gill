@@ -10,8 +10,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@solana/web3.js": "2",
+    "@solana-program/compute-budget": "^0.6.1",
+    "@solana-program/memo": "^0.6.1",
+    "@solana/web3.js": "2.0.0",
+    "fastestsmallesttextencoderdecoder": "^1.0.22",
     "dotenv": "^16.4.5",
+    "ws": "^8.18.0",
     "gill": "workspace:*"
   },
   "devDependencies": {
