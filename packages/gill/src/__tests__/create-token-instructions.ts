@@ -7,7 +7,8 @@ import { getCreateMetadataAccountV3Instruction } from "../programs/token-metadat
 import {
   getCreateTokenInstructions,
   GetCreateTokenInstructionsArgs,
-} from "../programs/create-token-instructions";
+  TOKEN_PROGRAM_ADDRESS,
+} from "../programs/token";
 
 import {
   TOKEN_2022_PROGRAM_ADDRESS,
@@ -16,7 +17,6 @@ import {
   getInitializeTokenMetadataInstruction,
   getInitializeMetadataPointerInstruction,
 } from "@solana-program/token-2022";
-import { TOKEN_PROGRAM_ADDRESS } from "../programs";
 
 const MOCK_SPACE = 122n;
 const MOCK_RENT = 10000n;

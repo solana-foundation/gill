@@ -4,9 +4,9 @@ import { KeyPairSigner } from "@solana/signers";
 import { checkedAddress } from "../../core/utils";
 
 /**
- * Derive the Token Metadata address from a token's Mint address
+ * Derive the Token Metadata address from a token's mint address
  *
- * @param `mint` - `Address` or `KeyPairSigner` of the token Mint
+ * @param `mint` - `Address` or `KeyPairSigner` of the token mint
  */
 export async function getTokenMetadataAddress(mint: Address | KeyPairSigner): Promise<Address> {
   return (

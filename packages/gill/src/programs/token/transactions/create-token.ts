@@ -3,16 +3,16 @@ import type {
   TransactionMessageWithBlockhashLifetime,
   TransactionVersion,
 } from "@solana/transaction-messages";
-import { createTransaction } from "../core";
-import type { CreateTransactionInput, FullTransaction, Simplify } from "../types";
+import { createTransaction } from "../../../core";
+import type { CreateTransactionInput, FullTransaction, Simplify } from "../../../types";
 import {
   getCreateTokenInstructions,
   type GetCreateTokenInstructionsArgs,
-} from "./create-token-instructions";
+} from "../instructions/create-token";
 import { type KeyPairSigner, type TransactionSigner } from "@solana/signers";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
-import { getTokenMetadataAddress } from "./token-metadata";
-import { checkedTokenProgramAddress, TOKEN_PROGRAM_ADDRESS } from "./token-shared";
+import { getTokenMetadataAddress } from "../../token-metadata";
+import { checkedTokenProgramAddress, TOKEN_PROGRAM_ADDRESS } from "../addresses";
 
 type TransactionInput<
   TVersion extends TransactionVersion = "legacy",

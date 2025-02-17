@@ -6,8 +6,7 @@ import type {
   TransactionMessageWithBlockhashLifetime,
 } from "@solana/transaction-messages";
 import { signTransactionMessageWithSigners } from "@solana/signers";
-
-import { GetCreateTokenInstructionsArgs, buildCreateTokenTransaction } from "../programs";
+import { GetCreateTokenInstructionsArgs, buildCreateTokenTransaction } from "../programs/token";
 
 // [DESCRIBE] buildCreateTokenTransaction
 async () => {

@@ -3,14 +3,14 @@ import type {
   TransactionMessageWithBlockhashLifetime,
   TransactionVersion,
 } from "@solana/transaction-messages";
-import { checkedAddress, createTransaction } from "../core";
-import type { CreateTransactionInput, FullTransaction, Simplify } from "../types";
+import { checkedAddress, createTransaction } from "../../../core";
+import type { CreateTransactionInput, FullTransaction, Simplify } from "../../../types";
 import { type TransactionSigner } from "@solana/signers";
-import { checkedTokenProgramAddress, getAssociatedTokenAccountAddress } from "./token-shared";
+import { checkedTokenProgramAddress, getAssociatedTokenAccountAddress } from "../addresses";
 import {
   getMintTokensInstructions,
   type GetMintTokensInstructionsArgs,
-} from "./mint-tokens-instructions";
+} from "../instructions/mint-tokens";
 import { Address } from "@solana/addresses";
 
 type TransactionInput<

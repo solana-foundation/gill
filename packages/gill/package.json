@@ -43,15 +43,15 @@
       "import": "./dist/node/index.node.mjs",
       "require": "./dist/node/index.node.cjs"
     },
+    "./programs/token": {
+      "types": "./dist/programs/token/index.d.ts",
+      "import": "./dist/programs/token/index.node.mjs",
+      "require": "./dist/programs/token/index.node.cjs"
+    },
     "./programs": {
       "types": "./dist/programs/index.d.ts",
       "import": "./dist/programs/index.node.mjs",
       "require": "./dist/programs/index.node.cjs"
-    },
-    "./programs/token22": {
-      "types": "./dist/programs/token22.d.ts",
-      "import": "./dist/programs/token22.node.mjs",
-      "require": "./dist/programs/token22.node.cjs"
     },
     "./types": "./dist/index.d.ts"
   },

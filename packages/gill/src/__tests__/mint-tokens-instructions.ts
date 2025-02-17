@@ -1,3 +1,5 @@
+import type { Address } from "@solana/addresses";
+import type { KeyPairSigner } from "@solana/signers";
 import {
   getCreateAssociatedTokenIdempotentInstruction,
   getMintToInstruction,
@@ -7,9 +9,7 @@ import {
   getMintTokensInstructions,
   GetMintTokensInstructionsArgs,
   TOKEN_PROGRAM_ADDRESS,
-} from "../programs";
-import type { KeyPairSigner } from "@solana/signers";
-import type { Address } from "@solana/addresses";
+} from "../programs/token";
 
 // Mock the imported functions
 jest.mock("@solana-program/token-2022", () => ({

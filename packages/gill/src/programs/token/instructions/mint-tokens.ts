@@ -2,12 +2,12 @@ import type { IInstruction } from "@solana/instructions";
 import type { Address } from "@solana/addresses";
 import type { KeyPairSigner } from "@solana/signers";
 
-import { checkedTokenProgramAddress } from "./token-shared";
+import { checkedTokenProgramAddress } from "../addresses";
 import {
   getMintToInstruction,
   getCreateAssociatedTokenIdempotentInstruction,
 } from "@solana-program/token-2022";
-import { checkedAddress } from "../core";
+import { checkedAddress } from "../../../core";
 
 export type GetMintTokensInstructionsArgs = {
   /** Signer that will pay for the rent storage deposit fee */

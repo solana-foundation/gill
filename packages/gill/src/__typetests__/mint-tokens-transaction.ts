@@ -7,8 +7,7 @@ import type {
   TransactionMessageWithBlockhashLifetime,
 } from "@solana/transaction-messages";
 import { signTransactionMessageWithSigners } from "@solana/signers";
-
-import { buildMintTokensTransaction } from "../programs";
+import { buildMintTokensTransaction } from "../programs/token";
 
 // [DESCRIBE] buildMintTokensTransaction
 async () => {

@@ -8,8 +8,11 @@ import {
   address,
 } from "gill";
 import { loadKeypairSignerFromFile } from "gill/node";
-import { buildCreateTokenTransaction, buildMintTokensTransaction } from "gill/programs";
-import { TOKEN_2022_PROGRAM_ADDRESS } from "gill/programs/token22";
+import {
+  buildCreateTokenTransaction,
+  buildMintTokensTransaction,
+  TOKEN_2022_PROGRAM_ADDRESS,
+} from "gill/programs/token";
 
 /** Turn on debug mode */
 global.__GILL_DEBUG_LEVEL__ = "debug";

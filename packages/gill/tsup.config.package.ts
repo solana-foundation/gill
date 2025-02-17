@@ -11,7 +11,7 @@ export default defineConfig((options = {}) => [
       "node/index": "src/node/index.ts",
       // some program clients have symbol collision, re-exporting under a different path helps resolve them
       "programs/index": "src/programs/index.ts",
-      "programs/token22": "src/programs/token22.ts",
+      "programs/token/index": "src/programs/token/index.ts",
     },
   }),
   ...getBaseConfig("browser", ["cjs", "esm"], options),
