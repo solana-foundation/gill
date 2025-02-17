@@ -66,7 +66,7 @@ export async function buildCreateTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
 >(
-  input: TransactionInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
+  args: TransactionInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
 ): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer>>;
 export async function buildCreateTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
@@ -74,8 +74,7 @@ export async function buildCreateTokenTransaction<
   TLifetimeConstraint extends
     TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetCreateTokenTransactionInput,
+  args: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
 ): Promise<
   FullTransaction<
     TVersion,
@@ -88,32 +87,31 @@ export async function buildCreateTokenTransaction<
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetCreateTokenTransactionInput,
+  args: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
 ) {
-  input.tokenProgram = checkedTokenProgramAddress(input.tokenProgram);
+  args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
 
-  let metadataAddress = input.mint.address;
+  let metadataAddress = args.mint.address;
 
-  if (input.tokenProgram === TOKEN_PROGRAM_ADDRESS) {
-    metadataAddress = await getTokenMetadataAddress(input.mint);
+  if (args.tokenProgram === TOKEN_PROGRAM_ADDRESS) {
+    metadataAddress = await getTokenMetadataAddress(args.mint);
 
     // default a reasonably low computeUnitLimit based on simulation data
-    if (!input.computeUnitLimit) {
+    if (!args.computeUnitLimit) {
       // creating the token's mint is around 3219cu (and stable?)
       // token metadata is the rest... and fluctuates a lot based on the pda and amount of metadata
-      input.computeUnitLimit = 60_000;
+      args.computeUnitLimit = 60_000;
     }
-  } else if (input.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
-    if (!input.computeUnitLimit) {
+  } else if (args.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
+    if (!args.computeUnitLimit) {
       // token22 token creation, with metadata is (seemingly stable) around 7647cu,
       // but consume more with more metadata provided
-      input.computeUnitLimit = 10_000;
+      args.computeUnitLimit = 10_000;
     }
   }
 
   return createTransaction(
-    (({ payer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof input) => ({
+    (({ payer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof args) => ({
       feePayer: payer,
       version: version || "legacy",
       computeUnitLimit,
@@ -129,7 +127,7 @@ export async function buildCreateTokenTransaction<
           payer,
           tokenProgram,
           mint,
-        }: typeof input) => ({
+        }: typeof args) => ({
           mint: mint as KeyPairSigner,
           payer,
           metadataAddress,
@@ -139,8 +137,8 @@ export async function buildCreateTokenTransaction<
           freezeAuthority,
           updateAuthority,
           tokenProgram,
-        }))(input),
+        }))(args),
       ),
-    }))(input),
+    }))(args),
   );
 }

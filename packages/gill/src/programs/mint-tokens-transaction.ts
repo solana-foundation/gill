@@ -69,7 +69,7 @@ export async function buildMintTokensTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
 >(
-  input: TransactionInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
+  args: TransactionInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
 ): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer>>;
 export async function buildMintTokensTransaction<
   TVersion extends TransactionVersion = "legacy",
@@ -77,8 +77,7 @@ export async function buildMintTokensTransaction<
   TLifetimeConstraint extends
     TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetCreateTokenTransactionInput,
+  args: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
 ): Promise<
   FullTransaction<
     TVersion,
@@ -91,22 +90,21 @@ export async function buildMintTokensTransaction<
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  input: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetCreateTokenTransactionInput,
+  args: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
 ) {
-  input.tokenProgram = checkedTokenProgramAddress(input.tokenProgram);
-  input.mint = checkedAddress(input.mint);
+  args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
+  args.mint = checkedAddress(args.mint);
 
-  if (!input.ata) {
-    input.ata = await getAssociatedTokenAccountAddress(
-      input.mint,
-      input.destination,
-      input.tokenProgram,
+  if (!args.ata) {
+    args.ata = await getAssociatedTokenAccountAddress(
+      args.mint,
+      args.destination,
+      args.tokenProgram,
     );
   }
 
   // default a reasonably low computeUnitLimit based on simulation data
-  if (!input.computeUnitLimit) {
+  if (!args.computeUnitLimit) {
     /**
      * for TOKEN_PROGRAM_ADDRESS and multiple simulation attempts,
      * minting tokens costs the following:
@@ -118,26 +116,18 @@ export async function buildMintTokensTransaction<
      * - when not creating the ata: 8978cu
      * - when creating the ata: 22567cu
      */
-    input.computeUnitLimit = 31_000;
+    args.computeUnitLimit = 31_000;
   }
 
   return createTransaction(
-    (({ payer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof input) => ({
+    (({ payer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof args) => ({
       feePayer: payer,
       version: version || "legacy",
       computeUnitLimit,
       computeUnitPrice,
       latestBlockhash,
       instructions: getMintTokensInstructions(
-        (({
-          tokenProgram,
-          payer,
-          mint,
-          ata,
-          mintAuthority,
-          amount,
-          destination,
-        }: typeof input) => ({
+        (({ tokenProgram, payer, mint, ata, mintAuthority, amount, destination }: typeof args) => ({
           tokenProgram,
           payer,
           mint,
@@ -145,8 +135,8 @@ export async function buildMintTokensTransaction<
           ata: ata as Address,
           amount,
           destination,
-        }))(input),
+        }))(args),
       ),
-    }))(input),
+    }))(args),
   );
 }
