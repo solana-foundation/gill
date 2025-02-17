@@ -5,16 +5,15 @@ import { getCreateAccountInstruction } from "@solana-program/system";
 import { checkedAddress, getMinimumBalanceForRentExemption } from "../core";
 import { getTokenMetadataAddress, getCreateMetadataAccountV3Instruction } from "./token-metadata";
 
-import { TOKEN_PROGRAM_ADDRESS, getInitializeMintInstruction } from "@solana-program/token";
 import {
-  TOKEN_2022_PROGRAM_ADDRESS,
-  getMintSize,
-  getInitializeMintInstruction as getInitializeMintInstructionToken22,
   extension,
-  getInitializeMetadataPointerInstruction,
+  getMintSize,
+  TOKEN_2022_PROGRAM_ADDRESS,
+  getInitializeMintInstruction,
   getInitializeTokenMetadataInstruction,
+  getInitializeMetadataPointerInstruction,
 } from "@solana-program/token-2022";
-import { checkedTokenProgramAddress } from "./token-shared";
+import { checkedTokenProgramAddress, type TOKEN_PROGRAM_ADDRESS } from "./token-shared";
 
 export type GetCreateTokenInstructionsArgs = {
   /** Signer that will pay for the rent storage deposit fee */
@@ -137,7 +136,7 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
         metadataAddress: args.metadataAddress,
         mint: args.mint.address,
       }),
-      getInitializeMintInstructionToken22({
+      getInitializeMintInstruction({
         mint: args.mint.address,
         decimals: Number(args.decimals),
         mintAuthority: args.mintAuthority.address,

@@ -9,14 +9,14 @@ import {
   GetCreateTokenInstructionsArgs,
 } from "../programs/create-token-instructions";
 
-import { TOKEN_PROGRAM_ADDRESS, getInitializeMintInstruction } from "@solana-program/token";
 import {
   TOKEN_2022_PROGRAM_ADDRESS,
   getMintSize,
-  getInitializeMintInstruction as getInitializeMintInstructionToken22,
+  getInitializeMintInstruction,
   getInitializeTokenMetadataInstruction,
   getInitializeMetadataPointerInstruction,
 } from "@solana-program/token-2022";
+import { TOKEN_PROGRAM_ADDRESS } from "../programs";
 
 const MOCK_SPACE = 122n;
 const MOCK_RENT = 10000n;
@@ -35,12 +35,6 @@ jest.mock("../programs/token-metadata", () => ({
 
 jest.mock("@solana-program/system", () => ({
   getCreateAccountInstruction: jest.fn(),
-}));
-
-jest.mock("@solana-program/token", () => ({
-  // preserve all real implementations to only change the desired ones
-  ...jest.requireActual("@solana-program/token"),
-  getInitializeMintInstruction: jest.fn(),
 }));
 
 jest.mock("@solana-program/token-2022", () => ({
@@ -65,7 +59,6 @@ describe("getCreateTokenInstructions", () => {
   let mockInitializeMintInstruction: IInstruction;
   let mockCreateMetadataInstruction: IInstruction;
 
-  let mockInitializeMintToken22Instruction: IInstruction;
   let mockInitializeMetadataPointerInstruction: IInstruction;
   let mockInitializeTokenMetadataInstruction: IInstruction;
 
@@ -91,12 +84,8 @@ describe("getCreateTokenInstructions", () => {
       data: new Uint8Array([1]),
     };
     mockInitializeMintInstruction = {
-      programAddress: "token" as Address,
+      programAddress: "tokenProgram" as Address,
       data: new Uint8Array([2]),
-    };
-    mockInitializeMintToken22Instruction = {
-      programAddress: "token22" as Address,
-      data: new Uint8Array([3]),
     };
     mockCreateMetadataInstruction = {
       programAddress: "metadata" as Address,
@@ -115,9 +104,6 @@ describe("getCreateTokenInstructions", () => {
     (getInitializeMintInstruction as jest.Mock).mockReturnValue(mockInitializeMintInstruction);
     (getCreateMetadataAccountV3Instruction as jest.Mock).mockReturnValue(
       mockCreateMetadataInstruction,
-    );
-    (getInitializeMintInstructionToken22 as jest.Mock).mockReturnValue(
-      mockInitializeMintToken22Instruction,
     );
     (getInitializeMetadataPointerInstruction as jest.Mock).mockReturnValue(
       mockInitializeMetadataPointerInstruction,
@@ -347,7 +333,7 @@ describe("getCreateTokenInstructions", () => {
         }),
       );
 
-      expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
+      expect(getInitializeMintInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
           mint: mockMint.address,
         }),
@@ -366,7 +352,7 @@ describe("getCreateTokenInstructions", () => {
 
       getCreateTokenInstructions(args);
 
-      expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
+      expect(getInitializeMintInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
           mint: mockMint.address,
           decimals: 6,
@@ -387,7 +373,7 @@ describe("getCreateTokenInstructions", () => {
 
       getCreateTokenInstructions(args);
 
-      expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
+      expect(getInitializeMintInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
           mintAuthority: mockMintAuthority.address,
           freezeAuthority: mockFreezeAuthority.address,
@@ -415,7 +401,6 @@ describe("getCreateTokenInstructions", () => {
 
       expect(instructions).toHaveLength(4);
       expect(instructions[1]).toBe(mockInitializeMetadataPointerInstruction);
-      expect(instructions[2]).toBe(mockInitializeMintToken22Instruction);
       expect(instructions[3]).toBe(mockInitializeTokenMetadataInstruction);
 
       expect(getInitializeMetadataPointerInstruction).toHaveBeenCalledWith(
@@ -426,7 +411,7 @@ describe("getCreateTokenInstructions", () => {
         }),
       );
 
-      expect(getInitializeMintInstructionToken22).toHaveBeenCalledWith(
+      expect(getInitializeMintInstruction).toHaveBeenCalledWith(
         expect.objectContaining({
           mint: mockMint.address,
           mintAuthority: mockPayer.address,
@@ -462,7 +447,6 @@ describe("getCreateTokenInstructions", () => {
 
       expect(instructions).toHaveLength(4);
       expect(instructions[1]).toBe(mockInitializeMetadataPointerInstruction);
-      expect(instructions[2]).toBe(mockInitializeMintToken22Instruction);
       expect(instructions[3]).toBe(mockInitializeTokenMetadataInstruction);
 
       expect(getInitializeMetadataPointerInstruction).toHaveBeenCalledWith(

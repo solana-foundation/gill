@@ -10,10 +10,9 @@ import {
   type GetCreateTokenInstructionsArgs,
 } from "./create-token-instructions";
 import { type KeyPairSigner, type TransactionSigner } from "@solana/signers";
-import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 import { getTokenMetadataAddress } from "./token-metadata";
-import { checkedTokenProgramAddress } from "./token-shared";
+import { checkedTokenProgramAddress, TOKEN_PROGRAM_ADDRESS } from "./token-shared";
 
 type TransactionInput<
   TVersion extends TransactionVersion = "legacy",

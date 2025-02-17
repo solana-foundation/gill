@@ -11,7 +11,6 @@ export default defineConfig((options = {}) => [
       "node/index": "src/node/index.ts",
       // some program clients have symbol collision, re-exporting under a different path helps resolve them
       "programs/index": "src/programs/index.ts",
-      "programs/token": "src/programs/token.ts",
       "programs/token22": "src/programs/token22.ts",
     },
   }),

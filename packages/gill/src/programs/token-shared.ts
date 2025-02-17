@@ -1,8 +1,11 @@
 import type { Address } from "@solana/addresses";
 import type { KeyPairSigner } from "@solana/signers";
-import { findAssociatedTokenPda, TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
+import { findAssociatedTokenPda } from "@solana-program/token-2022";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 import { checkedAddress } from "../core/utils";
+
+export const TOKEN_PROGRAM_ADDRESS =
+  "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" as Address<"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA">;
 
 /**
  * Derive the associated token account (ata) address for an owner and mint/tokenProgram
