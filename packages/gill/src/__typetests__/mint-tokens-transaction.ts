@@ -23,7 +23,7 @@ async () => {
   // Legacy transaction
   {
     (await buildMintTokensTransaction({
-      payer: signer,
+      feePayer: signer,
       mint,
       destination,
       amount: 0,
@@ -32,7 +32,7 @@ async () => {
     })) satisfies BaseTransactionMessage<"legacy">;
 
     (await buildMintTokensTransaction({
-      payer: signer,
+      feePayer: signer,
       version: "legacy",
       mint,
       destination,
@@ -42,7 +42,7 @@ async () => {
     })) satisfies BaseTransactionMessage<"legacy">;
 
     const txNotSignable = (await buildMintTokensTransaction({
-      payer: signer,
+      feePayer: signer,
       version: "legacy",
       mint,
       destination,
@@ -56,7 +56,7 @@ async () => {
     signTransactionMessageWithSigners(txNotSignable);
 
     const txSignable = (await buildMintTokensTransaction({
-      payer: signer,
+      feePayer: signer,
       version: "legacy",
       mint,
       destination,
@@ -73,7 +73,7 @@ async () => {
   // Version 0 transaction
   {
     (await buildMintTokensTransaction({
-      payer: signer,
+      feePayer: signer,
       version: 0,
       mint,
       destination,
@@ -83,7 +83,7 @@ async () => {
     })) satisfies BaseTransactionMessage<0>;
 
     const txNotSignable = (await buildMintTokensTransaction({
-      payer: signer,
+      feePayer: signer,
       version: 0,
       mint,
       destination,
@@ -97,7 +97,7 @@ async () => {
     signTransactionMessageWithSigners(txNotSignable);
 
     const txSignable = (await buildMintTokensTransaction({
-      payer: signer,
+      feePayer: signer,
       version: 0,
       mint,
       destination,

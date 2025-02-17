@@ -62,8 +62,8 @@ console.log("latestBlockhash:", latestBlockhash);
 const createTokenTx = await buildCreateTokenTransaction({
   mint,
   latestBlockhash,
-  payer: signer,
-  // mintAuthority, // default=same as the `payer`
+  feePayer: signer,
+  // mintAuthority, // default=same as the `feePayer`
   metadata: {
     isMutable: true, // if the `updateAuthority` can change this metadata in the future
     name: "Only Possible On Solana",
@@ -115,7 +115,7 @@ const destination = address("nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c");
  * - ensure the `mintAuthority` is the correct signer in order to actually mint new tokens
  */
 const mintTokensTx = await buildMintTokensTransaction({
-  payer: signer,
+  feePayer: signer,
   latestBlockhash,
   mint,
   mintAuthority: signer,

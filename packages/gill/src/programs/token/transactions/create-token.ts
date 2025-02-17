@@ -48,7 +48,7 @@ type GetCreateTokenTransactionInput = Simplify<
  * const mint = await generateKeyPairSigner();
  *
  * const transaction = await buildCreateTokenTransaction({
- *   payer: signer,
+ *   feePayer: signer,
  *   latestBlockhash,
  *   mint,
  *   metadata: {
@@ -111,8 +111,8 @@ export async function buildCreateTokenTransaction<
   }
 
   return createTransaction(
-    (({ payer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof args) => ({
-      feePayer: payer,
+    (({ feePayer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof args) => ({
+      feePayer,
       version: version || "legacy",
       computeUnitLimit,
       computeUnitPrice,
@@ -124,12 +124,12 @@ export async function buildCreateTokenTransaction<
           freezeAuthority,
           updateAuthority,
           metadata,
-          payer,
+          feePayer,
           tokenProgram,
           mint,
         }: typeof args) => ({
           mint: mint as KeyPairSigner,
-          payer,
+          feePayer,
           metadataAddress,
           metadata,
           decimals,

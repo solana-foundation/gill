@@ -122,7 +122,7 @@ describe("getCreateTokenInstructions", () => {
 
   it("should create basic token instructions with default values", () => {
     const args: GetCreateTokenInstructionsArgs = {
-      payer: mockPayer,
+      feePayer: mockPayer,
       mint: mockMint,
       metadataAddress: mockMetadataAddress,
       metadata,
@@ -174,7 +174,7 @@ describe("getCreateTokenInstructions", () => {
 
   it("should throw error for unsupported token program", () => {
     const args: GetCreateTokenInstructionsArgs = {
-      payer: mockPayer,
+      feePayer: mockPayer,
       mint: mockMint,
       metadataAddress: mockMetadataAddress,
       metadata,
@@ -189,7 +189,7 @@ describe("getCreateTokenInstructions", () => {
   describe("should use original token program", () => {
     it("should use original token program when specified", () => {
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMetadataAddress,
         tokenProgram: TOKEN_PROGRAM_ADDRESS,
@@ -214,7 +214,7 @@ describe("getCreateTokenInstructions", () => {
 
     it("should use custom decimals when provided", () => {
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         metadataAddress: mockMetadataAddress,
         mint: mockMint,
         decimals: 6,
@@ -233,7 +233,7 @@ describe("getCreateTokenInstructions", () => {
 
     it("should use custom mint and freeze authorities when provided", () => {
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMetadataAddress,
         metadata,
@@ -260,7 +260,7 @@ describe("getCreateTokenInstructions", () => {
       };
 
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMetadataAddress,
         metadata,
@@ -297,7 +297,7 @@ describe("getCreateTokenInstructions", () => {
       const customUpdateAuthority = { address: "customUpdateAuth" } as KeyPairSigner;
 
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMetadataAddress,
         updateAuthority: customUpdateAuthority,
@@ -317,7 +317,7 @@ describe("getCreateTokenInstructions", () => {
   describe("should use token22 program", () => {
     it("should use Token-2022 program when specified", () => {
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
         tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
@@ -342,7 +342,7 @@ describe("getCreateTokenInstructions", () => {
 
     it("should use custom decimals when provided", () => {
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
         decimals: 6,
@@ -362,7 +362,7 @@ describe("getCreateTokenInstructions", () => {
 
     it("should use custom mint and freeze authorities when provided", () => {
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
         metadata,
@@ -390,7 +390,7 @@ describe("getCreateTokenInstructions", () => {
       };
 
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
         metadata,
@@ -435,7 +435,7 @@ describe("getCreateTokenInstructions", () => {
       const customUpdateAuthority = { address: "customUpdateAuth" } as KeyPairSigner;
 
       const args: GetCreateTokenInstructionsArgs = {
-        payer: mockPayer,
+        feePayer: mockPayer,
         mint: mockMint,
         metadataAddress: mockMint.address,
         updateAuthority: customUpdateAuthority,

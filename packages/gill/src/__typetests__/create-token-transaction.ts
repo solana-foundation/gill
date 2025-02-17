@@ -19,20 +19,20 @@ async () => {
   // Legacy transaction
   {
     (await buildCreateTokenTransaction({
-      payer: signer,
+      feePayer: signer,
       mint,
       metadata,
     })) satisfies BaseTransactionMessage<"legacy">;
 
     (await buildCreateTokenTransaction({
-      payer: signer,
+      feePayer: signer,
       version: "legacy",
       mint,
       metadata,
     })) satisfies BaseTransactionMessage<"legacy">;
 
     const txNotSignable = (await buildCreateTokenTransaction({
-      payer: signer,
+      feePayer: signer,
       version: "legacy",
       mint,
       metadata,
@@ -43,7 +43,7 @@ async () => {
     signTransactionMessageWithSigners(txNotSignable);
 
     const txSignable = (await buildCreateTokenTransaction({
-      payer: signer,
+      feePayer: signer,
       version: "legacy",
       mint,
       metadata,
@@ -57,14 +57,14 @@ async () => {
   // Version 0 transaction
   {
     (await buildCreateTokenTransaction({
-      payer: signer,
+      feePayer: signer,
       version: 0,
       mint,
       metadata,
     })) satisfies BaseTransactionMessage<0>;
 
     const txNotSignable = (await buildCreateTokenTransaction({
-      payer: signer,
+      feePayer: signer,
       version: 0,
       mint,
       metadata,
@@ -75,7 +75,7 @@ async () => {
     signTransactionMessageWithSigners(txNotSignable);
 
     const txSignable = (await buildCreateTokenTransaction({
-      payer: signer,
+      feePayer: signer,
       version: 0,
       mint,
       metadata,

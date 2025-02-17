@@ -8,12 +8,9 @@ import {
   getCreateAssociatedTokenIdempotentInstruction,
 } from "@solana-program/token-2022";
 import { checkedAddress } from "../../../core";
+import type { TokenInstructionBase } from "./types";
 
-export type GetMintTokensInstructionsArgs = {
-  /** Signer that will pay for the rent storage deposit fee */
-  payer: KeyPairSigner;
-  /** Token mint to issue the tokens */
-  mint: KeyPairSigner | Address;
+export type GetMintTokensInstructionsArgs = TokenInstructionBase<KeyPairSigner | Address> & {
   /**
    * The authority address capable of authorizing minting of new tokens.
    *
@@ -36,13 +33,6 @@ export type GetMintTokensInstructionsArgs = {
   ata: Address;
   /** Amount of tokens to mint to the `owner` via their `ata` */
   amount: bigint | number;
-  /**
-   * Token program used to create the token's `mint`
-   *
-   * - (default) {@link TOKEN_PROGRAM_ADDRESS} - the original SPL Token Program
-   * - {@link TOKEN_2022_PROGRAM_ADDRESS} - the SPL Token Extensions Program (aka Token22)
-   **/
-  tokenProgram?: Address;
 };
 
 /**
@@ -57,7 +47,7 @@ export type GetMintTokensInstructionsArgs = {
  *
  * const instructions = getMintTokensInstructions({
  *   mint,
- *   payer: signer,
+ *   feePayer: signer,
  *   mintAuthority: signer,
  *   amount: 1000, // note: be sure to consider the mint's `decimals` value
  *   // if decimals=2 => this will mint 10.00 tokens
@@ -80,7 +70,7 @@ export function getMintTokensInstructions(args: GetMintTokensInstructionsArgs): 
       owner: checkedAddress(args.destination),
       mint: args.mint,
       ata: args.ata,
-      payer: args.payer,
+      payer: args.feePayer,
       tokenProgram: args.tokenProgram,
     }),
     getMintToInstruction(

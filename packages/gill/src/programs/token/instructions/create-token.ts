@@ -16,13 +16,10 @@ import {
   getInitializeTokenMetadataInstruction,
   getInitializeMetadataPointerInstruction,
 } from "@solana-program/token-2022";
-import { checkedTokenProgramAddress, type TOKEN_PROGRAM_ADDRESS } from "../addresses";
+import { checkedTokenProgramAddress } from "../addresses";
+import type { TokenInstructionBase } from "./types";
 
-export type GetCreateTokenInstructionsArgs = {
-  /** Signer that will pay for the rent storage deposit fee */
-  payer: KeyPairSigner;
-  /** Token mint to be created (aka token address) */
-  mint: KeyPairSigner;
+export type GetCreateTokenInstructionsArgs = TokenInstructionBase<KeyPairSigner> & {
   /**
    * The number of decimal places this token should have
    *
@@ -32,7 +29,7 @@ export type GetCreateTokenInstructionsArgs = {
   /**
    * Authority address that is allowed to mint new tokens
    *
-   * When not provided, defaults to: `payer`
+   * When not provided, defaults to: `feePayer`
    **/
   mintAuthority?: KeyPairSigner;
   /**
@@ -45,7 +42,7 @@ export type GetCreateTokenInstructionsArgs = {
   /**
    * Authority address that is allowed to update the metadata
    *
-   * When not provided, defaults to: `payer`
+   * When not provided, defaults to: `feePayer`
    **/
   updateAuthority?: KeyPairSigner;
   /**
@@ -77,13 +74,6 @@ export type GetCreateTokenInstructionsArgs = {
    * ```
    * */
   metadataAddress: Address;
-  /**
-   * Token program used to create the token's `mint`
-   *
-   * - (default) {@link TOKEN_PROGRAM_ADDRESS} - the original SPL Token Program
-   * - {@link TOKEN_2022_PROGRAM_ADDRESS} - the SPL Token Extensions Program (aka Token22)
-   **/
-  tokenProgram?: Address;
   // extensions // todo
 };
 
@@ -94,8 +84,8 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
 
   if (!args.decimals) args.decimals = 9;
-  if (!args.mintAuthority) args.mintAuthority = args.payer;
-  if (!args.updateAuthority) args.updateAuthority = args.payer;
+  if (!args.mintAuthority) args.mintAuthority = args.feePayer;
+  if (!args.updateAuthority) args.updateAuthority = args.feePayer;
   if (args.freezeAuthority) args.freezeAuthority = checkedAddress(args.freezeAuthority);
 
   if (args.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
@@ -118,7 +108,7 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
 
     return [
       getCreateAccountInstruction({
-        payer: args.payer,
+        payer: args.feePayer,
         newAccount: args.mint,
         /**
          * token22 requires only the pre-mint-initialization extensions (like metadata pointer)
@@ -162,7 +152,7 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
 
     return [
       getCreateAccountInstruction({
-        payer: args.payer,
+        payer: args.feePayer,
         newAccount: args.mint,
         lamports: getMinimumBalanceForRentExemption(space),
         space,
@@ -178,7 +168,7 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
         metadata: args.metadataAddress,
         mint: args.mint.address,
         mintAuthority: args.mintAuthority,
-        payer: args.payer,
+        payer: args.feePayer,
         updateAuthority: args.updateAuthority,
         data: {
           name: args.metadata.name,

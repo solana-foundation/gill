@@ -45,7 +45,7 @@ describe("getMintTokensInstructions", () => {
 
   it("should create instructions with default token program", () => {
     const args: GetMintTokensInstructionsArgs = {
-      payer: mockPayer,
+      feePayer: mockPayer,
       mint: mockMint.address,
       mintAuthority: mockMintAuthority,
       destination: mockDestination.address,
@@ -80,7 +80,7 @@ describe("getMintTokensInstructions", () => {
 
   it("should create instructions with Token-2022 program", () => {
     const args: GetMintTokensInstructionsArgs = {
-      payer: mockPayer,
+      feePayer: mockPayer,
       mint: mockMint.address,
       mintAuthority: mockMintAuthority,
       destination: mockDestination.address,
@@ -103,7 +103,7 @@ describe("getMintTokensInstructions", () => {
 
   it("should accept Address type for mint, mintAuthority, and destination", () => {
     const args: GetMintTokensInstructionsArgs = {
-      payer: mockPayer,
+      feePayer: mockPayer,
       mint: "mintAddress" as Address,
       mintAuthority: "mintAuthorityAddress" as Address,
       destination: "ownerAddress" as Address,
@@ -138,7 +138,7 @@ describe("getMintTokensInstructions", () => {
 
   it("should accept number type for amount", () => {
     const args: GetMintTokensInstructionsArgs = {
-      payer: mockPayer,
+      feePayer: mockPayer,
       mint: mockMint.address,
       mintAuthority: mockMintAuthority,
       destination: mockDestination.address,
@@ -164,7 +164,7 @@ describe("getMintTokensInstructions", () => {
 
   it("should throw error for unsupported token program", () => {
     const args: GetMintTokensInstructionsArgs = {
-      payer: mockPayer,
+      feePayer: mockPayer,
       mint: mockMint.address,
       mintAuthority: mockMintAuthority,
       destination: mockDestination.address,
