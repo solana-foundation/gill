@@ -6,8 +6,6 @@ import type {
 import { checkedAddress, createTransaction } from "../core";
 import type { CreateTransactionInput, FullTransaction, Simplify } from "../types";
 import { type TransactionSigner } from "@solana/signers";
-import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
-import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 import { checkedTokenProgramAddress, getAssociatedTokenAccountAddress } from "./token-shared";
 import {
   getMintTokensInstructions,
@@ -39,9 +37,12 @@ type GetCreateTokenTransactionInput = Simplify<
  *
  * The transaction will has the following defaults:
  * - Default `version` = `legacy`
- * - Default `computeUnitLimit`:
- *    - for TOKEN_PROGRAM_ADDRESS => `60_000`
- *    - for TOKEN_2022_PROGRAM_ADDRESS => `10_000`
+ * - Default `computeUnitLimit` = `31_000`
+ *
+ * @remarks
+ *
+ * - minting without creating the ata is generally < 10_000cu
+ * - validating the ata onchain during creation results in a ~5000cu fluctuation
  *
  * @example
  *
@@ -97,19 +98,28 @@ export async function buildMintTokensTransaction<
   input.tokenProgram = checkedTokenProgramAddress(input.tokenProgram);
   input.mint = checkedAddress(input.mint);
 
-  if (!input.ata) input.ata = await getAssociatedTokenAccountAddress(input.mint, input.destination);
+  if (!input.ata) {
+    input.ata = await getAssociatedTokenAccountAddress(
+      input.mint,
+      input.destination,
+      input.tokenProgram,
+    );
+  }
 
   // default a reasonably low computeUnitLimit based on simulation data
   if (!input.computeUnitLimit) {
-    if (input.tokenProgram === TOKEN_PROGRAM_ADDRESS) {
-      // creating the token's mint is around 3219cu (and stable?)
-      // token metadata is the rest... and fluctuates a lot based on the pda and amount of metadata
-      // input.computeUnitLimit = 60_000;
-    } else if (input.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
-      // token22 token creation, with metadata is (seemingly stable) around 7647cu,
-      // but consume more with more metadata provided
-      // input.computeUnitLimit = 10_000;
-    }
+    /**
+     * for TOKEN_PROGRAM_ADDRESS and multiple simulation attempts,
+     * minting tokens costs the following:
+     * - when not creating the ata: 9156cu
+     * - when creating the ata: 26535cu
+     *
+     * for TOKEN_2022_PROGRAM_ADDRESS and multiple simulation attempts,
+     * minting tokens costs the following:
+     * - when not creating the ata: 8978cu
+     * - when creating the ata: 22567cu
+     */
+    input.computeUnitLimit = 31_000;
   }
 
   return createTransaction(
