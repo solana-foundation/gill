@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
 
 import { DEFAULT_CLI_KEYPAIR_PATH } from "./const";
-import { createSignerFromKeyPair, KeyPairSigner } from "@solana/signers";
+import { createSignerFromKeyPair, type KeyPairSigner } from "@solana/signers";
 import { createKeyPairFromBytes } from "@solana/keys";
 
 /**
@@ -13,9 +13,7 @@ import { createKeyPairFromBytes } from "@solana/keys";
 export async function loadKeypairSignerFromFile(
   filePath: string = DEFAULT_CLI_KEYPAIR_PATH,
 ): Promise<KeyPairSigner> {
-  const keypair = await loadKeypairFromFile(filePath);
-  //
-  return createSignerFromKeyPair(keypair);
+  return createSignerFromKeyPair(await loadKeypairFromFile(filePath));
 }
 
 /**
