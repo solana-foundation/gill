@@ -1,11 +1,11 @@
 import { pipe } from "@solana/functional";
 import { partiallySignTransactionMessageWithSigners } from "@solana/signers";
-import { CompilableTransactionMessage } from "@solana/transaction-messages";
+import type { CompilableTransactionMessage } from "@solana/transaction-messages";
 
 import {
-  Transaction,
+  type Transaction,
   compileTransaction,
-  Base64EncodedWireTransaction,
+  type Base64EncodedWireTransaction,
   getBase64EncodedWireTransaction,
 } from "@solana/transactions";
 
