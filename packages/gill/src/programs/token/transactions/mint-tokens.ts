@@ -1,31 +1,18 @@
+import type { TransactionBuilderInput } from "./types";
+import type { Address } from "@solana/addresses";
+import { type TransactionSigner } from "@solana/signers";
 import type {
   ITransactionMessageWithFeePayer,
   TransactionMessageWithBlockhashLifetime,
   TransactionVersion,
 } from "@solana/transaction-messages";
+import type { FullTransaction, Simplify } from "../../../types";
 import { checkedAddress, createTransaction } from "../../../core";
-import type { CreateTransactionInput, FullTransaction, Simplify } from "../../../types";
-import { type TransactionSigner } from "@solana/signers";
 import { checkedTokenProgramAddress, getAssociatedTokenAccountAddress } from "../addresses";
 import {
   getMintTokensInstructions,
   type GetMintTokensInstructionsArgs,
 } from "../instructions/mint-tokens";
-import { Address } from "@solana/addresses";
-
-type TransactionInput<
-  TVersion extends TransactionVersion = "legacy",
-  TFeePayer extends TransactionSigner = TransactionSigner,
-  TLifetimeConstraint extends
-    | TransactionMessageWithBlockhashLifetime["lifetimeConstraint"]
-    | undefined = undefined,
-> = Simplify<
-  Omit<
-    CreateTransactionInput<TVersion, TFeePayer, TLifetimeConstraint>,
-    "version" | "instructions" | "feePayer"
-  > &
-    Partial<Pick<CreateTransactionInput<TVersion, TFeePayer, TLifetimeConstraint>, "version">>
->;
 
 type GetCreateTokenTransactionInput = Simplify<
   Omit<GetMintTokensInstructionsArgs, "ata"> & Partial<Pick<GetMintTokensInstructionsArgs, "ata">>
@@ -35,7 +22,7 @@ type GetCreateTokenTransactionInput = Simplify<
  * Create a transaction that can mint tokens to the desired wallet/owner,
  * including creating their ATA if it does not exist
  *
- * The transaction will has the following defaults:
+ * The transaction has the following defaults:
  * - Default `version` = `legacy`
  * - Default `computeUnitLimit` = `31_000`
  *
@@ -69,7 +56,7 @@ export async function buildMintTokensTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
 >(
-  args: TransactionInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
+  args: TransactionBuilderInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
 ): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer>>;
 export async function buildMintTokensTransaction<
   TVersion extends TransactionVersion = "legacy",
@@ -77,7 +64,8 @@ export async function buildMintTokensTransaction<
   TLifetimeConstraint extends
     TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  args: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
+  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
+    GetCreateTokenTransactionInput,
 ): Promise<
   FullTransaction<
     TVersion,
@@ -90,7 +78,8 @@ export async function buildMintTokensTransaction<
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  args: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
+  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
+    GetCreateTokenTransactionInput,
 ) {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
   args.mint = checkedAddress(args.mint);

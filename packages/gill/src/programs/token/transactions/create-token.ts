@@ -1,32 +1,19 @@
+import type { TransactionBuilderInput } from "./types";
 import type {
   ITransactionMessageWithFeePayer,
   TransactionMessageWithBlockhashLifetime,
   TransactionVersion,
 } from "@solana/transaction-messages";
-import { createTransaction } from "../../../core";
-import type { CreateTransactionInput, FullTransaction, Simplify } from "../../../types";
+import type { FullTransaction, Simplify } from "../../../types";
+import { type KeyPairSigner, type TransactionSigner } from "@solana/signers";
 import {
   getCreateTokenInstructions,
   type GetCreateTokenInstructionsArgs,
 } from "../instructions/create-token";
-import { type KeyPairSigner, type TransactionSigner } from "@solana/signers";
+import { createTransaction } from "../../../core";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 import { getTokenMetadataAddress } from "../../token-metadata";
 import { checkedTokenProgramAddress, TOKEN_PROGRAM_ADDRESS } from "../addresses";
-
-type TransactionInput<
-  TVersion extends TransactionVersion = "legacy",
-  TFeePayer extends TransactionSigner = TransactionSigner,
-  TLifetimeConstraint extends
-    | TransactionMessageWithBlockhashLifetime["lifetimeConstraint"]
-    | undefined = undefined,
-> = Simplify<
-  Omit<
-    CreateTransactionInput<TVersion, TFeePayer, TLifetimeConstraint>,
-    "version" | "instructions" | "feePayer"
-  > &
-    Partial<Pick<CreateTransactionInput<TVersion, TFeePayer, TLifetimeConstraint>, "version">>
->;
 
 type GetCreateTokenTransactionInput = Simplify<
   Omit<GetCreateTokenInstructionsArgs, "metadataAddress"> &
@@ -36,7 +23,7 @@ type GetCreateTokenTransactionInput = Simplify<
 /**
  * Create a transaction that can create a token with metadata
  *
- * The transaction will has the following defaults:
+ * The transaction has the following defaults:
  * - Default `version` = `legacy`
  * - Default `computeUnitLimit`:
  *    - for TOKEN_PROGRAM_ADDRESS => `60_000`
@@ -66,7 +53,7 @@ export async function buildCreateTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
 >(
-  args: TransactionInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
+  args: TransactionBuilderInput<TVersion, TFeePayer> & GetCreateTokenTransactionInput,
 ): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer>>;
 export async function buildCreateTokenTransaction<
   TVersion extends TransactionVersion = "legacy",
@@ -74,7 +61,8 @@ export async function buildCreateTokenTransaction<
   TLifetimeConstraint extends
     TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  args: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
+  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
+    GetCreateTokenTransactionInput,
 ): Promise<
   FullTransaction<
     TVersion,
@@ -87,7 +75,8 @@ export async function buildCreateTokenTransaction<
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  args: TransactionInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
+  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
+    GetCreateTokenTransactionInput,
 ) {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
 
