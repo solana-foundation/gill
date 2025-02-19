@@ -30,3 +30,6 @@ test-ledger/
 
 # Codegenerated TypeDoc API
 docs/
+
+.env
+.env.local
