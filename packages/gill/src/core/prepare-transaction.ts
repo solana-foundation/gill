@@ -15,7 +15,7 @@ import type { GetLatestBlockhashApi, Rpc, SimulateTransactionApi } from "@solana
 import { isSetComputeLimitInstruction } from "../programs/compute-budget";
 import { getComputeUnitEstimateForTransactionMessageFactory } from "../kit";
 import { debug } from "./debug";
-import { transactionToBase64 } from "./base64-transactions";
+import { transactionToBase64WithSigners } from "./base64-transactions";
 
 type PrepareCompilableTransactionMessage =
   | CompilableTransactionMessage
@@ -121,7 +121,10 @@ export async function prepareTransaction<TMessage extends PrepareCompilableTrans
 
   assertIsTransactionMessageWithBlockhashLifetime(config.transaction);
 
-  debug(`Transaction as base64: ${transactionToBase64(config.transaction)}`, "debug");
+  debug(
+    `Transaction as base64: ${await transactionToBase64WithSigners(config.transaction)}`,
+    "debug",
+  );
 
   return config.transaction;
 }
