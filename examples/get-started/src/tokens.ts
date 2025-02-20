@@ -11,13 +11,15 @@ import { loadKeypairSignerFromFile } from "gill/node";
 import {
   buildCreateTokenTransaction,
   buildMintTokensTransaction,
+  buildTransferTokensTransaction,
+  getAssociatedTokenAccountAddress,
   TOKEN_2022_PROGRAM_ADDRESS,
 } from "gill/programs/token";
 
-/** Turn on debug mode */
-global.__GILL_DEBUG__ = true;
+// /** Turn on debug mode */
+// global.__GILL_DEBUG__ = true;
 
-/** Set the debug mode log level (default: `info`) */
+// /** Set the debug mode log level (default: `info`) */
 global.__GILL_DEBUG_LEVEL__ = "debug";
 
 /**
@@ -57,6 +59,7 @@ const { rpc, sendAndConfirmTransaction } = createSolanaClient({
  * Declare our token mint and desired token program
  */
 const tokenProgram = TOKEN_2022_PROGRAM_ADDRESS;
+// const tokenProgram = TOKEN_PROGRAM_ADDRESS;
 const mint = await generateKeyPairSigner();
 
 /**
@@ -124,7 +127,9 @@ await sendAndConfirmTransaction(signedTransaction);
 /**
  * Declare the wallet address that we want to mint the tokens to
  */
-const destination = address("nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c");
+const mintToDestination = address(
+  "nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c",
+);
 
 /**
  * Create a transaction that mints new tokens to the `destination` wallet address
@@ -138,10 +143,10 @@ const mintTokensTx = await buildMintTokensTransaction({
   latestBlockhash,
   mint,
   mintAuthority: signer,
-  amount: 1000, // note: be sure to consider the mint's `decimals` value
-  // if decimals=2 => this will mint 10.00 tokens
-  // if decimals=4 => this will mint 0.100 tokens
-  destination,
+  amount: 2000, // note: be sure to consider the mint's `decimals` value
+  // if decimals=2 => this will mint 20.00 tokens
+  // if decimals=4 => this will mint 0.200 tokens
+  destination: mintToDestination,
   // use the correct token program for the `mint`
   tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
   // default cu limit set to be optimized, but can be overriden here
@@ -170,5 +175,112 @@ console.log(
 );
 
 await sendAndConfirmTransaction(signedTransaction);
+
+/**
+ * Get the token balance of a wallet's associated token account (ata)
+ *
+ * In this case, we are checking our original wallet's ata
+ */
+let { value: postMintBalance } = await rpc
+  .getTokenAccountBalance(
+    await getAssociatedTokenAccountAddress(
+      mint,
+      mintToDestination,
+      tokenProgram,
+    ),
+  )
+  .send();
+
+console.log(
+  "token balance after minting to 'mintToDestination':",
+  postMintBalance,
+);
+
+/**
+ * We will generate a new, random wallet in order to show that this wallet's ata
+ * will be automatically created during the token transfer transaction
+ */
+const transferToDestination = await generateKeyPairSigner();
+console.log("transfer to destination:", transferToDestination.address);
+
+/**
+ * The `authority` address that can authorize the token transfer.
+ * This is usually the user's wallet or the delegated authority
+ */
+const authority = address("7sZoCrE3cGgEpNgxcPnGffDeWfTewKnk6wWdLxmYA7Cy");
+
+/**
+ * Create a transaction that mints new tokens to the `destination` wallet address
+ * (raising the token's overall supply)
+ *
+ * - be sure to use the correct token program that the `mint` was created with
+ * - ensure the `mintAuthority` is the correct signer in order to actually mint new tokens
+ */
+const transferTokensTx = await buildTransferTokensTransaction({
+  feePayer: signer,
+  latestBlockhash,
+  mint,
+  authority,
+  amount: 900, // note: be sure to consider the mint's `decimals` value
+  // if decimals=2 => this will mint 9.00 tokens
+  // if decimals=4 => this will mint 0.090 tokens
+  destination: transferToDestination,
+  // use the correct token program for the `mint`
+  tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
+  // default cu limit set to be optimized, but can be overriden here
+  // computeUnitLimit?: number,
+  // obtain from your favorite priority fee api
+  // computeUnitPrice?: number, // no default set
+});
+
+/**
+ * Sign the transaction with the provided `signer` from when it was created
+ */
+signedTransaction = await signTransactionMessageWithSigners(transferTokensTx);
+signature = getSignatureFromTransaction(signedTransaction);
+
+console.log("\nExplorer Link (for transferring tokens to the new wallet):");
+console.log(
+  getExplorerLink({
+    cluster,
+    transaction: signature,
+  }),
+);
+
+// process.exit();
+
+await sendAndConfirmTransaction(signedTransaction);
+
+/**
+ * Now that we have transferred tokens FROM the source (in this example, the `signer`),
+ * we can check this wallets current balance by deriving the ATA
+ */
+
+const sourceAta = await getAssociatedTokenAccountAddress(
+  mint,
+  authority,
+  tokenProgram,
+);
+const { value: updatedBalance } = await rpc
+  .getTokenAccountBalance(sourceAta)
+  .send();
+
+console.log("new token balance for original source/authority", updatedBalance);
+
+/**
+ * We can also check the destination wallet's balance,
+ * including that their ATA was created automatically!
+ */
+const destinationAta = await getAssociatedTokenAccountAddress(
+  mint,
+  transferToDestination,
+  tokenProgram,
+);
+
+const { value: destinationWalletBalance } = await rpc
+  .getTokenAccountBalance(destinationAta)
+  .send();
+
+console.log("token balance for destination wallet:", destinationWalletBalance);
 
 console.log("Complete.");
