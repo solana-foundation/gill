@@ -103,6 +103,7 @@
     "@solana-program/token-2022": "^0.3.4",
     "@solana/accounts": "^2.0.0",
     "@solana/addresses": "^2.0.0",
+    "@solana/assertions": "^2.0.0",
     "@solana/codecs": "^2.0.0",
     "@solana/errors": "^2.0.0",
     "@solana/functional": "^2.0.0",

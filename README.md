@@ -54,10 +54,15 @@ yarn add gill
 - [Get a transaction signature](#get-the-signature-from-a-signed-transaction)
 - [Get a Solana Explorer link](#get-a-solana-explorer-link-for-transactions-accounts-or-blocks)
 - [Calculate minimum rent balance for an account](#calculate-minimum-rent-for-an-account)
+- [Generating keypairs and signers](#generating-keypairs-and-signers)
+- [Generating extractable keypairs and signers](#generating-extractable-keypairs-and-signers)
 
 You can also find some [NodeJS specific helpers](#node-specific-imports) like:
 
 - [Loading a keypair from a file](#loading-a-keypair-from-a-file)
+- [Saving a keypair to a file](#saving-a-keypair-to-a-file)
+- [Loading a keypair from an environment variable](#loading-a-keypair-from-an-environment-variable)
+- [Saving a keypair to an environment variable file](#saving-a-keypair-to-an-environment-file)
 
 You can find [transaction builders](#transaction-builders) for common tasks, including:
 
@@ -69,6 +74,42 @@ For troubleshooting and debugging your Solana transactions, see [Debug mode](#de
 > You can also consult the documentation for Anza's
 > [JavaScript client](https://github.com/anza-xyz/solana-web3.js) library for more information and
 > helpful resources.
+
+### Generating keypairs and signers
+
+For most "signing" operations, you will need a `KeyPairSigner` instance, which can be used to sign
+transactions and messages.
+
+To generate a random `KeyPairSigner`:
+
+```typescript
+import { generateKeyPairSigner } from "gill";
+
+const signer: KeyPairSigner = generateKeyPairSigner();
+```
+
+> Note: These Signers are non-extractable, meaning there is no way to get the secret key material
+> out of the instance. This is a more secure practice and highly recommended to be used over
+> extractable keypairs, unless you REALLY need to be able to save the keypair for some reason.
+
+### Generating extractable keypairs and signers
+
+Extractable keypairs are less secure and should not be used unless you REALLY need to save the key
+for some reason. Since there are a few useful cases for saving these keypairs, gill has contains a
+separate explicit function.
+
+To generate a random, **extractable** `KeyPairSigner`:
+
+```typescript
+import { generateExtractableKeyPairSigner } from "gill";
+
+const signer: KeyPairSigner = generateExtractableKeyPairSigner();
+```
+
+> WARNING: Using **extractable** keypairs are inherently less-secure, since they allow the secret
+> key material to be extracted. Obviously. As such, they should only be used sparingly and ONLY when
+> you have an explicit reason you need extract the key material (like if you are going to save the
+> key to a file).
 
 ### Create a Solana RPC connection
 
@@ -427,6 +468,49 @@ import { loadKeypairSignerFromFile } from "gill/node";
 const signer = await loadKeypairSignerFromFile("/path/to/your/keypair.json");
 console.log("address:", signer.address);
 ```
+
+### Saving a keypair to a file
+
+> See [`saveKeypairSignerToEnvFile`](#saving-a-keypair-to-an-environment-file) for saving to an env
+> file.
+
+Save an **extractable** `KeyPairSigner` to a local json file (e.g. `keypair.json`).
+
+```typescript
+import { saveKeypairSignerToFile } from "gill/node";
+
+await saveKeypairSignerToFile(keypairSigner, filePath);
+```
+
+See [`loadKeypairSignerFromFile`](#loading-a-keypair-from-a-file) for how to load keypairs from the
+local filesystem.
+
+### Loading a keypair from an environment variable
+
+Load a `KeyPairSigner` from the bytes stored in the environment process (e.g.
+`process.env[variableName]`)
+
+```typescript
+import { loadKeypairSignerFromEnvironment } from "gill/node";
+
+// loads signer from bytes stored at `process.env[variableName]`
+const signer = await loadKeypairSignerFromEnvironment(variableName);
+console.log("address:", signer.address);
+```
+
+### Saving a keypair to an environment file
+
+Save an **extractable** `KeyPairSigner` to a local environment variable file (e.g. `.env`).
+
+```typescript
+import { saveKeypairSignerToEnvFile } from "gill/node";
+
+// default: envPath = `.env` (in your current working directory)
+await saveKeypairSignerToEnvFile(signer, variableName, envPath);
+```
+
+See [`loadKeypairSignerFromEnvironment`](#loading-a-keypair-from-an-environment-variable) for how to
+load keypairs from environment variables.
 
 ## Transaction builders
 
