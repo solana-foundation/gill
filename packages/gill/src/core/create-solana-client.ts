@@ -59,10 +59,20 @@ export function createSolanaClient<TCluster extends ModifiedClusterUrl>({
     throw new Error("Unsupported protocol. Only HTTP and HTTPS are supported");
   }
 
+  if (rpcConfig?.port) {
+    urlOrMoniker.port = rpcConfig.port.toString();
+  }
+
   const rpc = createSolanaRpc<TCluster>(urlOrMoniker.toString() as TCluster, rpcConfig);
 
   if (urlOrMoniker.protocol.endsWith("s")) urlOrMoniker.protocol = "wss";
   else urlOrMoniker.protocol = "ws";
+
+  if (rpcSubscriptionsConfig?.port) {
+    urlOrMoniker.port = rpcSubscriptionsConfig.port.toString();
+  } else if (urlOrMoniker.hostname == "localhost" || urlOrMoniker.hostname.startsWith("127")) {
+    urlOrMoniker.port = "8900";
+  }
 
   const rpcSubscriptions = createSolanaRpcSubscriptions<TCluster>(
     urlOrMoniker.toString() as TCluster,
