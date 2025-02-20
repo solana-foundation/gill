@@ -2,22 +2,18 @@ import type { Address } from "@solana/addresses";
 import type { IInstruction } from "@solana/instructions";
 import type { KeyPairSigner } from "@solana/signers";
 import { getCreateAccountInstruction } from "@solana-program/system";
-import { getInitializeMintInstruction } from "@solana-program/token";
 import {
   extension,
   getInitializeMetadataPointerInstruction,
-  getInitializeMintInstruction as getInitializeMintInstructionToken2022,
+  getInitializeMintInstruction,
   getInitializeTokenMetadataInstruction,
   getMintSize,
   TOKEN_2022_PROGRAM_ADDRESS,
 } from "@solana-program/token-2022";
 
 import { checkedAddress, getMinimumBalanceForRentExemption } from "../../../core";
-import {
-  getCreateMetadataAccountV3Instruction,
-  getTokenMetadataAddress,
-} from "../../token-metadata";
-import { checkedTokenProgramAddress } from "../addresses";
+import { getCreateMetadataAccountV3Instruction } from "../../token-metadata";
+import { checkedTokenProgramAddress, TOKEN_PROGRAM_ADDRESS } from "../addresses";
 import type { TokenInstructionBase } from "./types";
 
 export type GetCreateTokenInstructionsArgs = TokenInstructionBase<KeyPairSigner> & {
@@ -90,13 +86,13 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
   if (args.freezeAuthority) args.freezeAuthority = checkedAddress(args.freezeAuthority);
 
   if (args.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
-    // @ts-ignore FIXME(nick): errors due to not finding the valid overload
+    // @ts-expect-error FIXME(nick): errors due to not finding the valid overload
     const metadataPointer = extension("MetadataPointer", {
       authority: args.updateAuthority.address,
       metadataAddress: args.mint.address,
     });
 
-    // @ts-ignore FIXME(nick): errors due to not finding the valid overload
+    // @ts-expect-error FIXME(nick): errors due to not finding the valid overload
     const metadataExtensionData = extension("TokenMetadata", {
       // todo: support token22 additional metadata
       additionalMetadata: new Map(),
@@ -138,7 +134,7 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
         metadataAddress: args.metadataAddress,
         mint: args.mint.address,
       }),
-      getInitializeMintInstructionToken2022({
+      getInitializeMintInstruction({
         decimals: Number(args.decimals),
         freezeAuthority: args.freezeAuthority || null,
         mint: args.mint.address,
@@ -167,19 +163,24 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
         programAddress: args.tokenProgram,
         space,
       }),
-      getInitializeMintInstruction({
-        decimals: Number(args.decimals),
-        freezeAuthority: args.freezeAuthority || null,
-        mint: args.mint.address,
-        mintAuthority: args.mintAuthority.address,
-      }),
+      getInitializeMintInstruction(
+        {
+          decimals: Number(args.decimals),
+          freezeAuthority: args.freezeAuthority || null,
+          mint: args.mint.address,
+          mintAuthority: args.mintAuthority.address,
+        },
+        {
+          programAddress: TOKEN_PROGRAM_ADDRESS,
+        },
+      ),
       getCreateMetadataAccountV3Instruction({
         collectionDetails: null,
         data: {
-          name: args.metadata.name,
           collection: null,
-          sellerFeeBasisPoints: 0,
           creators: null,
+          name: args.metadata.name,
+          sellerFeeBasisPoints: 0,
           symbol: args.metadata.symbol,
           uri: args.metadata.uri,
           uses: null,
