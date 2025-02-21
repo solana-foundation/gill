@@ -15,7 +15,7 @@ import {
  * Note: This will NOT attempt to sign the transaction,
  * so it will be missing `signatures` from any of the attached Signers
  *
- * See {@link transactionToBase64WithSignatures}
+ * Use {@link transactionToBase64WithSignatures} sign and base64 encode
  */
 export function transactionToBase64(
   tx: CompilableTransactionMessage | Transaction,
@@ -25,9 +25,9 @@ export function transactionToBase64(
 }
 
 /**
- * Compile a transaction to a base64 string and partially sign it with all attached Signers
+ * Compile a transaction to a base64 string and sign it with all attached Signers
  *
- * See {@link partiallySignTransactionMessageWithSigners}
+ * See also {@link partiallySignTransactionMessageWithSigners}
  */
 export async function transactionToBase64WithSigners(
   tx: CompilableTransactionMessage | Transaction,

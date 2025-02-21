@@ -14,7 +14,7 @@ import {
 import type { GetLatestBlockhashApi, Rpc, SimulateTransactionApi } from "@solana/rpc";
 import { isSetComputeLimitInstruction } from "../programs/compute-budget";
 import { getComputeUnitEstimateForTransactionMessageFactory } from "../kit";
-import { debug } from "./debug";
+import { debug, isDebugEnabled } from "./debug";
 import { transactionToBase64WithSigners } from "./base64-transactions";
 
 type PrepareCompilableTransactionMessage =
@@ -121,10 +121,13 @@ export async function prepareTransaction<TMessage extends PrepareCompilableTrans
 
   assertIsTransactionMessageWithBlockhashLifetime(config.transaction);
 
-  debug(
-    `Transaction as base64: ${await transactionToBase64WithSigners(config.transaction)}`,
-    "debug",
-  );
+  // skip the async call if debugging is off
+  if (isDebugEnabled()) {
+    debug(
+      `Transaction as base64: ${await transactionToBase64WithSigners(config.transaction)}`,
+      "debug",
+    );
+  }
 
   return config.transaction;
 }
