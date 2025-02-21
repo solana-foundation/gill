@@ -52,7 +52,6 @@ export type GetTransferTokensInstructionsArgs = TokenInstructionBase<KeyPairSign
  * @example
  *
  * ```
- * const authority = address(...);
  * const sourceAta = await getAssociatedTokenAccountAddress(mint, authority, tokenProgram);
  *
  * const destination = address(...);
@@ -62,7 +61,7 @@ export type GetTransferTokensInstructionsArgs = TokenInstructionBase<KeyPairSign
  *    feePayer: signer,
  *    mint,
  *    amount: 10,
- *    authority, // the source wallet for the tokens to be transferred
+ *    authority: signer, // the source wallet for the tokens to be transferred
  *    sourceAta, // normally derived from the `authority`
  *    destination,
  *    destinationAta, // derived from the `destination`

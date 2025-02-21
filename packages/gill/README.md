@@ -63,6 +63,7 @@ You can find [transaction builders](#transaction-builders) for common tasks, inc
 
 - [Creating a token with metadata](#create-a-token-with-metadata)
 - [Minting tokens to a destination wallet](#mint-tokens-to-a-destination-wallet)
+- [Transfer tokens to a destination wallet](#transfer-tokens-to-a-destination-wallet)
 
 For troubleshooting and debugging your Solana transactions, see [Debug mode](#debug-mode) below.
 
@@ -511,6 +512,44 @@ const mintTokensTx = await buildMintTokensTransaction({
   // if decimals=2 => this will mint 10.00 tokens
   // if decimals=4 => this will mint 0.100 tokens
   destination,
+  // use the correct token program for the `mint`
+  tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
+  // default cu limit set to be optimized, but can be overriden here
+  // computeUnitLimit?: number,
+  // obtain from your favorite priority fee api
+  // computeUnitPrice?: number, // no default set
+});
+```
+
+### Transfer tokens to a destination wallet
+
+Build a transaction that transfers tokens to the `destination` wallet address form the `source`
+
+- ensure you set the correct `tokenProgram` used by the `mint` itself
+- if the `destination` owner does not have an associated token account (ata) created for the `mint`,
+  one will be auto-created for them
+- ensure you take into account the `decimals` for the `mint` when setting the `amount` in this
+  transaction
+
+Related instruction builder: `getTransferTokensInstructions`
+
+```typescript
+import { buildTransferTokensTransaction } from "gill/programs/token";
+
+const transferTokensTx = await buildTransferTokensTransaction({
+  feePayer: signer,
+  latestBlockhash,
+  mint,
+  authority: signer,
+  // sourceAta, // default=derived from the `authority`.
+  /**
+   * if the `sourceAta` is not derived from the `authority` (like for multi-sig wallets),
+   * manually derive with `getAssociatedTokenAccountAddress()`
+  */
+  amount: 900, // note: be sure to consider the mint's `decimals` value
+  // if decimals=2 => this will mint 9.00 tokens
+  // if decimals=4 => this will mint 0.090 tokens
+  destination: address(...),
   // use the correct token program for the `mint`
   tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
   // default cu limit set to be optimized, but can be overriden here

@@ -34,14 +34,13 @@ type GetTransferTokensTransactionInput = Simplify<
  *
  * @example
  * ```
- * const authority = address(...);
  * const destination = address(...);
  *
  * const transferTokensTx = await buildTransferTokensTransaction({
  *   feePayer: signer,
  *   latestBlockhash,
  *   mint,
- *   authority,
+ *   authority: signer,
  *   amount: 900, // note: be sure to consider the mint's `decimals` value
  *   // if decimals=2 => this will mint 9.00 tokens
  *   // if decimals=4 => this will mint 0.090 tokens
