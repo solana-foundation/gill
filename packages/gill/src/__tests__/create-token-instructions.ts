@@ -143,12 +143,17 @@ describe("getCreateTokenInstructions", () => {
       programAddress: TOKEN_PROGRAM_ADDRESS,
     });
 
-    expect(getInitializeMintInstruction).toHaveBeenCalledWith({
-      mint: mockMint.address,
-      decimals: 9,
-      mintAuthority: mockPayer.address,
-      freezeAuthority: null,
-    });
+    expect(getInitializeMintInstruction).toHaveBeenCalledWith(
+      {
+        mint: mockMint.address,
+        decimals: 9,
+        mintAuthority: mockPayer.address,
+        freezeAuthority: null,
+      },
+      {
+        programAddress: TOKEN_PROGRAM_ADDRESS,
+      },
+    );
 
     expect(getCreateMetadataAccountV3Instruction).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -209,6 +214,9 @@ describe("getCreateTokenInstructions", () => {
         expect.objectContaining({
           mint: mockMint.address,
         }),
+        {
+          programAddress: TOKEN_PROGRAM_ADDRESS,
+        },
       );
     });
 
@@ -228,6 +236,9 @@ describe("getCreateTokenInstructions", () => {
           mint: mockMint.address,
           decimals: 6,
         }),
+        {
+          programAddress: TOKEN_PROGRAM_ADDRESS,
+        },
       );
     });
 
@@ -248,6 +259,9 @@ describe("getCreateTokenInstructions", () => {
           mintAuthority: mockMintAuthority.address,
           freezeAuthority: mockFreezeAuthority.address,
         }),
+        {
+          programAddress: TOKEN_PROGRAM_ADDRESS,
+        },
       );
     });
 
@@ -337,6 +351,9 @@ describe("getCreateTokenInstructions", () => {
         expect.objectContaining({
           mint: mockMint.address,
         }),
+        {
+          programAddress: TOKEN_2022_PROGRAM_ADDRESS,
+        },
       );
     });
 
@@ -357,6 +374,9 @@ describe("getCreateTokenInstructions", () => {
           mint: mockMint.address,
           decimals: 6,
         }),
+        {
+          programAddress: TOKEN_2022_PROGRAM_ADDRESS,
+        },
       );
     });
 
@@ -378,6 +398,9 @@ describe("getCreateTokenInstructions", () => {
           mintAuthority: mockMintAuthority.address,
           freezeAuthority: mockFreezeAuthority.address,
         }),
+        {
+          programAddress: TOKEN_2022_PROGRAM_ADDRESS,
+        },
       );
     });
 
@@ -416,6 +439,9 @@ describe("getCreateTokenInstructions", () => {
           mint: mockMint.address,
           mintAuthority: mockPayer.address,
         }),
+        {
+          programAddress: TOKEN_2022_PROGRAM_ADDRESS,
+        },
       );
 
       expect(getInitializeTokenMetadataInstruction).toHaveBeenCalledWith(
