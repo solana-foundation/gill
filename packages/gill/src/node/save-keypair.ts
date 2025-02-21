@@ -30,6 +30,7 @@ export async function saveKeypairToFile(
   bytes = await extractBytesFromKeyPair(keypair);
   writeFileSync(resolvedPath, "[" + Array.from(bytes).toString() + "]", "utf8");
 
+  // attempt to reload the saved file to ensure the save was correctly formatted
   const [input, output] = await Promise.all([
     createKeyPairSignerFromBytes(bytes),
     loadKeypairSignerFromFile(resolvedPath),

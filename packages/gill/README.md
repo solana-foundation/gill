@@ -95,8 +95,8 @@ const signer: KeyPairSigner = generateKeyPairSigner();
 ### Generating extractable keypairs and signers
 
 Extractable keypairs are less secure and should not be used unless you REALLY need to save the key
-for some reason. Since there are a few useful cases for saving these keypairs, gill has contains a
-separate explicit function.
+for some reason. Since there are a few useful cases for saving these keypairs, gill contains a
+separate explicit function to generate these extractable keypairs.
 
 To generate a random, **extractable** `KeyPairSigner`:
 
@@ -477,9 +477,9 @@ console.log("address:", signer.address);
 Save an **extractable** `KeyPairSigner` to a local json file (e.g. `keypair.json`).
 
 ```typescript
-import { saveKeypairSignerToFile } from "gill/node";
-
-await saveKeypairSignerToFile(keypairSigner, filePath);
+import { ... } from "gill/node";
+const extractableSigner = generateExtractableKeyPairSigner();
+await saveKeypairSignerToFile(extractableSigner, filePath);
 ```
 
 See [`loadKeypairSignerFromFile`](#loading-a-keypair-from-a-file) for how to load keypairs from the
@@ -503,10 +503,10 @@ console.log("address:", signer.address);
 Save an **extractable** `KeyPairSigner` to a local environment variable file (e.g. `.env`).
 
 ```typescript
-import { saveKeypairSignerToEnvFile } from "gill/node";
-
+import { ... } from "gill/node";
+const extractableSigner = generateExtractableKeyPairSigner();
 // default: envPath = `.env` (in your current working directory)
-await saveKeypairSignerToEnvFile(signer, variableName, envPath);
+await saveKeypairSignerToEnvFile(extractableSigner, variableName, envPath);
 ```
 
 See [`loadKeypairSignerFromEnvironment`](#loading-a-keypair-from-an-environment-variable) for how to
