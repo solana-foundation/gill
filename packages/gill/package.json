@@ -1,6 +1,6 @@
 {
   "name": "gill",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "a modern javascript/typescript client library for interacting with the Solana blockchain",
   "scripts": {
     "clean": "rimraf dist build node_modules .turbo",

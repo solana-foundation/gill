@@ -1,5 +1,40 @@
 # gill
 
+## 0.4.0
+
+### Minor Changes
+
+- [#40](https://github.com/solana-foundation/gill/pull/40)
+  [`9ae5ee8`](https://github.com/solana-foundation/gill/commit/9ae5ee8c3549c15df5c71a072bd9686b55afeb1a)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added transfer token
+  transaction/instruction builders
+
+- [#43](https://github.com/solana-foundation/gill/pull/43)
+  [`b9491e4`](https://github.com/solana-foundation/gill/commit/b9491e43ed0841c08b6de0d37a3e06df8161ce46)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added transactionToBase64WithSigners to
+  sign and base64 encode
+
+- [#44](https://github.com/solana-foundation/gill/pull/44)
+  [`e18fc1b`](https://github.com/solana-foundation/gill/commit/e18fc1bf78b68eff089f61e93444f222f5374b90)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added functions for generating extractable
+  keypairs, saving keypairs to files, and loading/saving keypairs to env variables
+
+### Patch Changes
+
+- [#42](https://github.com/solana-foundation/gill/pull/42)
+  [`7a220bc`](https://github.com/solana-foundation/gill/commit/7a220bc67c6987e30105f3bdab24ff86ee6328ee)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - fix createSolanaClient to accept port
+  numbers and set the localnet port
+
+- [#49](https://github.com/solana-foundation/gill/pull/49)
+  [`64d138a`](https://github.com/solana-foundation/gill/commit/64d138a03e3c09b340c54273455b44ae582ff0c6)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - vendor in spl memo
+
+- [#48](https://github.com/solana-foundation/gill/pull/48)
+  [`18a8eec`](https://github.com/solana-foundation/gill/commit/18a8eecba39d4c133e90c90905a5bb87f4eb7ba9)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - fix create token instructions to correctly
+  handle desired token program
+
 ## 0.3.0
 
 ### Minor Changes
