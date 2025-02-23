@@ -1,3 +1,11 @@
+/**
+ * The purpose of this script is to compare some of the differences
+ * of using `gill` as a single entrypoint vs `@solana/web3.js`
+ * (and the various `@solana-program/*` packages).
+ *
+ * This script is the `gill` version of the comparison.
+ * See the `@solana/web3.js` version in the ./basic-compare.ts file
+ */
 import {
   getExplorerLink,
   createTransaction,

@@ -37,7 +37,7 @@ import type {
 } from "@solana/instructions";
 import { type IAccountSignerMeta, type TransactionSigner } from "@solana/signers";
 
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+import { getAccountMetaFactory, type ResolvedAccount } from "../../../shared";
 import {
   getCollectionDetailsDecoder,
   getCollectionDetailsEncoder,

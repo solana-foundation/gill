@@ -129,12 +129,17 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
         metadataAddress: args.metadataAddress,
         mint: args.mint.address,
       }),
-      getInitializeMintInstruction({
-        mint: args.mint.address,
-        decimals: Number(args.decimals),
-        mintAuthority: args.mintAuthority.address,
-        freezeAuthority: args.freezeAuthority || null,
-      }),
+      getInitializeMintInstruction(
+        {
+          mint: args.mint.address,
+          decimals: Number(args.decimals),
+          mintAuthority: args.mintAuthority.address,
+          freezeAuthority: args.freezeAuthority || null,
+        },
+        {
+          programAddress: args.tokenProgram,
+        },
+      ),
       getInitializeTokenMetadataInstruction({
         metadata: args.mint.address,
         mint: args.mint.address,
@@ -158,12 +163,17 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
         space,
         programAddress: args.tokenProgram,
       }),
-      getInitializeMintInstruction({
-        mint: args.mint.address,
-        decimals: Number(args.decimals),
-        mintAuthority: args.mintAuthority.address,
-        freezeAuthority: args.freezeAuthority || null,
-      }),
+      getInitializeMintInstruction(
+        {
+          mint: args.mint.address,
+          decimals: Number(args.decimals),
+          mintAuthority: args.mintAuthority.address,
+          freezeAuthority: args.freezeAuthority || null,
+        },
+        {
+          programAddress: args.tokenProgram,
+        },
+      ),
       getCreateMetadataAccountV3Instruction({
         metadata: args.metadataAddress,
         mint: args.mint.address,

@@ -27,9 +27,9 @@ export type CreateSolanaClientArgs<
   /** Full RPC URL (for a private RPC endpoint) or the Solana moniker (for a public RPC endpoint) */
   urlOrMoniker: SolanaClusterMoniker | TClusterUrl | URL | ModifiedClusterUrl;
   /** Configuration used to create the `rpc` client */
-  rpcConfig?: Parameters<typeof createSolanaRpc>[1];
+  rpcConfig?: Parameters<typeof createSolanaRpc>[1] & { port?: number };
   /** Configuration used to create the `rpcSubscriptions` client */
-  rpcSubscriptionsConfig?: Parameters<typeof createSolanaRpcSubscriptions>[1];
+  rpcSubscriptionsConfig?: Parameters<typeof createSolanaRpcSubscriptions>[1] & { port?: number };
 };
 
 export type CreateSolanaClientResult<TClusterUrl extends ModifiedClusterUrl | string = string> = {

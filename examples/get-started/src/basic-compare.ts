@@ -1,3 +1,11 @@
+/**
+ * The purpose of this script is to compare some of the differences
+ * of using `gill` as a single entrypoint vs `@solana/web3.js`
+ * (and the various `@solana-program/*` packages).
+ *
+ * This script is the `@solana/web3.js` version of the comparison.
+ * See the `gill` version in the ./basic.ts file
+ */
 import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { resolve } from "node:path";

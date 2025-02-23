@@ -8,3 +8,4 @@ export * from "./base64-transactions";
 export * from "./prepare-transaction";
 export * from "./create-solana-client";
 export * from "./accounts";
+export * from "./keypairs";
