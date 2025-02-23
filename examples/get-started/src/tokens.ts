@@ -16,10 +16,10 @@ import {
   TOKEN_2022_PROGRAM_ADDRESS,
 } from "gill/programs/token";
 
-// /** Turn on debug mode */
-// global.__GILL_DEBUG__ = true;
+/** Turn on debug mode */
+global.__GILL_DEBUG__ = true;
 
-// /** Set the debug mode log level (default: `info`) */
+/** Set the debug mode log level (default: `info`) */
 global.__GILL_DEBUG_LEVEL__ = "debug";
 
 /**

@@ -523,7 +523,8 @@ const mintTokensTx = await buildMintTokensTransaction({
 
 ### Transfer tokens to a destination wallet
 
-Build a transaction that transfers tokens to the `destination` wallet address form the `source`
+Build a transaction that transfers tokens to the `destination` wallet address from the `source` (aka
+from `sourceAta` to `destinationAta`).
 
 - ensure you set the correct `tokenProgram` used by the `mint` itself
 - if the `destination` owner does not have an associated token account (ata) created for the `mint`,
@@ -547,8 +548,8 @@ const transferTokensTx = await buildTransferTokensTransaction({
    * manually derive with `getAssociatedTokenAccountAddress()`
   */
   amount: 900, // note: be sure to consider the mint's `decimals` value
-  // if decimals=2 => this will mint 9.00 tokens
-  // if decimals=4 => this will mint 0.090 tokens
+  // if decimals=2 => this will transfer 9.00 tokens
+  // if decimals=4 => this will transfer 0.090 tokens
   destination: address(...),
   // use the correct token program for the `mint`
   tokenProgram, // default=TOKEN_PROGRAM_ADDRESS

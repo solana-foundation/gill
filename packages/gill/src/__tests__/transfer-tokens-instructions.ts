@@ -117,11 +117,11 @@ describe("getTransferTokensInstructions", () => {
     );
   });
 
-  it("should accept Address type for mint, mintAuthority, and destination", () => {
+  it("should accept Address type for mint, authority, and destination", () => {
     const args: GetTransferTokensInstructionsArgs = {
       feePayer: mockPayer,
-      mint: mockMint,
-      authority: mockAuthority,
+      mint: mockMint.address,
+      authority: mockAuthority.address,
       amount: mockAmount,
       destination: mockDestination.address,
       destinationAta: mockDestinationAta,
@@ -142,7 +142,7 @@ describe("getTransferTokensInstructions", () => {
 
     expect(getTransferInstruction).toHaveBeenCalledWith(
       {
-        authority: mockAuthority,
+        authority: mockAuthority.address,
         source: mockSourceAta,
         amount: mockAmount,
         destination: mockDestinationAta,

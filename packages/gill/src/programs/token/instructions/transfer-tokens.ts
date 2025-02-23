@@ -66,8 +66,6 @@ export type GetTransferTokensInstructionsArgs = TokenInstructionBase<KeyPairSign
  *    destination,
  *    destinationAta, // derived from the `destination`
  *    tokenProgram,
- *   }),
- *   latestBlockhash,
  * });
  * ```
  */

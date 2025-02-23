@@ -42,8 +42,8 @@ type GetTransferTokensTransactionInput = Simplify<
  *   mint,
  *   authority: signer,
  *   amount: 900, // note: be sure to consider the mint's `decimals` value
- *   // if decimals=2 => this will mint 9.00 tokens
- *   // if decimals=4 => this will mint 0.090 tokens
+ *   // if decimals=2 => this will transfer 9.00 tokens
+ *   // if decimals=4 => this will transfer 0.090 tokens
  *   destination,
  *   // use the correct token program for the `mint`
  *   tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
