@@ -1,5 +1,23 @@
 # gill
 
+## 0.5.0
+
+### Minor Changes
+
+- [#52](https://github.com/solana-foundation/gill/pull/52)
+  [`9e01463`](https://github.com/solana-foundation/gill/commit/9e01463d7d38ca9b073fbb96472093dd6ccf379c)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added `lamportsToSol` function
+
+### Patch Changes
+
+- [#53](https://github.com/solana-foundation/gill/pull/53)
+  [`452359c`](https://github.com/solana-foundation/gill/commit/452359c08c5fd089fb1f1e7959e70fb34e148697)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - declare imports as type
+
+- [#50](https://github.com/solana-foundation/gill/pull/50)
+  [`5dd8366`](https://github.com/solana-foundation/gill/commit/5dd8366084727541394d90e5044e030fdcfc246c)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - add `localhost` support to explorer urls
+
 ## 0.4.0
 
 ### Minor Changes
