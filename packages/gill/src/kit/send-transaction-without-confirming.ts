@@ -1,5 +1,5 @@
 import type { Rpc, SendTransactionApi } from '@solana/rpc';
-import { FullySignedTransaction } from '@solana/transactions';
+import type { FullySignedTransaction } from '@solana/transactions';
 
 import { sendTransaction_INTERNAL_ONLY_DO_NOT_EXPORT } from './send-transaction-internal';
 

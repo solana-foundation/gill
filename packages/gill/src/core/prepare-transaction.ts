@@ -4,9 +4,9 @@ import {
 } from "@solana-program/compute-budget";
 import {
   type CompilableTransactionMessage,
-  ITransactionMessageWithFeePayer,
-  TransactionMessage,
-  TransactionMessageWithBlockhashLifetime,
+  type ITransactionMessageWithFeePayer,
+  type TransactionMessage,
+  type TransactionMessageWithBlockhashLifetime,
   appendTransactionMessageInstruction,
   assertIsTransactionMessageWithBlockhashLifetime,
   setTransactionMessageLifetimeUsingBlockhash,

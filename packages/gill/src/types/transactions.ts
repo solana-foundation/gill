@@ -1,13 +1,13 @@
-import { Address } from "@solana/addresses";
-import { IInstruction } from "@solana/instructions";
-import { ITransactionMessageWithFeePayerSigner, TransactionSigner } from "@solana/signers";
-import {
+import type { Address } from "@solana/addresses";
+import type { IInstruction } from "@solana/instructions";
+import type { ITransactionMessageWithFeePayerSigner, TransactionSigner } from "@solana/signers";
+import type {
   BaseTransactionMessage,
   ITransactionMessageWithFeePayer,
   TransactionMessageWithBlockhashLifetime,
   TransactionVersion,
 } from "@solana/transaction-messages";
-import { Simplify } from ".";
+import type { Simplify } from ".";
 
 export type CreateTransactionInput<
   TVersion extends TransactionVersion,

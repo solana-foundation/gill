@@ -1,16 +1,16 @@
 import type { Signature } from '@solana/keys';
 import type { Rpc, SendTransactionApi } from '@solana/rpc';
-import { Commitment, commitmentComparator } from '@solana/rpc-types';
+import { type Commitment, commitmentComparator } from '@solana/rpc-types';
 import {
     waitForDurableNonceTransactionConfirmation,
     waitForRecentTransactionConfirmation,
 } from '@solana/transaction-confirmation';
 import {
-    FullySignedTransaction,
+    type FullySignedTransaction,
     getBase64EncodedWireTransaction,
     getSignatureFromTransaction,
-    TransactionWithBlockhashLifetime,
-    TransactionWithDurableNonceLifetime,
+    type TransactionWithBlockhashLifetime,
+    type TransactionWithDurableNonceLifetime,
 } from '@solana/transactions';
 import { debug, getExplorerLink } from '../core';
 

@@ -6,7 +6,7 @@ import {
     createRecentSignatureConfirmationPromiseFactory,
     waitForDurableNonceTransactionConfirmation,
 } from '@solana/transaction-confirmation';
-import { FullySignedTransaction, TransactionWithDurableNonceLifetime } from '@solana/transactions';
+import type { FullySignedTransaction, TransactionWithDurableNonceLifetime } from '@solana/transactions';
 
 import { sendAndConfirmDurableNonceTransaction_INTERNAL_ONLY_DO_NOT_EXPORT } from './send-transaction-internal';
 

@@ -1,7 +1,7 @@
 import { env } from "node:process";
 
 import browsersListToEsBuild from "browserslist-to-esbuild";
-import { Format, Options } from "tsup";
+import type { Format, Options } from "tsup";
 
 import { DevFlagPlugin } from "./dev-flag";
 

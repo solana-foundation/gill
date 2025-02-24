@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 import jscodeshift from "jscodeshift";
-import { Options } from "tsup";
+import type { Options } from "tsup";
 
 type Loader = NonNullable<
   NonNullable<

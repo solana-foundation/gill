@@ -1,6 +1,5 @@
-import { devnet, mainnet, testnet } from "@solana/rpc-types";
-
-import { LocalnetUrl, ModifiedClusterUrl, SolanaClusterMoniker } from "../types/rpc";
+import type { MainnetUrl, DevnetUrl, TestnetUrl } from "@solana/rpc-types";
+import type { LocalnetUrl, ModifiedClusterUrl, SolanaClusterMoniker } from "../types/rpc";
 
 export function localnet(putativeString: string): LocalnetUrl {
   return putativeString as LocalnetUrl;
@@ -16,14 +15,14 @@ export function getPublicSolanaRpcUrl(
 ): ModifiedClusterUrl {
   switch (cluster) {
     case "devnet":
-      return devnet("https://api.devnet.solana.com");
+      return "https://api.devnet.solana.com" as DevnetUrl;
     case "testnet":
-      return testnet("https://api.testnet.solana.com");
+      return "https://api.testnet.solana.com" as TestnetUrl;
     case "mainnet-beta":
     case "mainnet":
-      return mainnet("https://api.mainnet-beta.solana.com");
+      return "https://api.mainnet-beta.solana.com" as MainnetUrl;
     case "localnet":
-      return localnet("http://127.0.0.1:8899");
+      return "http://127.0.0.1:8899" as LocalnetUrl;
     default:
       throw new Error("Invalid cluster moniker");
   }

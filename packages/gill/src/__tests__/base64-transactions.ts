@@ -1,6 +1,6 @@
 import { blockhash } from "@solana/rpc-types";
 import { address } from "@solana/addresses";
-import { createKeyPairSignerFromPrivateKeyBytes, KeyPairSigner } from "@solana/signers";
+import { createKeyPairSignerFromPrivateKeyBytes, type KeyPairSigner } from "@solana/signers";
 import { createTransaction, transactionToBase64, transactionToBase64WithSigners } from "../core";
 
 // initialize a sample transaction

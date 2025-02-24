@@ -1,23 +1,23 @@
-import { Simplify } from "../types";
+import type { Simplify } from "../types";
 import { pipe } from "@solana/functional";
 import {
   appendTransactionMessageInstruction,
   appendTransactionMessageInstructions,
   createTransactionMessage,
-  ITransactionMessageWithFeePayer,
+  type ITransactionMessageWithFeePayer,
   setTransactionMessageFeePayer,
   setTransactionMessageLifetimeUsingBlockhash,
-  TransactionMessageWithBlockhashLifetime,
-  TransactionVersion,
+  type TransactionMessageWithBlockhashLifetime,
+  type TransactionVersion,
 } from "@solana/transaction-messages";
 import {
   isTransactionSigner,
-  ITransactionMessageWithFeePayerSigner,
+  type ITransactionMessageWithFeePayerSigner,
   setTransactionMessageFeePayerSigner,
-  TransactionSigner,
+  type TransactionSigner,
 } from "@solana/signers";
 import type { FullTransaction, CreateTransactionInput } from "../types/transactions";
-import { Address } from "@solana/addresses";
+import type { Address } from "@solana/addresses";
 import {
   getSetComputeUnitLimitInstruction,
   getSetComputeUnitPriceInstruction,

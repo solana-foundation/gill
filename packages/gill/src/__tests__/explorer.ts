@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { FullySignedTransaction, getSignatureFromTransaction } from "@solana/transactions";
+import { type FullySignedTransaction, getSignatureFromTransaction } from "@solana/transactions";
 
 import { getExplorerLink } from "../core";
 

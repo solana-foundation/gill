@@ -8,8 +8,8 @@ import type { Address } from '@solana/addresses';
 import type { GetMultipleAccountsApi, Rpc } from '@solana/rpc';
 import {
     type AddressesByLookupTableAddress,
-    CompilableTransactionMessage,
-    CompiledTransactionMessage,
+    type CompilableTransactionMessage,
+    type CompiledTransactionMessage,
     decompileTransactionMessage,
 } from '@solana/transaction-messages';
 

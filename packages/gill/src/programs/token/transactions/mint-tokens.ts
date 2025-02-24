@@ -1,6 +1,6 @@
 import type { TransactionBuilderInput } from "./types";
 import type { Address } from "@solana/addresses";
-import { type TransactionSigner } from "@solana/signers";
+import type { TransactionSigner } from "@solana/signers";
 import type {
   ITransactionMessageWithFeePayer,
   TransactionMessageWithBlockhashLifetime,

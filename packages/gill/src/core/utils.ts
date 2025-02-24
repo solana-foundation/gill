@@ -1,7 +1,7 @@
 import type { SolanaClusterMoniker } from "../types";
-import { GENESIS_HASH } from "./const";
 import type { KeyPairSigner } from "@solana/signers";
 import type { Address } from "@solana/addresses";
+import { GENESIS_HASH } from "./const";
 
 /**
  * Determine the Solana moniker from its genesis hash

@@ -1,5 +1,5 @@
-import { Rpc, SimulateTransactionApi } from '@solana/rpc';
-import {
+import type { Rpc, SimulateTransactionApi } from '@solana/rpc';
+import type {
     CompilableTransactionMessage,
     ITransactionMessageWithFeePayer,
     TransactionMessage,

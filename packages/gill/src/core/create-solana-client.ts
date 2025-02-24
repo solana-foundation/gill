@@ -1,6 +1,6 @@
 import { createSolanaRpc } from "@solana/rpc";
 import { createSolanaRpcSubscriptions } from "@solana/rpc-subscriptions";
-import { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/rpc-types";
+import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/rpc-types";
 
 import type {
   LocalnetUrl,

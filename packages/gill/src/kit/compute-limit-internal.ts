@@ -1,4 +1,4 @@
-import { Address } from '@solana/addresses';
+import type { Address } from '@solana/addresses';
 import { getU32Encoder } from '@solana/codecs';
 import {
     isSolanaError,
@@ -7,21 +7,21 @@ import {
     SolanaError,
 } from '@solana/errors';
 import {
-    IInstruction,
-    IInstructionWithData,
+    type IInstruction,
+    type IInstructionWithData,
     isInstructionForProgram,
     isInstructionWithData,
 } from '@solana/instructions';
-import { Rpc, SimulateTransactionApi } from '@solana/rpc';
-import { Blockhash, Commitment, Slot } from '@solana/rpc-types';
+import type { Rpc, SimulateTransactionApi } from '@solana/rpc';
+import type { Blockhash, Commitment, Slot } from '@solana/rpc-types';
 import {
     appendTransactionMessageInstruction,
-    CompilableTransactionMessage,
+    type CompilableTransactionMessage,
     isDurableNonceTransaction,
     isTransactionMessageWithBlockhashLifetime,
-    ITransactionMessageWithFeePayer,
+    type ITransactionMessageWithFeePayer,
     setTransactionMessageLifetimeUsingBlockhash,
-    TransactionMessage,
+    type TransactionMessage,
 } from '@solana/transaction-messages';
 import { compileTransaction, getBase64EncodedWireTransaction } from '@solana/transactions';
 

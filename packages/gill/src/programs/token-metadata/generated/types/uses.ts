@@ -7,10 +7,10 @@
  */
 
 import {
-  Codec,
+  type Codec,
   combineCodec,
-  Decoder,
-  Encoder,
+  type Decoder,
+  type Encoder,
   getStructDecoder,
   getStructEncoder,
   getU64Decoder,

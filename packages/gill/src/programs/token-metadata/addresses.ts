@@ -1,6 +1,6 @@
-import { Address, getAddressEncoder, getProgramDerivedAddress } from "@solana/addresses";
+import { type Address, getAddressEncoder, getProgramDerivedAddress } from "@solana/addresses";
 import { TOKEN_METADATA_PROGRAM_ADDRESS } from "./generated/instructions";
-import { KeyPairSigner } from "@solana/signers";
+import { type KeyPairSigner } from "@solana/signers";
 import { checkedAddress } from "../../core/utils";
 
 /**

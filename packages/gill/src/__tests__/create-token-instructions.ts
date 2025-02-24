@@ -1,6 +1,6 @@
-import { generateKeyPairSigner, KeyPairSigner } from "@solana/signers";
-import { Address } from "@solana/addresses";
-import { IInstruction } from "@solana/instructions";
+import { generateKeyPairSigner, type KeyPairSigner } from "@solana/signers";
+import type { Address } from "@solana/addresses";
+import type { IInstruction } from "@solana/instructions";
 import { getCreateAccountInstruction } from "@solana-program/system";
 import { getMinimumBalanceForRentExemption } from "../core";
 import { getCreateMetadataAccountV3Instruction } from "../programs/token-metadata";

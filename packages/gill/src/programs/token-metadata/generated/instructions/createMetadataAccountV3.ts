@@ -16,7 +16,7 @@ import {
   getStructEncoder,
   getU8Decoder,
   getU8Encoder,
-  ReadonlyUint8Array,
+  type ReadonlyUint8Array,
   transformEncoder,
   type Codec,
   type Decoder,
@@ -24,7 +24,7 @@ import {
   type Option,
   type OptionOrNullable,
 } from "@solana/codecs";
-import { type Address } from "@solana/addresses";
+import type { Address } from "@solana/addresses";
 import type {
   IInstruction,
   IInstructionWithAccounts,

@@ -6,7 +6,7 @@ import {
     createRecentSignatureConfirmationPromiseFactory,
     waitForRecentTransactionConfirmation,
 } from '@solana/transaction-confirmation';
-import { FullySignedTransaction, TransactionWithBlockhashLifetime } from '@solana/transactions';
+import type { FullySignedTransaction, TransactionWithBlockhashLifetime } from '@solana/transactions';
 
 import { sendAndConfirmTransactionWithBlockhashLifetime_INTERNAL_ONLY_DO_NOT_EXPORT } from './send-transaction-internal';
 

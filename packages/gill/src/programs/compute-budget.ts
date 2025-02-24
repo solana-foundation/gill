@@ -3,12 +3,12 @@ import {
   ComputeBudgetInstruction,
 } from "@solana-program/compute-budget";
 import {
-  IInstruction,
-  IInstructionWithData,
+  type IInstruction,
+  type IInstructionWithData,
   isInstructionForProgram,
   isInstructionWithData,
 } from "@solana/instructions";
-import { TransactionMessage } from "@solana/transaction-messages";
+import type { TransactionMessage } from "@solana/transaction-messages";
 
 /**
  * Check if a given instruction is a `SetComputeUnitLimit` instruction
