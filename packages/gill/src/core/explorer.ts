@@ -1,4 +1,4 @@
-import { GetExplorerLinkArgs } from "../types";
+import type { GetExplorerLinkArgs } from "../types";
 
 /**
  * Craft a Solana Explorer link on any cluster
@@ -20,7 +20,7 @@ export function getExplorerLink(props: GetExplorerLinkArgs = {}): string {
   }
 
   if (props.cluster !== "mainnet-beta") {
-    if (props.cluster === "localnet") {
+    if (props.cluster === "localnet" || props.cluster === "localhost") {
       // localnet technically isn't a cluster, so requires special handling
       url.searchParams.set("cluster", "custom");
       url.searchParams.set("customUrl", "http://localhost:8899");
