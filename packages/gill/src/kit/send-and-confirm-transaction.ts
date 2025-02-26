@@ -6,12 +6,14 @@ import {
     createRecentSignatureConfirmationPromiseFactory,
     waitForRecentTransactionConfirmation,
 } from '@solana/transaction-confirmation';
-import type { FullySignedTransaction, TransactionWithBlockhashLifetime } from '@solana/transactions';
+import { type FullySignedTransaction, type TransactionWithBlockhashLifetime } from '@solana/transactions';
 
 import { sendAndConfirmTransactionWithBlockhashLifetime_INTERNAL_ONLY_DO_NOT_EXPORT } from './send-transaction-internal';
+import type { CompilableTransactionMessage } from '@solana/transaction-messages';
+import { signTransactionMessageWithSigners } from '@solana/signers';
 
 export type SendAndConfirmTransactionWithBlockhashLifetimeFunction = (
-    transaction: FullySignedTransaction & TransactionWithBlockhashLifetime,
+    transaction: (FullySignedTransaction & TransactionWithBlockhashLifetime) | CompilableTransactionMessage,
     config?: Omit<
         Parameters<typeof sendAndConfirmTransactionWithBlockhashLifetime_INTERNAL_ONLY_DO_NOT_EXPORT>[0],
         'confirmRecentTransaction' | 'rpc' | 'transaction'
@@ -65,6 +67,9 @@ export function sendAndConfirmTransactionFactory<TCluster extends 'devnet' | 'ma
     }
 
     return async function sendAndConfirmTransaction(transaction, config = { commitment: "confirmed" }) {
+        if ("messageBytes" in transaction == false){
+            transaction = await signTransactionMessageWithSigners(transaction) as Readonly<FullySignedTransaction & TransactionWithBlockhashLifetime>;
+        }
         return await sendAndConfirmTransactionWithBlockhashLifetime_INTERNAL_ONLY_DO_NOT_EXPORT({
             ...config,
             confirmRecentTransaction,
