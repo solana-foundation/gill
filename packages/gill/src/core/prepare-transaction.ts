@@ -15,7 +15,7 @@ import type { GetLatestBlockhashApi, Rpc, SimulateTransactionApi } from "@solana
 import { isSetComputeLimitInstruction } from "../programs/compute-budget";
 import { getComputeUnitEstimateForTransactionMessageFactory } from "../kit";
 import { debug, isDebugEnabled } from "./debug";
-import { transactionToBase64WithSigners } from "./base64-transactions";
+import { transactionToBase64WithSigners } from "./base64-to-transaction";
 
 type PrepareCompilableTransactionMessage =
   | CompilableTransactionMessage

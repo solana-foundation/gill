@@ -1,7 +1,12 @@
 import { blockhash } from "@solana/rpc-types";
 import { address } from "@solana/addresses";
 import { createKeyPairSignerFromPrivateKeyBytes, type KeyPairSigner } from "@solana/signers";
-import { createTransaction, transactionToBase64, transactionToBase64WithSigners } from "../core";
+import {
+  createTransaction,
+  transactionFromBase64,
+  transactionToBase64,
+  transactionToBase64WithSigners,
+} from "../core";
 
 // initialize a sample transaction
 const tx = createTransaction({
@@ -64,5 +69,18 @@ describe("transactionToBase64WithSigners", () => {
     const result = await transactionToBase64WithSigners(tx);
 
     expect(result).toBe(expected);
+  });
+});
+
+describe("transactionFromBase64", () => {
+  test("can decode base64 an unsigned transaction", () => {
+    const input =
+      "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAABC7YxPJkVXZH3qqq8Nq1nwYa5Pm6+M9ZeObND0CCtBLXjfKbGfbEEIU1AEH81ttgpyiNLO+xurYCsjdCVcfR4YQA=";
+
+    const tx = transactionFromBase64(input);
+
+    const result = transactionToBase64(tx);
+
+    expect(result).toBe(input);
   });
 });
