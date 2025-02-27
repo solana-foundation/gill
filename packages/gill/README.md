@@ -227,24 +227,6 @@ const transaction = createTransaction({
 });
 ```
 
-To create a transaction while setting the latest blockhash:
-
-```typescript
-import { createTransaction } from "gill";
-
-const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
-
-const transaction = createTransaction({
-  version,
-  feePayer,
-  instructions,
-  latestBlockhash,
-  // the compute budget values are HIGHLY recommend to be set in order to maximize your transaction landing rate
-  // computeUnitLimit: number,
-  // computeUnitPrice: number,
-});
-```
-
 ### Signing transactions
 
 If your transaction already has the latest blockhash lifetime set via `createTransaction`:
