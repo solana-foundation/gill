@@ -4,9 +4,9 @@ import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/rpc-types";
 
 import type {
   LocalnetUrl,
+  SolanaClient,
   ModifiedClusterUrl,
   CreateSolanaClientArgs,
-  CreateSolanaClientResult,
 } from "../types/rpc";
 import { sendAndConfirmTransactionFactory } from "../kit";
 import { getPublicSolanaRpcUrl } from "./rpc";
@@ -18,25 +18,25 @@ export function createSolanaClient(
   props: Omit<CreateSolanaClientArgs<MainnetUrl | "mainnet">, "urlOrMoniker"> & {
     urlOrMoniker: "mainnet";
   },
-): CreateSolanaClientResult<MainnetUrl>;
+): SolanaClient<MainnetUrl>;
 export function createSolanaClient(
   props: Omit<CreateSolanaClientArgs<DevnetUrl | "devnet">, "urlOrMoniker"> & {
     urlOrMoniker: "devnet";
   },
-): CreateSolanaClientResult<DevnetUrl>;
+): SolanaClient<DevnetUrl>;
 export function createSolanaClient(
   props: Omit<CreateSolanaClientArgs<TestnetUrl | "testnet">, "urlOrMoniker"> & {
     urlOrMoniker: "testnet";
   },
-): CreateSolanaClientResult<TestnetUrl>;
+): SolanaClient<TestnetUrl>;
 export function createSolanaClient(
   props: Omit<CreateSolanaClientArgs<LocalnetUrl | "localnet">, "urlOrMoniker"> & {
     urlOrMoniker: "localnet";
   },
-): CreateSolanaClientResult<LocalnetUrl>;
+): SolanaClient<LocalnetUrl>;
 export function createSolanaClient<TClusterUrl extends ModifiedClusterUrl>(
   props: CreateSolanaClientArgs<TClusterUrl>,
-): CreateSolanaClientResult<TClusterUrl>;
+): SolanaClient<TClusterUrl>;
 export function createSolanaClient<TCluster extends ModifiedClusterUrl>({
   urlOrMoniker,
   rpcConfig,

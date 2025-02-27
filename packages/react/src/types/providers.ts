@@ -1,8 +1,8 @@
 // import {} from "react";
 
-import { CreateSolanaClientResult } from "gill";
+import { SolanaClient } from "gill";
 
 /**
  * Initial configuration settings for utilizing gill hooks
  */
-export type GillConfig = CreateSolanaClientResult;
+export type GillConfig = SolanaClient;
