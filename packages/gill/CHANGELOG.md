@@ -1,5 +1,44 @@
 # gill
 
+## 0.5.0
+
+### Minor Changes
+
+- [#54](https://github.com/solana-foundation/gill/pull/54)
+  [`8139481`](https://github.com/solana-foundation/gill/commit/813948162c84e7ddad12493ed78f9190182b99bf)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - allow `sendAndConfirmTransaction` to also
+  handle signing
+
+- [#52](https://github.com/solana-foundation/gill/pull/52)
+  [`9e01463`](https://github.com/solana-foundation/gill/commit/9e01463d7d38ca9b073fbb96472093dd6ccf379c)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added `lamportsToSol` function
+
+- [#56](https://github.com/solana-foundation/gill/pull/56)
+  [`3439498`](https://github.com/solana-foundation/gill/commit/343949824950f700e572ada151b4dc07fd68d229)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added `transactionFromBase64` function
+
+### Patch Changes
+
+- [#58](https://github.com/solana-foundation/gill/pull/58)
+  [`7c997f7`](https://github.com/solana-foundation/gill/commit/7c997f7cde676beeeb89200fe389c79dba708082)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - refactored client type names
+
+- [#53](https://github.com/solana-foundation/gill/pull/53)
+  [`452359c`](https://github.com/solana-foundation/gill/commit/452359c08c5fd089fb1f1e7959e70fb34e148697)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - declare imports as type
+
+- [#50](https://github.com/solana-foundation/gill/pull/50)
+  [`5dd8366`](https://github.com/solana-foundation/gill/commit/5dd8366084727541394d90e5044e030fdcfc246c)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - add `localhost` support to explorer urls
+
+- [#55](https://github.com/solana-foundation/gill/pull/55)
+  [`7e1ce79`](https://github.com/solana-foundation/gill/commit/7e1ce79e05793c0b0422de05d1b7505e6fdca864)
+  Thanks [@metasal1](https://github.com/metasal1)! - remove duplicate entry from changelog
+
+- [#59](https://github.com/solana-foundation/gill/pull/59)
+  [`585bdc7`](https://github.com/solana-foundation/gill/commit/585bdc788d8291d6712e4df704f97c50034b484f)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - forced resolutions for web3js and kit
+
 ## 0.4.0
 
 ### Minor Changes
