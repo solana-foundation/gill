@@ -17,7 +17,7 @@ type FetchedAddressLookup = {
     addresses: Address[];
 };
 
-async function fetchLookupTables(
+export async function fetchLookupTables(
     lookupTableAddresses: Address[],
     rpc: Rpc<GetMultipleAccountsApi>,
     config?: FetchAccountsConfig,
