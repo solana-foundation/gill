@@ -14,10 +14,10 @@ importers:
     dependencies:
       '@solana/kit':
         specifier: npm:gill
-        version: gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+        version: gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@solana/web3.js':
         specifier: npm:gill
-        version: gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+        version: gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
     devDependencies:
       '@changesets/changelog-github':
         specifier: ^0.5.0
@@ -122,14 +122,11 @@ importers:
   examples/get-started:
     dependencies:
       '@solana-program/compute-budget':
-        specifier: ^0.6.1
-        version: 0.6.1(gill@0.4.0)
+        specifier: ^0.7.0
+        version: 0.7.0(gill@0.5.0)
       '@solana-program/memo':
-        specifier: ^0.6.1
-        version: 0.6.1(gill@0.4.0)
-      '@solana/web3.js':
-        specifier: npm:gill
-        version: gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+        specifier: ^0.7.0
+        version: 0.7.0(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))
       dotenv:
         specifier: ^16.4.5
         version: 16.4.7
@@ -184,77 +181,74 @@ importers:
   packages/gill:
     dependencies:
       '@solana-program/address-lookup-table':
-        specifier: ^0.6.1
-        version: 0.6.1(gill@0.4.0)
+        specifier: ^0.7.0
+        version: 0.7.0(gill@0.5.0)
       '@solana-program/compute-budget':
-        specifier: ^0.6.1
-        version: 0.6.1(gill@0.4.0)
+        specifier: ^0.7.0
+        version: 0.7.0(gill@0.5.0)
       '@solana-program/system':
-        specifier: ^0.6.2
-        version: 0.6.2(gill@0.4.0)
+        specifier: ^0.7.0
+        version: 0.7.0(gill@0.5.0)
       '@solana-program/token-2022':
-        specifier: ^0.3.4
-        version: 0.3.4(gill@0.4.0)
+        specifier: ^0.4.0
+        version: 0.4.0(@solana/sysvars@2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3))(gill@0.5.0)
       '@solana/accounts':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/addresses':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/assertions':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(typescript@5.6.3)
       '@solana/codecs':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/errors':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(typescript@5.6.3)
       '@solana/functional':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(typescript@5.6.3)
       '@solana/instructions':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(typescript@5.6.3)
       '@solana/keys':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/kit':
         specifier: npm:gill
-        version: gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+        version: gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@solana/programs':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/rpc':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/rpc-parsed-types':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(typescript@5.6.3)
       '@solana/rpc-spec-types':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(typescript@5.6.3)
       '@solana/rpc-subscriptions':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@solana/rpc-types':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/signers':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/transaction-confirmation':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@solana/transaction-messages':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/transactions':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
-      '@solana/web3.js':
-        specifier: npm:gill
-        version: gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       typescript:
         specifier: '>=5'
         version: 5.6.3
@@ -1403,25 +1397,46 @@ packages:
     peerDependencies:
       '@solana/web3.js': npm:gill
 
+  '@solana-program/address-lookup-table@0.7.0':
+    resolution: {integrity: sha512-dzCeIO5LtiK3bIg0AwO+TPeGURjSG2BKt0c4FRx7105AgLy7uzTktpUzUj6NXAK9SzbirI8HyvHUvw1uvL8O9A==}
+    peerDependencies:
+      '@solana/kit': npm:gill
+
   '@solana-program/compute-budget@0.6.1':
     resolution: {integrity: sha512-PWcVmRx2gSQ8jd5va5HzSlKqQmR8Q1sYaPcqpCzhOHcApJ4YsVWY6QhaOD5Nx7z1UXkP12vNq3KDsSCZnT3Hkw==}
     peerDependencies:
       '@solana/web3.js': npm:gill
 
-  '@solana-program/memo@0.6.1':
-    resolution: {integrity: sha512-m1Mt/10uADf5WeqTQequI5GqeNsEw3xWzFz1KR018U+olUWXCKoVE4TsjF0+C0lxW9kQ+smLXvCDyqTHW/Lf6A==}
+  '@solana-program/compute-budget@0.7.0':
+    resolution: {integrity: sha512-/JJSE1fKO5zx7Z55Z2tLGWBDDi7tUE+xMlK8qqkHlY51KpqksMsIBzQMkG9Dqhoe2Cnn5/t3QK1nJKqW6eHzpg==}
     peerDependencies:
-      '@solana/web3.js': npm:gill
+      '@solana/kit': npm:gill
+
+  '@solana-program/memo@0.7.0':
+    resolution: {integrity: sha512-3T9iUjWSYtN/5S5jzJuasD2yQfVfFAQ9yTwIE25+P9peWqz4oarn6ZQvRj/FLcBqaMLtSqLhU1hN2cyVBS6hyg==}
+    peerDependencies:
+      '@solana/kit': npm:gill
 
   '@solana-program/system@0.6.2':
     resolution: {integrity: sha512-q0ZnylK+LISjuP2jH5GWV9IJPtpzQctj5KQwij9XCDRSGkcFr2fpqptNnVupTLQiNL6Q4c1OZuG8WBmyFXVXZw==}
     peerDependencies:
       '@solana/web3.js': npm:gill
 
+  '@solana-program/system@0.7.0':
+    resolution: {integrity: sha512-FKTBsKHpvHHNc1ATRm7SlC5nF/VdJtOSjldhcyfMN9R7xo712Mo2jHIzvBgn8zQO5Kg0DcWuKB7268Kv1ocicw==}
+    peerDependencies:
+      '@solana/kit': npm:gill
+
   '@solana-program/token-2022@0.3.4':
     resolution: {integrity: sha512-URHA91F9sDibbL6RbuhnKHWGeAONCDcCmHq8tMtpVOhse9/WKp0JOvdLSiGuRkKZqLHo74xF8otmgPVchgVZXQ==}
     peerDependencies:
       '@solana/web3.js': npm:gill
+
+  '@solana-program/token-2022@0.4.0':
+    resolution: {integrity: sha512-rLcYyjeRq/dW62ju9X+gFYqIIRGuD4vXq6EwM9oQBoURFbFzyo12VUi6v0hNh0dRcru+kUx321qVCAfsWWV/ug==}
+    peerDependencies:
+      '@solana/kit': npm:gill
+      '@solana/sysvars': ^2.1.0
 
   '@solana/accounts@2.1.0':
     resolution: {integrity: sha512-1JOBiLFeIeHmGx7k1b23UWF9vM1HAh9GBMCzr5rBPrGSBs+QUgxBJ3+yrRg+UPEOSELubqo7qoOVFUKYsb1nXw==}
@@ -1688,6 +1703,12 @@ packages:
 
   '@solana/subscribable@2.1.0':
     resolution: {integrity: sha512-xi12Cm889+uT5sRKnIzr7nLnHAp3hiR3dqIzrT1P7z7iEGp8OnqUQIQCHlgozFHM2cPW+6685NQXk1l1ImuJIw==}
+    engines: {node: '>=20.18.0'}
+    peerDependencies:
+      typescript: '>=5'
+
+  '@solana/sysvars@2.1.0':
+    resolution: {integrity: sha512-GXu9yS0zIebmM1Unqw/XFpYuvug03m42w98ioOPV/yiHzECggGRGpHGD9RLVYnkyz0eL4NRbnJ5dAEu/fvGe0A==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       typescript: '>=5'
@@ -2975,11 +2996,19 @@ packages:
     resolution: {integrity: sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==}
     engines: {node: '>=10'}
 
-  gill@0.4.0:
-    resolution: {integrity: sha512-gpCEeBE07NDhosyZvvPi/P4hbl81HpAQEQKQdh258MXCvvctmhqRJv3Eumol+L12mouzD29eBkNkHDc5ILZ2pw==}
+  gill@0.5.0:
+    resolution: {integrity: sha512-g9S7J2upNPOI1IoZ0MLodHO1+e6t/BGkfB4ADDLlSrAzWyv9vixZVRqoIBpZGxJfpW77lIfkUQXhHkd6+O5VbA==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
+      '@solana/kit': npm:gill
+      '@solana/web3.js': npm:gill
+      '@solana/web3.js@^2.0.0': '*'
       typescript: '>=5'
+    peerDependenciesMeta:
+      '@solana/kit':
+        optional: true
+      '@solana/web3.js@^2.0.0':
+        optional: true
 
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
@@ -5930,25 +5959,42 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 1.8.6
 
-  '@solana-program/address-lookup-table@0.6.1(gill@0.4.0)':
+  '@solana-program/address-lookup-table@0.6.1(gill@0.5.0)':
     dependencies:
-      '@solana/web3.js': gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+      '@solana/web3.js': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
 
-  '@solana-program/compute-budget@0.6.1(gill@0.4.0)':
+  '@solana-program/address-lookup-table@0.7.0(gill@0.5.0)':
     dependencies:
-      '@solana/web3.js': gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+      '@solana/kit': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
 
-  '@solana-program/memo@0.6.1(gill@0.4.0)':
+  '@solana-program/compute-budget@0.6.1(gill@0.5.0)':
     dependencies:
-      '@solana/web3.js': gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+      '@solana/web3.js': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
 
-  '@solana-program/system@0.6.2(gill@0.4.0)':
+  '@solana-program/compute-budget@0.7.0(gill@0.5.0)':
     dependencies:
-      '@solana/web3.js': gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+      '@solana/kit': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
 
-  '@solana-program/token-2022@0.3.4(gill@0.4.0)':
+  '@solana-program/memo@0.7.0(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))':
     dependencies:
-      '@solana/web3.js': gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+      '@solana/kit': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+
+  '@solana-program/system@0.6.2(gill@0.5.0)':
+    dependencies:
+      '@solana/web3.js': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+
+  '@solana-program/system@0.7.0(gill@0.5.0)':
+    dependencies:
+      '@solana/kit': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+
+  '@solana-program/token-2022@0.3.4(gill@0.5.0)':
+    dependencies:
+      '@solana/web3.js': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+
+  '@solana-program/token-2022@0.4.0(@solana/sysvars@2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3))(gill@0.5.0)':
+    dependencies:
+      '@solana/kit': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+      '@solana/sysvars': 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
 
   '@solana/accounts@2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)':
     dependencies:
@@ -6072,19 +6118,19 @@ snapshots:
 
   '@solana/errors@2.0.0(typescript@5.6.3)':
     dependencies:
-      chalk: 5.3.0
+      chalk: 5.4.1
       commander: 12.1.0
       typescript: 5.6.3
 
   '@solana/errors@2.0.0-rc.4(typescript@5.6.3)':
     dependencies:
-      chalk: 5.3.0
+      chalk: 5.4.1
       commander: 12.1.0
       typescript: 5.6.3
 
   '@solana/errors@2.1.0(typescript@5.6.3)':
     dependencies:
-      chalk: 5.3.0
+      chalk: 5.4.1
       commander: 13.1.0
       typescript: 5.6.3
 
@@ -6301,6 +6347,16 @@ snapshots:
     dependencies:
       '@solana/errors': 2.1.0(typescript@5.6.3)
       typescript: 5.6.3
+
+  '@solana/sysvars@2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)':
+    dependencies:
+      '@solana/accounts': 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
+      '@solana/codecs': 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
+      '@solana/errors': 2.1.0(typescript@5.6.3)
+      '@solana/rpc-types': 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
+      typescript: 5.6.3
+    transitivePeerDependencies:
+      - fastestsmallesttextencoderdecoder
 
   '@solana/transaction-confirmation@2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))':
     dependencies:
@@ -7716,12 +7772,12 @@ snapshots:
 
   get-stream@6.0.1: {}
 
-  gill@0.4.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.4.0)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)):
+  gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)):
     dependencies:
-      '@solana-program/address-lookup-table': 0.6.1(gill@0.4.0)
-      '@solana-program/compute-budget': 0.6.1(gill@0.4.0)
-      '@solana-program/system': 0.6.2(gill@0.4.0)
-      '@solana-program/token-2022': 0.3.4(gill@0.4.0)
+      '@solana-program/address-lookup-table': 0.6.1(gill@0.5.0)
+      '@solana-program/compute-budget': 0.6.1(gill@0.5.0)
+      '@solana-program/system': 0.6.2(gill@0.5.0)
+      '@solana-program/token-2022': 0.3.4(gill@0.5.0)
       '@solana/accounts': 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/addresses': 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/assertions': 2.1.0(typescript@5.6.3)
@@ -7740,9 +7796,11 @@ snapshots:
       '@solana/transaction-confirmation': 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@solana/transaction-messages': 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@solana/transactions': 2.1.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
+      '@solana/web3.js': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       typescript: 5.6.3
+    optionalDependencies:
+      '@solana/kit': gill@0.5.0(fastestsmallesttextencoderdecoder@1.0.22)(gill@0.5.0)(gill@0.5.0(gill@0.5.0)(gill@0.5.0)(typescript@5.6.3))(typescript@5.6.3)(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
     transitivePeerDependencies:
-      - '@solana/web3.js'
       - fastestsmallesttextencoderdecoder
       - ws
 

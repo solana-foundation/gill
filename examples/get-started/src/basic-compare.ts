@@ -1,9 +1,9 @@
 /**
  * The purpose of this script is to compare some of the differences
- * of using `gill` as a single entrypoint vs `@solana/web3.js`
+ * of using `gill` as a single entrypoint vs `@solana/kit`
  * (and the various `@solana-program/*` packages).
  *
- * This script is the `@solana/web3.js` version of the comparison.
+ * This script is the `@solana/kit` version of the comparison.
  * See the `gill` version in the ./basic.ts file
  */
 import { readFileSync } from "node:fs";
@@ -23,7 +23,7 @@ import {
   setTransactionMessageFeePayerSigner,
   appendTransactionMessageInstructions,
   setTransactionMessageLifetimeUsingBlockhash,
-} from "@solana/web3.js";
+} from "@solana/kit";
 import { getAddMemoInstruction } from "@solana-program/memo";
 import {
   getSetComputeUnitLimitInstruction,

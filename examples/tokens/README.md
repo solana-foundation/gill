@@ -6,7 +6,7 @@ offering the low level "escape hatches" when developers need (or want)
 fine-grain control.
 
 Take a look through these examples to see how gill works and even
-[how it compares](../get-started/README.md#comparison-of-gill-vs-web3js-v2) to
+[how it compares](../get-started/README.md#comparison-of-gill-vs-solanakit-aka-web3js-v2) to
 using the vanilla web3js v2 library.
 
 ## Tech stack used

@@ -6,7 +6,7 @@ offering the low level "escape hatches" when developers need (or want)
 fine-grain control.
 
 Take a look through these examples to see how gill works and even
-[how it compares](#comparison-of-gill-vs-web3js-v2) to using the vanilla web3js
+[how it compares](#comparison-of-gill-vs-solanakit-aka-web3js-v2) to using the vanilla web3js
 v2 library.
 
 ## Tech stack used
@@ -88,11 +88,11 @@ wallet:
 > For more examples interacting with Tokens on Solana, see the
 > [token examples examples here](../tokens/README.md)
 
-## Comparison of gill vs web3js v2
+## Comparison of gill vs @solana/kit (aka web3js v2)
 
 You can find comparison scripts that demonstrates some of the differences
 between [gill](https://github.com/solana-foundation/gill) and
-[web3.js v2](https://github.com/anza-xyz/solana-web3.js).
+[@solana/kit](https://github.com/anza-xyz/kit) (formerly known as "web3.js v2").
 
 Both scripts accomplish the same task: send an optimized transaction to the
 Solana blockchain.

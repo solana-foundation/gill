@@ -22,11 +22,11 @@ Welcome to `gill`, a JavaScript/TypeScript client library for interacting with t
 Native, or just about any other JavaScript environment.
 
 Gill is built on top of the modern javascript libraries for Solana built by Anza and used in
-([@solana/web3.js v2](https://github.com/anza-xyz/solana-web3.js)). By utilizing the same types and
-functions under the hood, `gill` is compatible with web3.js.
+([@solana/kit](https://github.com/anza-xyz/kit) aka "web3.js v2"). By utilizing the same types and
+functions under the hood, `gill` is compatible with `kit`.
 
 > For a comparison of using gill vs web3js v2, take a look at the
-> [comparison examples](https://github.com/solana-foundation/gill/tree/master/examples/get-started#comparison-of-gill-vs-web3js-v2).
+> [comparison examples](https://github.com/solana-foundation/gill/tree/master/examples/get-started#comparison-of-gill-vs-solanakit-aka-web3js-v2).
 
 ## Installation
 

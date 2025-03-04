@@ -10,13 +10,12 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "@solana-program/compute-budget": "^0.6.1",
-    "@solana-program/memo": "^0.6.1",
-    "@solana/web3.js": "2.0.0",
-    "fastestsmallesttextencoderdecoder": "^1.0.22",
+    "@solana-program/compute-budget": "^0.7.0",
+    "@solana-program/memo": "^0.7.0",
     "dotenv": "^16.4.5",
-    "ws": "^8.18.0",
-    "gill": "workspace:*"
+    "fastestsmallesttextencoderdecoder": "^1.0.22",
+    "gill": "workspace:*",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@types/node": "^22.9.0",
