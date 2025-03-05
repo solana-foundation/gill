@@ -40,9 +40,9 @@ export function simulateTransactionFactory<
     return rpc
       .simulateTransaction(getBase64EncodedWireTransaction(transaction), {
         replaceRecentBlockhash: true,
-        sigVerify: false,
         // innerInstructions: true,
         ...config,
+        sigVerify: false,
         encoding: "base64",
       })
       .send();
