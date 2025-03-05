@@ -1,5 +1,21 @@
 # gill
 
+## 0.6.0
+
+### Minor Changes
+
+- [#60](https://github.com/solana-foundation/gill/pull/60)
+  [`2b1f604`](https://github.com/solana-foundation/gill/commit/2b1f604ff0b538cfa81138e1f25f8cd48c908fad)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - export the `fetchLookupTables` function
+
+- [#63](https://github.com/solana-foundation/gill/pull/63)
+  [`bf67203`](https://github.com/solana-foundation/gill/commit/bf6720391dc62056d734f7e1d46ac19484d2b2e7)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - added `simulateTransaction` and factory
+
+- [#62](https://github.com/solana-foundation/gill/pull/62)
+  [`c8205fb`](https://github.com/solana-foundation/gill/commit/c8205fb80950aa3d61f7a573b5e59e3c7a087002)
+  Thanks [@nickfrosty](https://github.com/nickfrosty)! - replace web3js v2 with kit
+
 ## 0.5.0
 
 ### Minor Changes
