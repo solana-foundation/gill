@@ -55,6 +55,7 @@ yarn add gill
 - [Making Solana RPC calls](#making-solana-rpc-calls)
 - [Create a transaction](#create-a-transaction)
 - [Signing transactions](#signing-transactions)
+- [Simulating transactions](#simulating-transactions)
 - [Sending and confirming transaction](#sending-and-confirming-transactions)
 - [Get a transaction signature](#get-the-signature-from-a-signed-transaction)
 - [Get a Solana Explorer link](#get-a-solana-explorer-link-for-transactions-accounts-or-blocks)
@@ -265,10 +266,29 @@ const signedTransaction = await signTransactionMessageWithSigners(
 );
 ```
 
+### Simulating transactions
+
+To simulate a transaction on the blockchain, you can use the `simulateTransaction()` function
+initialized from `createSolanaClient()`.
+
+```typescript
+import { ... } from "gill";
+
+const { simulateTransaction } = createSolanaClient({
+  urlOrMoniker: "mainnet",
+});
+
+const transaction = createTransaction(...);
+
+const simulation = await simulateTransaction(transaction)
+```
+
+The transaction provided to `simulateTransaction()` can either be signed or not.
+
 ### Sending and confirming transactions
 
 To send and confirm a transaction to the blockchain, you can use the `sendAndConfirmTransaction`
-function initialized from `createSolanaClient`.
+function initialized from `createSolanaClient()`.
 
 ```typescript
 import { ... } from "gill";
