@@ -27,9 +27,10 @@ const cluster: SolanaClusterMoniker = "devnet";
  *
  * Note: `urlOrMoniker` can be either a Solana network moniker or a full URL of your RPC provider
  */
-const { rpc, sendAndConfirmTransaction } = createSolanaClient({
-  urlOrMoniker: cluster,
-});
+const { rpc, sendAndConfirmTransaction, simulateTransaction } =
+  createSolanaClient({
+    urlOrMoniker: cluster,
+  });
 
 /**
  * Create a memo instruction to post a simple message onchain
@@ -59,6 +60,16 @@ let tx = createTransaction({
 });
 console.log("Transaction:");
 console.log(tx);
+
+/**
+ * Simulate the transaction
+ *
+ * Note: This is not required to be performed in your application,
+ * but can help catch errors during troubleshooting
+ */
+const simulation = await simulateTransaction(tx);
+console.log("transaction simulation:");
+console.log(simulation);
 
 /**
  * Sign the transaction with the provided `signer` when it was created
