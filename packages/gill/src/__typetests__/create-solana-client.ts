@@ -19,7 +19,11 @@ import {
 {
   // Mainnet cluster typechecks when the providing the moniker
   {
-    const { rpc: mainnetRpc, rpcSubscriptions: mainnetRpcSubscriptions } = createSolanaClient({
+    const {
+      rpc: mainnetRpc,
+      rpcSubscriptions: mainnetRpcSubscriptions,
+      simulateTransaction,
+    } = createSolanaClient({
       urlOrMoniker: "mainnet",
     });
     mainnetRpc satisfies Rpc<SolanaRpcApiMainnet>;
@@ -30,6 +34,9 @@ import {
     mainnetRpc satisfies RpcDevnet<SolanaRpcApi>;
     //@ts-expect-error Should not be a testnet RPC
     mainnetRpc satisfies RpcTestnet<SolanaRpcApi>;
+
+    // should have access to `simulateTransaction`
+    simulateTransaction;
 
     sendAndConfirmTransactionFactory({
       rpc: mainnetRpc,
@@ -43,7 +50,11 @@ import {
 
   // Devnet cluster typechecks when the providing the moniker
   {
-    const { rpc: devnetRpc, rpcSubscriptions: devnetRpcSubscriptions } = createSolanaClient({
+    const {
+      rpc: devnetRpc,
+      rpcSubscriptions: devnetRpcSubscriptions,
+      simulateTransaction,
+    } = createSolanaClient({
       urlOrMoniker: "devnet",
     });
     devnetRpc satisfies Rpc<SolanaRpcApi>;
@@ -53,6 +64,9 @@ import {
     devnetRpc satisfies RpcTestnet<SolanaRpcApi>;
     //@ts-expect-error Should not be a mainnet RPC
     devnetRpc satisfies RpcMainnet<SolanaRpcApiMainnet>;
+
+    // should have access to `simulateTransaction`
+    simulateTransaction;
 
     sendAndConfirmTransactionFactory({
       rpc: devnetRpc,
@@ -66,7 +80,11 @@ import {
 
   // Testnet cluster typechecks when the providing the moniker
   {
-    const { rpc: testnetRpc, rpcSubscriptions: testnetRpcSubscriptions } = createSolanaClient({
+    const {
+      rpc: testnetRpc,
+      rpcSubscriptions: testnetRpcSubscriptions,
+      simulateTransaction,
+    } = createSolanaClient({
       urlOrMoniker: "testnet",
     });
     testnetRpc satisfies Rpc<SolanaRpcApi>;
@@ -76,6 +94,9 @@ import {
     testnetRpc satisfies RpcDevnet<SolanaRpcApi>;
     //@ts-expect-error Should not be a mainnet RPC
     testnetRpc satisfies RpcMainnet<SolanaRpcApiMainnet>;
+
+    // should have access to `simulateTransaction`
+    simulateTransaction;
 
     sendAndConfirmTransactionFactory({
       rpc: testnetRpc,
@@ -89,7 +110,11 @@ import {
 
   // Localnet cluster typechecks when the providing the moniker
   {
-    const { rpc: localnetRpc, rpcSubscriptions: localnetRpcSubscriptions } = createSolanaClient({
+    const {
+      rpc: localnetRpc,
+      rpcSubscriptions: localnetRpcSubscriptions,
+      simulateTransaction,
+    } = createSolanaClient({
       urlOrMoniker: "localnet",
     });
     localnetRpc satisfies Rpc<SolanaRpcApi>;
@@ -101,6 +126,9 @@ import {
     //@ts-expect-error Should not be a mainnet RPC
     localnetRpc satisfies RpcMainnet<SolanaRpcApiMainnet>;
 
+    // should have access to `simulateTransaction`
+    simulateTransaction;
+
     sendAndConfirmTransactionFactory({
       rpc: localnetRpc,
       rpcSubscriptions: localnetRpcSubscriptions,
@@ -113,7 +141,11 @@ import {
 
   // Localnet cluster typechecks when the providing the moniker
   {
-    const { rpc: genericRpc, rpcSubscriptions: genericRpcSubscriptions } = createSolanaClient({
+    const {
+      rpc: genericRpc,
+      rpcSubscriptions: genericRpcSubscriptions,
+      simulateTransaction,
+    } = createSolanaClient({
       urlOrMoniker: "https://example-rpc.com",
     });
     genericRpc satisfies Rpc<SolanaRpcApi>;
@@ -124,6 +156,9 @@ import {
     genericRpc satisfies RpcDevnet<SolanaRpcApi>;
     //@ts-expect-error Should not be a mainnet RPC
     genericRpc satisfies RpcMainnet<SolanaRpcApiMainnet>;
+
+    // should have access to `simulateTransaction`
+    simulateTransaction;
 
     sendAndConfirmTransactionFactory({
       rpc: genericRpc,

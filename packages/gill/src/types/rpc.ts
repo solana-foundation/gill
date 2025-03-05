@@ -10,7 +10,8 @@ import type {
   SolanaRpcSubscriptionsApi,
 } from "@solana/rpc-subscriptions";
 import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/rpc-types";
-import type { SendAndConfirmTransactionWithBlockhashLifetimeFunction } from "../kit";
+import type { SendAndConfirmTransactionWithBlockhashLifetimeFunction } from "../kit/send-and-confirm-transaction";
+import type { SimulateTransactionFunction } from "../core/simulate-transaction";
 
 /** Solana cluster moniker */
 export type SolanaClusterMoniker = "mainnet" | "devnet" | "testnet" | "localnet";
@@ -46,4 +47,8 @@ export type SolanaClient<TClusterUrl extends ModifiedClusterUrl | string = strin
    * Default commitment level: `confirmed`
    */
   sendAndConfirmTransaction: SendAndConfirmTransactionWithBlockhashLifetimeFunction;
+  /**
+   * Simulate a transaction on the network
+   */
+  simulateTransaction: SimulateTransactionFunction;
 };

@@ -10,3 +10,4 @@ export * from "./accounts";
 export * from "./keypairs";
 export * from "./base64-to-transaction";
 export * from "./base64-from-transaction";
+export * from "./simulate-transaction";

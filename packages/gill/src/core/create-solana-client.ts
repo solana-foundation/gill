@@ -10,6 +10,7 @@ import type {
 } from "../types/rpc";
 import { sendAndConfirmTransactionFactory } from "../kit";
 import { getPublicSolanaRpcUrl } from "./rpc";
+import { simulateTransactionFactory } from "./simulate-transaction";
 
 /**
  * Create a Solana `rpc` and `rpcSubscriptions` client
@@ -79,12 +80,12 @@ export function createSolanaClient<TCluster extends ModifiedClusterUrl>({
     rpcSubscriptionsConfig,
   );
 
-  // @ts-ignore
-  const sendAndConfirmTransaction = sendAndConfirmTransactionFactory({ rpc, rpcSubscriptions });
-
   return {
     rpc,
     rpcSubscriptions,
-    sendAndConfirmTransaction,
+    // @ts-ignore
+    sendAndConfirmTransaction: sendAndConfirmTransactionFactory({ rpc, rpcSubscriptions }),
+    // @ts-ignore
+    simulateTransaction: simulateTransactionFactory({ rpc }),
   };
 }
