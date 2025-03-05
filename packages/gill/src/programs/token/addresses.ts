@@ -87,6 +87,7 @@ export function assertIsSupportedTokenProgram(
  */
 export function checkedTokenProgramAddress(tokenProgram?: Address | TokenProgramMonikers): Address {
   if (!tokenProgram) return TOKEN_PROGRAM_ADDRESS;
-  assertIsSupportedTokenProgram(parseTokenProgramAddressOrMoniker(tokenProgram));
-  return tokenProgram as Address;
+  tokenProgram = parseTokenProgramAddressOrMoniker(tokenProgram);
+  assertIsSupportedTokenProgram(tokenProgram);
+  return tokenProgram;
 }
