@@ -54,8 +54,8 @@ export function parseTokenProgramAddressOrMoniker(
     }
     case "token22":
     case "token2022":
-    case "tokenExtension".toLowerCase(): // toLowerCase() to satisfy the spell checker
-    case "tokenExtensions".toLowerCase(): // toLowerCase() to satisfy the spell checker
+    case "tokenextension":
+    case "tokenextensions":
     case TOKEN_2022_PROGRAM_ADDRESS: {
       return TOKEN_2022_PROGRAM_ADDRESS;
     }
