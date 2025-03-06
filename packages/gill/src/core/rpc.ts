@@ -11,7 +11,7 @@ export function localnet(putativeString: string): LocalnetUrl {
  * Note: These RPC URLs are rate limited and not suitable for production applications.
  */
 export function getPublicSolanaRpcUrl(
-  cluster: SolanaClusterMoniker | "mainnet-beta",
+  cluster: SolanaClusterMoniker | "mainnet-beta" | "localhost",
 ): ModifiedClusterUrl {
   switch (cluster) {
     case "devnet":
@@ -22,6 +22,7 @@ export function getPublicSolanaRpcUrl(
     case "mainnet":
       return "https://api.mainnet-beta.solana.com" as MainnetUrl;
     case "localnet":
+    case "localhost":
       return "http://127.0.0.1:8899" as LocalnetUrl;
     default:
       throw new Error("Invalid cluster moniker");

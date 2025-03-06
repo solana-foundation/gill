@@ -23,6 +23,10 @@ describe("getPublicSolanaRpcUrl", () => {
     const rpcUrl = getPublicSolanaRpcUrl("localnet");
     assert.equal(rpcUrl, "http://127.0.0.1:8899");
   });
+  test("getPublicSolanaRpcUrl returns localhost url", () => {
+    const rpcUrl = getPublicSolanaRpcUrl("localhost");
+    assert.equal(rpcUrl, "http://127.0.0.1:8899");
+  });
   test("getPublicSolanaRpcUrl show throw error on unsupported moniker", () => {
     // @ts-expect-error - `not-supported` is not a valid moniker
     assert.throws(() => getPublicSolanaRpcUrl("not-supported"), Error);
