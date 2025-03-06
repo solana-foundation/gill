@@ -13,6 +13,11 @@ describe("parseTokenProgramAddressOrMoniker", () => {
     expect(result).toBe(TOKEN_PROGRAM_ADDRESS);
   });
 
+  it("should return TOKEN_PROGRAM_ADDRESS for 'token' moniker", () => {
+    const result = parseTokenProgramAddressOrMoniker("token");
+    expect(result).toBe(TOKEN_PROGRAM_ADDRESS);
+  });
+
   it("should return TOKEN_PROGRAM_ADDRESS for direct address", () => {
     const result = parseTokenProgramAddressOrMoniker(TOKEN_PROGRAM_ADDRESS);
     expect(result).toBe(TOKEN_PROGRAM_ADDRESS);

@@ -4,7 +4,7 @@ import { findAssociatedTokenPda } from "@solana-program/token-2022";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 import { checkedAddress } from "../../core/utils";
 
-export type LegacyTokenProgramMonikers = "legacy";
+export type LegacyTokenProgramMonikers = "legacy" | "token";
 
 export type TokenExtensionProgramMonikers =
   | "token22"
@@ -49,6 +49,7 @@ export function parseTokenProgramAddressOrMoniker(
   }
   switch (tokenProgram) {
     case "legacy":
+    case "token":
     case TOKEN_PROGRAM_ADDRESS: {
       return TOKEN_PROGRAM_ADDRESS;
     }
