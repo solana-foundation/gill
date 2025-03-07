@@ -68,7 +68,9 @@
   "files": [
     "./dist/"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "./src/bigint.ts"
+  ],
   "keywords": [
     "blockchain",
     "solana",

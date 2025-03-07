@@ -1,3 +1,5 @@
+import "./bigint";
+
 export * from "@solana/accounts";
 export * from "@solana/addresses";
 export * from "@solana/codecs";
