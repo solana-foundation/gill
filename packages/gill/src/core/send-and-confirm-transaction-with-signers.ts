@@ -85,7 +85,7 @@ export function sendAndConfirmTransactionWithSignersFactory<
   rpc,
   rpcSubscriptions,
 }: SendAndConfirmTransactionWithSignersFactoryConfig<TCluster>): SendAndConfirmTransactionWithSignersFunction {
-  // @ts-ignore
+  // @ts-ignore - TODO(FIXME)
   const sendAndConfirmTransaction = sendAndConfirmTransactionFactory({ rpc, rpcSubscriptions });
   return async function sendAndConfirmTransactionWithSigners(transaction, config = { commitment: "confirmed" }) {
     if ("messageBytes" in transaction == false) {
@@ -94,12 +94,8 @@ export function sendAndConfirmTransactionWithSignersFactory<
       >;
     }
     debug(`Sending transaction: ${getExplorerLink({ transaction: getSignatureFromTransaction(transaction) })}`);
-    try {
-      await sendAndConfirmTransaction(transaction, config);
-      return getSignatureFromTransaction(transaction);
-    } catch (err) {
-      debug(`Transaction as base64: ${getBase64EncodedWireTransaction(transaction)}`, "debug");
-      throw err;
-    }
+    debug(`Transaction as base64: ${getBase64EncodedWireTransaction(transaction)}`, "debug");
+    await sendAndConfirmTransaction(transaction, config);
+    return getSignatureFromTransaction(transaction);
   };
 }
