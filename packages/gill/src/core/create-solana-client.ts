@@ -2,15 +2,10 @@ import { createSolanaRpc } from "@solana/rpc";
 import { createSolanaRpcSubscriptions } from "@solana/rpc-subscriptions";
 import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/rpc-types";
 
-import type {
-  LocalnetUrl,
-  SolanaClient,
-  ModifiedClusterUrl,
-  CreateSolanaClientArgs,
-} from "../types/rpc";
-import { sendAndConfirmTransactionFactory } from "../kit";
+import type { LocalnetUrl, SolanaClient, ModifiedClusterUrl, CreateSolanaClientArgs } from "../types/rpc";
 import { getPublicSolanaRpcUrl } from "./rpc";
 import { simulateTransactionFactory } from "./simulate-transaction";
+import { sendAndConfirmTransactionWithSignersFactory } from "./send-and-confirm-transaction-with-signers";
 
 /**
  * Create a Solana `rpc` and `rpcSubscriptions` client
@@ -83,8 +78,12 @@ export function createSolanaClient<TCluster extends ModifiedClusterUrl>({
   return {
     rpc,
     rpcSubscriptions,
-    // @ts-ignore
-    sendAndConfirmTransaction: sendAndConfirmTransactionFactory({ rpc, rpcSubscriptions }),
+    sendAndConfirmTransaction: sendAndConfirmTransactionWithSignersFactory({
+      // @ts-ignore - TODO(FIXME:nick)
+      rpc,
+      // @ts-ignore - TODO(FIXME:nick)
+      rpcSubscriptions,
+    }),
     // @ts-ignore
     simulateTransaction: simulateTransactionFactory({ rpc }),
   };

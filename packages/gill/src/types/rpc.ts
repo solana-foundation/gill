@@ -10,8 +10,8 @@ import type {
   SolanaRpcSubscriptionsApi,
 } from "@solana/rpc-subscriptions";
 import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/rpc-types";
-import type { SendAndConfirmTransactionWithBlockhashLifetimeFunction } from "../kit/send-and-confirm-transaction";
 import type { SimulateTransactionFunction } from "../core/simulate-transaction";
+import { SendAndConfirmTransactionWithSignersFunction } from "../core/send-and-confirm-transaction-with-signers";
 
 /** Solana cluster moniker */
 export type SolanaClusterMoniker = "mainnet" | "devnet" | "testnet" | "localnet";
@@ -42,11 +42,11 @@ export type SolanaClient<TClusterUrl extends ModifiedClusterUrl | string = strin
   /** Used to make RPC websocket calls to your RPC provider */
   rpcSubscriptions: RpcSubscriptions<SolanaRpcSubscriptionsApi> & TClusterUrl;
   /**
-   * Send and confirm a transaction to the network
+   * Send and confirm a transaction to the network (including signing with available Signers)
    *
    * Default commitment level: `confirmed`
    */
-  sendAndConfirmTransaction: SendAndConfirmTransactionWithBlockhashLifetimeFunction;
+  sendAndConfirmTransaction: SendAndConfirmTransactionWithSignersFunction;
   /**
    * Simulate a transaction on the network
    */

@@ -4,6 +4,7 @@ export * from "./utils";
 export * from "./rpc";
 export * from "./explorer";
 export * from "./create-transaction";
+export * from "./send-and-confirm-transaction-with-signers";
 export * from "./prepare-transaction";
 export * from "./create-solana-client";
 export * from "./accounts";
