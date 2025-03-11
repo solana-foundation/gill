@@ -24,7 +24,7 @@ import {
   type Option,
   type OptionOrNullable,
 } from "@solana/codecs";
-import type { Address } from "@solana/addresses";
+import type { Address } from "@solana/kit";
 import type {
   IInstruction,
   IInstructionWithAccounts,
@@ -34,8 +34,8 @@ import type {
   WritableAccount,
   WritableSignerAccount,
   IAccountMeta,
-} from "@solana/instructions";
-import { type IAccountSignerMeta, type TransactionSigner } from "@solana/signers";
+} from "@solana/kit";
+import { type IAccountSignerMeta, type TransactionSigner } from "@solana/kit";
 
 import { getAccountMetaFactory, type ResolvedAccount } from "../../../shared";
 import {
@@ -80,12 +80,8 @@ export type CreateMetadataAccountV3Instruction<
       TAccountPayer extends string
         ? WritableSignerAccount<TAccountPayer> & IAccountSignerMeta<TAccountPayer>
         : TAccountPayer,
-      TAccountUpdateAuthority extends string
-        ? ReadonlyAccount<TAccountUpdateAuthority>
-        : TAccountUpdateAuthority,
-      TAccountSystemProgram extends string
-        ? ReadonlyAccount<TAccountSystemProgram>
-        : TAccountSystemProgram,
+      TAccountUpdateAuthority extends string ? ReadonlyAccount<TAccountUpdateAuthority> : TAccountUpdateAuthority,
+      TAccountSystemProgram extends string ? ReadonlyAccount<TAccountSystemProgram> : TAccountSystemProgram,
       ...(TAccountRent extends undefined
         ? []
         : [TAccountRent extends string ? ReadonlyAccount<TAccountRent> : TAccountRent]),
@@ -223,8 +219,7 @@ export function getCreateMetadataAccountV3Instruction<
 
   // Resolve default values.
   if (!accounts.systemProgram.value) {
-    accounts.systemProgram.value =
-      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
+    accounts.systemProgram.value = "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
   }
 
   const getAccountMeta = getAccountMetaFactory(programAddress, "omitted");
@@ -239,9 +234,7 @@ export function getCreateMetadataAccountV3Instruction<
       getAccountMeta(accounts.rent),
     ].filter(<T>(x: T | undefined): x is T => x !== undefined),
     programAddress,
-    data: getCreateMetadataAccountV3InstructionDataEncoder().encode(
-      args as CreateMetadataAccountV3InstructionDataArgs,
-    ),
+    data: getCreateMetadataAccountV3InstructionDataEncoder().encode(args as CreateMetadataAccountV3InstructionDataArgs),
   } as CreateMetadataAccountV3Instruction<
     TProgramAddress,
     TAccountMetadata,
@@ -286,9 +279,7 @@ export function parseCreateMetadataAccountV3Instruction<
   TProgram extends string,
   TAccountMetas extends readonly IAccountMeta[],
 >(
-  instruction: IInstruction<TProgram> &
-    IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+  instruction: IInstruction<TProgram> & IInstructionWithAccounts<TAccountMetas> & IInstructionWithData<Uint8Array>,
 ): ParsedCreateMetadataAccountV3Instruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 6) {
     // TODO: Coded error.

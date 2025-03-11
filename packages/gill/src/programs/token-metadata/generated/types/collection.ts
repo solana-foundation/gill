@@ -6,7 +6,7 @@
  * @see https://github.com/codama-idl/codama
  */
 
-import { type Address, getAddressDecoder, getAddressEncoder } from "@solana/addresses";
+import { type Address, getAddressDecoder, getAddressEncoder } from "@solana/kit";
 import {
   combineCodec,
   getBooleanDecoder,

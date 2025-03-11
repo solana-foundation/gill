@@ -5,17 +5,15 @@ import {
   Rpc,
   RpcDevnet,
   RpcMainnet,
-  RpcTestnet,
-  SendTransactionApi,
-} from "@solana/rpc";
-import {
   RpcSubscriptions,
   RpcSubscriptionsDevnet,
   RpcSubscriptionsMainnet,
   RpcSubscriptionsTestnet,
+  RpcTestnet,
+  SendTransactionApi,
   SignatureNotificationsApi,
   SlotNotificationsApi,
-} from "@solana/rpc-subscriptions";
+} from "@solana/kit";
 import { sendAndConfirmTransactionWithSignersFactory } from "../core/send-and-confirm-transaction-with-signers";
 
 const rpc = null as unknown as Rpc<GetEpochInfoApi & GetSignatureStatusesApi & SendTransactionApi>;

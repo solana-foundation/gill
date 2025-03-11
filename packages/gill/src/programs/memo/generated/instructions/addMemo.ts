@@ -16,23 +16,21 @@ import {
   type Decoder,
   type Encoder,
 } from "@solana/codecs";
-import { type Address } from "@solana/addresses";
+import { type Address } from "@solana/kit";
 import {
   type IInstruction,
   type IInstructionWithAccounts,
   type IInstructionWithData,
   type IAccountMeta,
   AccountRole,
-} from "@solana/instructions";
-import { type TransactionSigner } from "@solana/signers";
+} from "@solana/kit";
+import { type TransactionSigner } from "@solana/kit";
 import { MEMO_PROGRAM_ADDRESS } from "../programs";
 
 export type AddMemoInstruction<
   TProgram extends string = typeof MEMO_PROGRAM_ADDRESS,
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
-> = IInstruction<TProgram> &
-  IInstructionWithData<Uint8Array> &
-  IInstructionWithAccounts<TRemainingAccounts>;
+> = IInstruction<TProgram> & IInstructionWithData<Uint8Array> & IInstructionWithAccounts<TRemainingAccounts>;
 
 export type AddMemoInstructionData = { memo: string };
 
@@ -46,10 +44,7 @@ export function getAddMemoInstructionDataDecoder(): Decoder<AddMemoInstructionDa
   return getStructDecoder([["memo", getUtf8Decoder()]]);
 }
 
-export function getAddMemoInstructionDataCodec(): Codec<
-  AddMemoInstructionDataArgs,
-  AddMemoInstructionData
-> {
+export function getAddMemoInstructionDataCodec(): Codec<AddMemoInstructionDataArgs, AddMemoInstructionData> {
   return combineCodec(getAddMemoInstructionDataEncoder(), getAddMemoInstructionDataDecoder());
 }
 
@@ -58,9 +53,7 @@ export type AddMemoInput = {
   signers?: Array<TransactionSigner>;
 };
 
-export function getAddMemoInstruction<
-  TProgramAddress extends Address = typeof MEMO_PROGRAM_ADDRESS,
->(
+export function getAddMemoInstruction<TProgramAddress extends Address = typeof MEMO_PROGRAM_ADDRESS>(
   input: AddMemoInput,
   config?: { programAddress?: TProgramAddress },
 ): AddMemoInstruction<TProgramAddress> {

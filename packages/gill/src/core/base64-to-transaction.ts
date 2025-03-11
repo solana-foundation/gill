@@ -1,13 +1,10 @@
-import { pipe } from "@solana/functional";
-import { partiallySignTransactionMessageWithSigners } from "@solana/signers";
-import type { CompilableTransactionMessage } from "@solana/transaction-messages";
-
+import type { Base64EncodedWireTransaction, CompilableTransactionMessage, Transaction } from "@solana/kit";
 import {
-  type Transaction,
   compileTransaction,
-  type Base64EncodedWireTransaction,
   getBase64EncodedWireTransaction,
-} from "@solana/transactions";
+  partiallySignTransactionMessageWithSigners,
+  pipe,
+} from "@solana/kit";
 
 /**
  * Compile a transaction to a base64 string
@@ -17,9 +14,7 @@ import {
  *
  * Use {@link transactionToBase64WithSignatures} sign and base64 encode
  */
-export function transactionToBase64(
-  tx: CompilableTransactionMessage | Transaction,
-): Base64EncodedWireTransaction {
+export function transactionToBase64(tx: CompilableTransactionMessage | Transaction): Base64EncodedWireTransaction {
   if ("messageBytes" in tx) return pipe(tx, getBase64EncodedWireTransaction);
   else return pipe(tx, compileTransaction, getBase64EncodedWireTransaction);
 }

@@ -1,5 +1,4 @@
-import type { KeyPairSigner } from "@solana/signers";
-import type { Address } from "@solana/addresses";
+import type { KeyPairSigner, Address } from "@solana/kit";
 import type { SolanaClusterMoniker } from "../types";
 import { GENESIS_HASH, LAMPORTS_PER_SOL } from "./const";
 
@@ -29,7 +28,5 @@ export function checkedAddress(input: KeyPairSigner | Address): Address {
  * Convert a lamport number to the human readable string of a SOL value
  */
 export function lamportsToSol(lamports: bigint | number): string {
-  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 9 }).format(
-    Number(lamports) / LAMPORTS_PER_SOL,
-  );
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 9 }).format(Number(lamports) / LAMPORTS_PER_SOL);
 }

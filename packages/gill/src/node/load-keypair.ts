@@ -1,10 +1,9 @@
+import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { resolve } from "node:path";
-import { readFileSync } from "node:fs";
 
+import { createKeyPairFromBytes, createSignerFromKeyPair, type KeyPairSigner } from "@solana/kit";
 import { DEFAULT_CLI_KEYPAIR_PATH } from "./const";
-import { createSignerFromKeyPair, type KeyPairSigner } from "@solana/signers";
-import { createKeyPairFromBytes } from "@solana/keys";
 
 /**
  * Load a `CryptoKeyPair` from a filesystem wallet json file
@@ -12,12 +11,8 @@ import { createKeyPairFromBytes } from "@solana/keys";
  *
  * @param filePath - file path to a json keypair file, default={@link DEFAULT_CLI_KEYPAIR_PATH}
  */
-export async function loadKeypairFromFile(
-  filePath: string = DEFAULT_CLI_KEYPAIR_PATH,
-): Promise<CryptoKeyPair> {
-  const resolvedPath = resolve(
-    filePath.startsWith("~") ? filePath.replace("~", homedir()) : filePath,
-  );
+export async function loadKeypairFromFile(filePath: string = DEFAULT_CLI_KEYPAIR_PATH): Promise<CryptoKeyPair> {
+  const resolvedPath = resolve(filePath.startsWith("~") ? filePath.replace("~", homedir()) : filePath);
   return createKeyPairFromBytes(Uint8Array.from(JSON.parse(readFileSync(resolvedPath, "utf8"))));
 }
 
@@ -27,9 +22,7 @@ export async function loadKeypairFromFile(
  *
  * @param filePath - file path to a json keypair file, default={@link DEFAULT_CLI_KEYPAIR_PATH}
  */
-export async function loadKeypairSignerFromFile(
-  filePath: string = DEFAULT_CLI_KEYPAIR_PATH,
-): Promise<KeyPairSigner> {
+export async function loadKeypairSignerFromFile(filePath: string = DEFAULT_CLI_KEYPAIR_PATH): Promise<KeyPairSigner> {
   return createSignerFromKeyPair(await loadKeypairFromFile(filePath));
 }
 
@@ -52,8 +45,6 @@ export async function loadKeypairFromEnvironment(variableName: string): Promise<
  *
  * @param variableName - environment variable name accessible via `process.env[variableName]`
  */
-export async function loadKeypairSignerFromEnvironment(
-  variableName: string,
-): Promise<KeyPairSigner> {
+export async function loadKeypairSignerFromEnvironment(variableName: string): Promise<KeyPairSigner> {
   return createSignerFromKeyPair(await loadKeypairFromEnvironment(variableName));
 }

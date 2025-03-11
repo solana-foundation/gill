@@ -1,21 +1,16 @@
-import { generateKeyPairSigner, type KeyPairSigner } from "@solana/signers";
-import type { Address } from "@solana/addresses";
-import type { IInstruction } from "@solana/instructions";
 import { getCreateAccountInstruction } from "@solana-program/system";
+import type { Address, IInstruction, KeyPairSigner } from "@solana/kit";
+import { generateKeyPairSigner } from "@solana/kit";
 import { getMinimumBalanceForRentExemption } from "../core";
+import { getCreateTokenInstructions, GetCreateTokenInstructionsArgs, TOKEN_PROGRAM_ADDRESS } from "../programs/token";
 import { getCreateMetadataAccountV3Instruction } from "../programs/token-metadata";
-import {
-  getCreateTokenInstructions,
-  GetCreateTokenInstructionsArgs,
-  TOKEN_PROGRAM_ADDRESS,
-} from "../programs/token";
 
 import {
-  TOKEN_2022_PROGRAM_ADDRESS,
-  getMintSize,
+  getInitializeMetadataPointerInstruction,
   getInitializeMintInstruction,
   getInitializeTokenMetadataInstruction,
-  getInitializeMetadataPointerInstruction,
+  getMintSize,
+  TOKEN_2022_PROGRAM_ADDRESS,
 } from "@solana-program/token-2022";
 
 const MOCK_SPACE = 122n;
@@ -102,15 +97,9 @@ describe("getCreateTokenInstructions", () => {
 
     (getCreateAccountInstruction as jest.Mock).mockReturnValue(mockCreateAccountInstruction);
     (getInitializeMintInstruction as jest.Mock).mockReturnValue(mockInitializeMintInstruction);
-    (getCreateMetadataAccountV3Instruction as jest.Mock).mockReturnValue(
-      mockCreateMetadataInstruction,
-    );
-    (getInitializeMetadataPointerInstruction as jest.Mock).mockReturnValue(
-      mockInitializeMetadataPointerInstruction,
-    );
-    (getInitializeTokenMetadataInstruction as jest.Mock).mockReturnValue(
-      mockInitializeTokenMetadataInstruction,
-    );
+    (getCreateMetadataAccountV3Instruction as jest.Mock).mockReturnValue(mockCreateMetadataInstruction);
+    (getInitializeMetadataPointerInstruction as jest.Mock).mockReturnValue(mockInitializeMetadataPointerInstruction);
+    (getInitializeTokenMetadataInstruction as jest.Mock).mockReturnValue(mockInitializeTokenMetadataInstruction);
 
     (getMinimumBalanceForRentExemption as jest.Mock).mockReturnValue(MOCK_RENT);
     (getMintSize as jest.Mock).mockReturnValue(MOCK_SPACE);

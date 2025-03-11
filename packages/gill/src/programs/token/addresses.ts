@@ -1,16 +1,12 @@
-import { isAddress, type Address } from "@solana/addresses";
-import type { KeyPairSigner } from "@solana/signers";
+import { isAddress, type Address } from "@solana/kit";
+import type { KeyPairSigner } from "@solana/kit";
 import { findAssociatedTokenPda } from "@solana-program/token-2022";
 import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 import { checkedAddress } from "../../core/utils";
 
 export type LegacyTokenProgramMonikers = "legacy" | "token";
 
-export type TokenExtensionProgramMonikers =
-  | "token22"
-  | "tokenExtension"
-  | "tokenExtensions"
-  | "token2022";
+export type TokenExtensionProgramMonikers = "token22" | "tokenExtension" | "tokenExtensions" | "token2022";
 
 export type TokenProgramMonikers = LegacyTokenProgramMonikers | TokenExtensionProgramMonikers;
 
@@ -41,9 +37,7 @@ export async function getAssociatedTokenAccountAddress(
   )[0];
 }
 
-export function parseTokenProgramAddressOrMoniker(
-  tokenProgram: Address | TokenProgramMonikers,
-): Address {
+export function parseTokenProgramAddressOrMoniker(tokenProgram: Address | TokenProgramMonikers): Address {
   if (!isAddress(tokenProgram)) {
     tokenProgram = tokenProgram.toLowerCase() as TokenProgramMonikers;
   }
@@ -61,9 +55,7 @@ export function parseTokenProgramAddressOrMoniker(
       return TOKEN_2022_PROGRAM_ADDRESS;
     }
     default:
-      throw Error(
-        "Unsupported token program. Try 'TOKEN_PROGRAM_ADDRESS' or 'TOKEN_2022_PROGRAM_ADDRESS'",
-      );
+      throw Error("Unsupported token program. Try 'TOKEN_PROGRAM_ADDRESS' or 'TOKEN_2022_PROGRAM_ADDRESS'");
   }
 }
 
@@ -71,9 +63,7 @@ export function assertIsSupportedTokenProgram(
   tokenProgram: Address,
 ): asserts tokenProgram is Address<typeof tokenProgram> {
   if (tokenProgram !== TOKEN_PROGRAM_ADDRESS && tokenProgram !== TOKEN_2022_PROGRAM_ADDRESS) {
-    throw Error(
-      "Unsupported token program. Try 'TOKEN_PROGRAM_ADDRESS' or 'TOKEN_2022_PROGRAM_ADDRESS'",
-    );
+    throw Error("Unsupported token program. Try 'TOKEN_PROGRAM_ADDRESS' or 'TOKEN_2022_PROGRAM_ADDRESS'");
   }
 }
 

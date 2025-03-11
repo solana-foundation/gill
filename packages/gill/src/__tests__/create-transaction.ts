@@ -1,7 +1,6 @@
 import assert from "node:assert";
 
-import { generateKeyPairSigner, isKeyPairSigner, type KeyPairSigner } from "@solana/signers";
-import { blockhash } from "@solana/rpc-types";
+import { blockhash, generateKeyPairSigner, isKeyPairSigner, type KeyPairSigner } from "@solana/kit";
 
 import { createTransaction } from "../core";
 import { hasSetComputeLimitInstruction, hasSetComputeUnitPriceInstruction } from "../programs";

@@ -1,14 +1,10 @@
+import type { CompilableTransactionMessage, Rpc, SimulateTransactionApi, Transaction } from "@solana/kit";
+import { getBase64EncodedWireTransaction, partiallySignTransactionMessageWithSigners } from "@solana/kit";
 import type { Simplify } from "./../types/index";
-import type { Rpc, SimulateTransactionApi } from "@solana/rpc";
-import { partiallySignTransactionMessageWithSigners } from "@solana/signers";
-import { type CompilableTransactionMessage } from "@solana/transaction-messages";
-import { getBase64EncodedWireTransaction, type Transaction } from "@solana/transactions";
 
 export type SimulateTransactionFunction = (
   transaction: Transaction | CompilableTransactionMessage,
-  config?: Simplify<
-    Omit<Parameters<SimulateTransactionApi["simulateTransaction"]>[1], "encoding" | "sigVerify">
-  >,
+  config?: Simplify<Omit<Parameters<SimulateTransactionApi["simulateTransaction"]>[1], "encoding" | "sigVerify">>,
 ) => Promise<ReturnType<SimulateTransactionApi["simulateTransaction"]>>;
 
 type SimulateTransactionFactoryConfig<TCluster> = {

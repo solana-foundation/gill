@@ -1,4 +1,4 @@
-import type { MainnetUrl, DevnetUrl, TestnetUrl } from "@solana/rpc-types";
+import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/kit";
 import type { LocalnetUrl, ModifiedClusterUrl, SolanaClusterMoniker } from "../types/rpc";
 
 export function localnet(putativeString: string): LocalnetUrl {

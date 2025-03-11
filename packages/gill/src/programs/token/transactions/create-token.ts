@@ -1,19 +1,17 @@
-import type { TransactionBuilderInput } from "./types";
+import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 import type {
   ITransactionMessageWithFeePayer,
+  KeyPairSigner,
   TransactionMessageWithBlockhashLifetime,
+  TransactionSigner,
   TransactionVersion,
-} from "@solana/transaction-messages";
-import type { FullTransaction, Simplify } from "../../../types";
-import { type KeyPairSigner, type TransactionSigner } from "@solana/signers";
-import {
-  getCreateTokenInstructions,
-  type GetCreateTokenInstructionsArgs,
-} from "../instructions/create-token";
+} from "@solana/kit";
 import { createTransaction } from "../../../core";
-import { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
+import type { FullTransaction, Simplify } from "../../../types";
 import { getTokenMetadataAddress } from "../../token-metadata";
 import { checkedTokenProgramAddress, TOKEN_PROGRAM_ADDRESS } from "../addresses";
+import { getCreateTokenInstructions, type GetCreateTokenInstructionsArgs } from "../instructions/create-token";
+import type { TransactionBuilderInput } from "./types";
 
 type GetCreateTokenTransactionInput = Simplify<
   Omit<GetCreateTokenInstructionsArgs, "metadataAddress"> &
@@ -61,23 +59,13 @@ export async function buildCreateTokenTransaction<
   TLifetimeConstraint extends
     TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetCreateTokenTransactionInput,
-): Promise<
-  FullTransaction<
-    TVersion,
-    ITransactionMessageWithFeePayer,
-    TransactionMessageWithBlockhashLifetime
-  >
->;
+  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
+): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer, TransactionMessageWithBlockhashLifetime>>;
 export async function buildCreateTokenTransaction<
   TVersion extends TransactionVersion,
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
->(
-  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetCreateTokenTransactionInput,
-) {
+>(args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput) {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
 
   let metadataAddress = args.mint.address;

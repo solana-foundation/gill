@@ -1,8 +1,8 @@
-import { resolve } from "node:path";
-import { homedir } from "node:os";
 import { appendFileSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { resolve } from "node:path";
 
-import { createKeyPairSignerFromBytes, type KeyPairSigner } from "@solana/signers";
+import { createKeyPairSignerFromBytes, type KeyPairSigner } from "@solana/kit";
 import { extractBytesFromKeyPair } from "../core";
 import { loadKeypairSignerFromFile } from "./load-keypair";
 
@@ -13,17 +13,12 @@ import { loadKeypairSignerFromFile } from "./load-keypair";
  * @param keypair - an extractable `CryptoKeyPair`
  * @param filePath - path to file where the keypair will be saved
  */
-export async function saveKeypairToFile(
-  keypair: CryptoKeyPair,
-  filePath: string,
-): Promise<boolean> {
+export async function saveKeypairToFile(keypair: CryptoKeyPair, filePath: string): Promise<boolean> {
   if (!filePath.endsWith(".json")) {
     throw new Error("Must provide a json file path to save keypair to");
   }
 
-  const resolvedPath = resolve(
-    filePath.startsWith("~") ? filePath.replace("~", homedir()) : filePath,
-  );
+  const resolvedPath = resolve(filePath.startsWith("~") ? filePath.replace("~", homedir()) : filePath);
 
   // initialized in multiple steps to help deallocate the bytes faster
   let bytes: Uint8Array | null;
@@ -49,10 +44,7 @@ export async function saveKeypairToFile(
  * @param keypairSigner - an extractable `KeyPairSigner`
  * @param filePath - path to file where the keypair will be saved
  */
-export async function saveKeypairSignerToFile(
-  keypairSigner: KeyPairSigner,
-  filePath: string,
-): Promise<boolean> {
+export async function saveKeypairSignerToFile(keypairSigner: KeyPairSigner, filePath: string): Promise<boolean> {
   return saveKeypairToFile(keypairSigner.keyPair, filePath);
 }
 
@@ -73,9 +65,7 @@ export async function saveKeypairToEnvFile(
     throw new Error(`Environment variable '${variableName}' already exist.`);
   }
 
-  const resolvedPath = resolve(
-    envFilePath.startsWith("~") ? envFilePath.replace("~", homedir()) : envFilePath,
-  );
+  const resolvedPath = resolve(envFilePath.startsWith("~") ? envFilePath.replace("~", homedir()) : envFilePath);
 
   // initialized in multiple steps to help deallocate the bytes faster
   let bytes: Uint8Array | null;

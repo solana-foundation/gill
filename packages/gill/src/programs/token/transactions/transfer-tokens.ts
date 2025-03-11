@@ -1,18 +1,15 @@
-import type { TransactionBuilderInput } from "./types";
 import type {
+  Address,
   ITransactionMessageWithFeePayer,
   TransactionMessageWithBlockhashLifetime,
+  TransactionSigner,
   TransactionVersion,
-} from "@solana/transaction-messages";
-import type { Address } from "@solana/addresses";
-import type { TransactionSigner } from "@solana/signers";
+} from "@solana/kit";
 import { checkedAddress, createTransaction } from "../../../core";
 import type { FullTransaction, Simplify } from "../../../types";
 import { checkedTokenProgramAddress, getAssociatedTokenAccountAddress } from "../addresses";
-import {
-  getTransferTokensInstructions,
-  type GetTransferTokensInstructionsArgs,
-} from "../instructions";
+import { getTransferTokensInstructions, type GetTransferTokensInstructionsArgs } from "../instructions";
+import type { TransactionBuilderInput } from "./types";
 
 type GetTransferTokensTransactionInput = Simplify<
   Omit<GetTransferTokensInstructionsArgs, "sourceAta" | "destinationAta"> &
@@ -47,7 +44,7 @@ type GetTransferTokensTransactionInput = Simplify<
  *   destination,
  *   // use the correct token program for the `mint`
  *   tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
- *   // default cu limit set to be optimized, but can be overriden here
+ *   // default cu limit set to be optimized, but can be overridden here
  *   // computeUnitLimit?: number,
  *   // obtain from your favorite priority fee api
  *   // computeUnitPrice?: number, // no default set
@@ -66,23 +63,13 @@ export async function buildTransferTokensTransaction<
   TLifetimeConstraint extends
     TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetTransferTokensTransactionInput,
-): Promise<
-  FullTransaction<
-    TVersion,
-    ITransactionMessageWithFeePayer,
-    TransactionMessageWithBlockhashLifetime
-  >
->;
+  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetTransferTokensTransactionInput,
+): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer, TransactionMessageWithBlockhashLifetime>>;
 export async function buildTransferTokensTransaction<
   TVersion extends TransactionVersion,
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
->(
-  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetTransferTokensTransactionInput,
-) {
+>(args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetTransferTokensTransactionInput) {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
   args.mint = checkedAddress(args.mint);
 
@@ -90,9 +77,7 @@ export async function buildTransferTokensTransaction<
     !args.destinationAta
       ? getAssociatedTokenAccountAddress(args.mint, args.destination, args.tokenProgram)
       : args.destinationAta,
-    !args.sourceAta
-      ? getAssociatedTokenAccountAddress(args.mint, args.authority, args.tokenProgram)
-      : args.sourceAta,
+    !args.sourceAta ? getAssociatedTokenAccountAddress(args.mint, args.authority, args.tokenProgram) : args.sourceAta,
   ]);
 
   // default a reasonably low computeUnitLimit based on simulation data

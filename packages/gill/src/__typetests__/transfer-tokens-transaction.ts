@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import type { Address } from "@solana/addresses";
-import type { KeyPairSigner } from "@solana/signers";
 import type {
+  Address,
   BaseTransactionMessage,
+  KeyPairSigner,
   TransactionMessageWithBlockhashLifetime,
-} from "@solana/transaction-messages";
-import { signTransactionMessageWithSigners } from "@solana/signers";
+} from "@solana/kit";
+import { signTransactionMessageWithSigners } from "@solana/kit";
 import { buildTransferTokensTransaction } from "../programs/token";
 
 // [DESCRIBE] buildTransferTokensTransaction
 async () => {
   const signer = null as unknown as KeyPairSigner;
-  const latestBlockhash =
-    null as unknown as TransactionMessageWithBlockhashLifetime["lifetimeConstraint"];
+  const latestBlockhash = null as unknown as TransactionMessageWithBlockhashLifetime["lifetimeConstraint"];
 
   const mint = null as unknown as KeyPairSigner;
   const destination = null as unknown as Address;

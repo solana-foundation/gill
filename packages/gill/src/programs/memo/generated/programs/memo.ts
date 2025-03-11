@@ -6,7 +6,7 @@
  * @see https://github.com/codama-idl/codama
  */
 
-import { type Address } from "@solana/addresses";
+import { type Address } from "@solana/kit";
 import { type ParsedAddMemoInstruction } from "../instructions";
 
 export const MEMO_PROGRAM_ADDRESS =
@@ -16,8 +16,6 @@ export enum MemoInstruction {
   AddMemo,
 }
 
-export type ParsedMemoInstruction<
-  TProgram extends string = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
-> = {
+export type ParsedMemoInstruction<TProgram extends string = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"> = {
   instructionType: MemoInstruction.AddMemo;
 } & ParsedAddMemoInstruction<TProgram>;

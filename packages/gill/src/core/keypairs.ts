@@ -1,14 +1,8 @@
 import { assertKeyExporterIsAvailable, assertKeyGenerationIsAvailable } from "@solana/assertions";
-import { createKeyPairFromBytes } from "@solana/keys";
-import {
-  type KeyPairSigner,
-  createSignerFromKeyPair,
-  type createKeyPairSignerFromBytes,
-} from "@solana/signers";
+import type { KeyPairSigner, createKeyPairFromBytes, createKeyPairSignerFromBytes } from "@solana/kit";
+import { createSignerFromKeyPair } from "@solana/kit";
 
-export function assertKeyPairIsExtractable(
-  keyPair: CryptoKeyPair,
-): asserts keyPair is ExtractableCryptoKeyPair {
+export function assertKeyPairIsExtractable(keyPair: CryptoKeyPair): asserts keyPair is ExtractableCryptoKeyPair {
   assertKeyExporterIsAvailable();
 
   if (!keyPair.privateKey) {
@@ -45,9 +39,7 @@ export async function generateExtractableKeyPair(): Promise<ExtractableCryptoKey
  * Generates an extractable signer capable of signing messages and transactions using a Crypto KeyPair.
  * */
 export async function generateExtractableKeyPairSigner(): Promise<ExtractableKeyPairSigner> {
-  return createSignerFromKeyPair(
-    await generateExtractableKeyPair(),
-  ) as Promise<ExtractableKeyPairSigner>;
+  return createSignerFromKeyPair(await generateExtractableKeyPair()) as Promise<ExtractableKeyPairSigner>;
 }
 
 /**
@@ -60,9 +52,7 @@ export async function generateExtractableKeyPairSigner(): Promise<ExtractableKey
  * @param keypair An extractable Ed25519 `CryptoKeyPair`
  * @returns Raw key bytes as `Uint8Array`
  */
-export async function extractBytesFromKeyPair(
-  keypair: ExtractableCryptoKeyPair | CryptoKeyPair,
-): Promise<Uint8Array> {
+export async function extractBytesFromKeyPair(keypair: ExtractableCryptoKeyPair | CryptoKeyPair): Promise<Uint8Array> {
   assertKeyPairIsExtractable(keypair);
 
   const [publicKeyBytes, privateKeyJwk] = await Promise.all([
@@ -72,10 +62,7 @@ export async function extractBytesFromKeyPair(
 
   if (!privateKeyJwk.d) throw new Error("Failed to get private key bytes");
 
-  return new Uint8Array([
-    ...Buffer.from(privateKeyJwk.d, "base64"),
-    ...new Uint8Array(publicKeyBytes),
-  ]);
+  return new Uint8Array([...Buffer.from(privateKeyJwk.d, "base64"), ...new Uint8Array(publicKeyBytes)]);
 }
 
 /**

@@ -1,20 +1,19 @@
-import type { Address } from "@solana/addresses";
-import type { IInstruction } from "@solana/instructions";
-import type { ITransactionMessageWithFeePayerSigner, TransactionSigner } from "@solana/signers";
 import type {
+  Address,
   BaseTransactionMessage,
+  IInstruction,
   ITransactionMessageWithFeePayer,
+  ITransactionMessageWithFeePayerSigner,
   TransactionMessageWithBlockhashLifetime,
+  TransactionSigner,
   TransactionVersion,
-} from "@solana/transaction-messages";
+} from "@solana/kit";
 import type { Simplify } from ".";
 
 export type CreateTransactionInput<
   TVersion extends TransactionVersion,
   TFeePayer extends Address | TransactionSigner = TransactionSigner,
-  TLifetimeConstraint extends
-    | TransactionMessageWithBlockhashLifetime["lifetimeConstraint"]
-    | undefined = undefined,
+  TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] | undefined = undefined,
 > = {
   /**
    * Transaction version
@@ -44,7 +43,5 @@ export type FullTransaction<
 > = Simplify<
   BaseTransactionMessage<TVersion> &
     TFeePayer &
-    (TBlockhashLifetime extends TransactionMessageWithBlockhashLifetime
-      ? TransactionMessageWithBlockhashLifetime
-      : {})
+    (TBlockhashLifetime extends TransactionMessageWithBlockhashLifetime ? TransactionMessageWithBlockhashLifetime : {})
 >;

@@ -1,19 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import type { KeyPairSigner } from "@solana/signers";
-import type {
-  BaseTransactionMessage,
-  TransactionMessageWithBlockhashLifetime,
-} from "@solana/transaction-messages";
-import { signTransactionMessageWithSigners } from "@solana/signers";
+import type { BaseTransactionMessage, KeyPairSigner, TransactionMessageWithBlockhashLifetime } from "@solana/kit";
+import { signTransactionMessageWithSigners } from "@solana/kit";
 import { GetCreateTokenInstructionsArgs, buildCreateTokenTransaction } from "../programs/token";
 
 // [DESCRIBE] buildCreateTokenTransaction
 async () => {
   const mint = null as unknown as KeyPairSigner;
   const signer = null as unknown as KeyPairSigner;
-  const latestBlockhash =
-    null as unknown as TransactionMessageWithBlockhashLifetime["lifetimeConstraint"];
+  const latestBlockhash = null as unknown as TransactionMessageWithBlockhashLifetime["lifetimeConstraint"];
   const metadata = {} as unknown as GetCreateTokenInstructionsArgs["metadata"];
 
   // Legacy transaction

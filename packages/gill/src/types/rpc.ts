@@ -1,17 +1,17 @@
 import type {
   createSolanaRpc,
+  createSolanaRpcSubscriptions,
+  DevnetUrl,
+  MainnetUrl,
+  RpcFromTransport,
+  RpcSubscriptions,
   RpcTransportFromClusterUrl,
   SolanaRpcApiFromTransport,
-  RpcFromTransport,
-} from "@solana/rpc";
-import type {
-  createSolanaRpcSubscriptions,
-  RpcSubscriptions,
   SolanaRpcSubscriptionsApi,
-} from "@solana/rpc-subscriptions";
-import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/rpc-types";
-import type { SimulateTransactionFunction } from "../core/simulate-transaction";
+  TestnetUrl,
+} from "@solana/kit";
 import { SendAndConfirmTransactionWithSignersFunction } from "../core/send-and-confirm-transaction-with-signers";
+import type { SimulateTransactionFunction } from "../core/simulate-transaction";
 
 /** Solana cluster moniker */
 export type SolanaClusterMoniker = "mainnet" | "devnet" | "testnet" | "localnet";

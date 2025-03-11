@@ -1,18 +1,15 @@
-import type { TransactionBuilderInput } from "./types";
-import type { Address } from "@solana/addresses";
-import type { TransactionSigner } from "@solana/signers";
 import type {
+  Address,
   ITransactionMessageWithFeePayer,
   TransactionMessageWithBlockhashLifetime,
+  TransactionSigner,
   TransactionVersion,
-} from "@solana/transaction-messages";
-import type { FullTransaction, Simplify } from "../../../types";
+} from "@solana/kit";
 import { checkedAddress, createTransaction } from "../../../core";
+import type { FullTransaction, Simplify } from "../../../types";
 import { checkedTokenProgramAddress, getAssociatedTokenAccountAddress } from "../addresses";
-import {
-  getMintTokensInstructions,
-  type GetMintTokensInstructionsArgs,
-} from "../instructions/mint-tokens";
+import { getMintTokensInstructions, type GetMintTokensInstructionsArgs } from "../instructions/mint-tokens";
+import type { TransactionBuilderInput } from "./types";
 
 type GetCreateTokenTransactionInput = Simplify<
   Omit<GetMintTokensInstructionsArgs, "ata"> & Partial<Pick<GetMintTokensInstructionsArgs, "ata">>
@@ -64,32 +61,18 @@ export async function buildMintTokensTransaction<
   TLifetimeConstraint extends
     TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
-  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetCreateTokenTransactionInput,
-): Promise<
-  FullTransaction<
-    TVersion,
-    ITransactionMessageWithFeePayer,
-    TransactionMessageWithBlockhashLifetime
-  >
->;
+  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput,
+): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer, TransactionMessageWithBlockhashLifetime>>;
 export async function buildMintTokensTransaction<
   TVersion extends TransactionVersion,
   TFeePayer extends TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
->(
-  args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> &
-    GetCreateTokenTransactionInput,
-) {
+>(args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput) {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
   args.mint = checkedAddress(args.mint);
 
   if (!args.ata) {
-    args.ata = await getAssociatedTokenAccountAddress(
-      args.mint,
-      args.destination,
-      args.tokenProgram,
-    );
+    args.ata = await getAssociatedTokenAccountAddress(args.mint, args.destination, args.tokenProgram);
   }
 
   // default a reasonably low computeUnitLimit based on simulation data
@@ -116,15 +99,7 @@ export async function buildMintTokensTransaction<
       computeUnitPrice,
       latestBlockhash,
       instructions: getMintTokensInstructions(
-        (({
-          tokenProgram,
-          feePayer,
-          mint,
-          ata,
-          mintAuthority,
-          amount,
-          destination,
-        }: typeof args) => ({
+        (({ tokenProgram, feePayer, mint, ata, mintAuthority, amount, destination }: typeof args) => ({
           tokenProgram,
           feePayer,
           mint,

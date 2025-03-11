@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-
-import type { Address } from "@solana/addresses";
-import type { ITransactionMessageWithFeePayerSigner, KeyPairSigner } from "@solana/signers";
 import type {
+  Address,
   BaseTransactionMessage,
+  IInstruction,
   ITransactionMessageWithFeePayer,
+  ITransactionMessageWithFeePayerSigner,
+  KeyPairSigner,
   TransactionMessageWithBlockhashLifetime,
-} from "@solana/transaction-messages";
-import type { IInstruction } from "@solana/instructions";
-import { signTransactionMessageWithSigners } from "@solana/signers";
+} from "@solana/kit";
+import { signTransactionMessageWithSigners } from "@solana/kit";
 
 import { createTransaction } from "../core";
 
@@ -16,8 +16,7 @@ import { createTransaction } from "../core";
 {
   const feePayer = null as unknown as Address;
   const signer = null as unknown as KeyPairSigner;
-  const latestBlockhash =
-    null as unknown as TransactionMessageWithBlockhashLifetime["lifetimeConstraint"];
+  const latestBlockhash = null as unknown as TransactionMessageWithBlockhashLifetime["lifetimeConstraint"];
 
   const ix = null as unknown as IInstruction;
 
@@ -127,9 +126,7 @@ import { createTransaction } from "../core";
       feePayer: feePayer,
       instructions: [ix],
       latestBlockhash,
-    }) satisfies BaseTransactionMessage<0> &
-      TransactionMessageWithBlockhashLifetime &
-      ITransactionMessageWithFeePayer;
+    }) satisfies BaseTransactionMessage<0> & TransactionMessageWithBlockhashLifetime & ITransactionMessageWithFeePayer;
 
     // Should be a signable transaction
     signTransactionMessageWithSigners(txSignable);

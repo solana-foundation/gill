@@ -6,17 +6,13 @@
  * @see https://github.com/codama-idl/codama
  */
 
-import {
-  isProgramDerivedAddress,
-  type Address,
-  type ProgramDerivedAddress,
-} from "@solana/addresses";
-import { AccountRole, type IAccountMeta, upgradeRoleToSigner } from "@solana/instructions";
+import { isProgramDerivedAddress, type Address, type ProgramDerivedAddress } from "@solana/kit";
+import { AccountRole, type IAccountMeta, upgradeRoleToSigner } from "@solana/kit";
 import {
   isTransactionSigner as web3JsIsTransactionSigner,
   type IAccountSignerMeta,
   type TransactionSigner,
-} from "@solana/signers";
+} from "@solana/kit";
 
 /**
  * Asserts that the given value is not null or undefined.
@@ -102,10 +98,7 @@ export type IInstructionWithByteDelta = {
  * Get account metas and signers from resolved accounts.
  * @internal
  */
-export function getAccountMetaFactory(
-  programAddress: Address,
-  optionalAccountStrategy: "omitted" | "programId",
-) {
+export function getAccountMetaFactory(programAddress: Address, optionalAccountStrategy: "omitted" | "programId") {
   return (account: ResolvedAccount): IAccountMeta | IAccountSignerMeta | undefined => {
     if (!account.value) {
       if (optionalAccountStrategy === "omitted") return;
@@ -127,7 +120,5 @@ export function getAccountMetaFactory(
 export function isTransactionSigner<TAddress extends string = string>(
   value: Address<TAddress> | ProgramDerivedAddress<TAddress> | TransactionSigner<TAddress>,
 ): value is TransactionSigner<TAddress> {
-  return (
-    !!value && typeof value === "object" && "address" in value && web3JsIsTransactionSigner(value)
-  );
+  return !!value && typeof value === "object" && "address" in value && web3JsIsTransactionSigner(value);
 }

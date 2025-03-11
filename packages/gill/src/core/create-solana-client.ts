@@ -1,11 +1,10 @@
-import { createSolanaRpc } from "@solana/rpc";
-import { createSolanaRpcSubscriptions } from "@solana/rpc-subscriptions";
-import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/rpc-types";
+import type { DevnetUrl, MainnetUrl, TestnetUrl } from "@solana/kit";
+import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
 
-import type { LocalnetUrl, SolanaClient, ModifiedClusterUrl, CreateSolanaClientArgs } from "../types/rpc";
+import type { CreateSolanaClientArgs, LocalnetUrl, ModifiedClusterUrl, SolanaClient } from "../types/rpc";
 import { getPublicSolanaRpcUrl } from "./rpc";
-import { simulateTransactionFactory } from "./simulate-transaction";
 import { sendAndConfirmTransactionWithSignersFactory } from "./send-and-confirm-transaction-with-signers";
+import { simulateTransactionFactory } from "./simulate-transaction";
 
 /**
  * Create a Solana `rpc` and `rpcSubscriptions` client

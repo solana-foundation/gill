@@ -1,4 +1,3 @@
-import { sendAndConfirmDurableNonceTransactionFactory, sendAndConfirmTransactionFactory } from "@solana/kit";
 import type {
   RequestAirdropApi,
   Rpc,
@@ -7,7 +6,8 @@ import type {
   RpcTestnet,
   SolanaRpcApi,
   SolanaRpcApiMainnet,
-} from "@solana/rpc";
+} from "@solana/kit";
+import { sendAndConfirmDurableNonceTransactionFactory, sendAndConfirmTransactionFactory } from "@solana/kit";
 import { createSolanaClient } from "../core";
 
 // [DESCRIBE] createSolanaClient
