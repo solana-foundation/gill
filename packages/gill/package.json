@@ -78,6 +78,8 @@
     "wallet",
     "dapps",
     "solana helpers",
+    "@solana/web3.js",
+    "@solana/kit",
     "@solana-developers/helpers",
     "treeshake"
   ],
