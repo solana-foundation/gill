@@ -106,6 +106,7 @@
     "@solana/functional": "^2.1.0",
     "@solana/instructions": "^2.1.0",
     "@solana/keys": "^2.1.0",
+    "@solana/kit": "^2.1.0",
     "@solana/programs": "^2.1.0",
     "@solana/rpc": "^2.1.0",
     "@solana/rpc-parsed-types": "^2.1.0",
@@ -118,29 +119,6 @@
     "@solana/transactions": "^2.1.0"
   },
   "peerDependencies": {
-    "typescript": ">=5",
-    "@solana/kit": "*"
-  },
-  "peerDependenciesMeta": {
-    "@solana/web3.js@^2.0.0": {
-      "optional": true
-    },
-    "@solana/kit": {
-      "optional": true
-    }
-  },
-  "overrides": {
-    "@solana/web3.js@^2.0.0": "npm:gill",
-    "@solana/kit": "npm:gill"
-  },
-  "resolutions": {
-    "@solana/web3.js@^2.0.0": "npm:gill",
-    "@solana/kit": "npm:gill"
-  },
-  "pnpm": {
-    "overrides": {
-      "@solana/web3.js@^2.0.0": "npm:gill",
-      "@solana/kit": "npm:gill"
-    }
+    "typescript": ">=5"
   }
 }

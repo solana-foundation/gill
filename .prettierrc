@@ -7,5 +7,5 @@
   "trailingComma": "all",
   "proseWrap": "always",
   "arrowParens": "always",
-  "printWidth": 100
+  "printWidth": 120
 }
