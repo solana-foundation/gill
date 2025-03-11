@@ -39,6 +39,7 @@ import type {
 } from "@solana/kit";
 
 import { getAccountMetaFactory, type ResolvedAccount } from "../../../shared";
+import { TOKEN_METADATA_PROGRAM_ADDRESS } from "../programs";
 import {
   getCollectionDetailsDecoder,
   getCollectionDetailsEncoder,
@@ -51,9 +52,6 @@ import {
 } from "../types";
 
 export const CREATE_METADATA_ACCOUNT_V3_DISCRIMINATOR = 33;
-
-export const TOKEN_METADATA_PROGRAM_ADDRESS =
-  "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s" as Address<"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s">;
 
 export function getCreateMetadataAccountV3DiscriminatorBytes(): ReadonlyUint8Array {
   return getU8Encoder().encode(CREATE_METADATA_ACCOUNT_V3_DISCRIMINATOR);

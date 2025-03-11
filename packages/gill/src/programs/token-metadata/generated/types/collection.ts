@@ -6,17 +6,19 @@
  * @see https://github.com/codama-idl/codama
  */
 
-import { type Address, getAddressDecoder, getAddressEncoder } from "@solana/kit";
 import {
   combineCodec,
+  getAddressDecoder,
+  getAddressEncoder,
   getBooleanDecoder,
   getBooleanEncoder,
   getStructDecoder,
   getStructEncoder,
+  type Address,
   type Codec,
   type Decoder,
   type Encoder,
-} from "@solana/codecs";
+} from "@solana/kit";
 
 export type Collection = { verified: boolean; key: Address };
 

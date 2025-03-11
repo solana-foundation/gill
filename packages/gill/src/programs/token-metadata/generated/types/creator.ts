@@ -6,19 +6,21 @@
  * @see https://github.com/codama-idl/codama
  */
 
-import { type Address, getAddressDecoder, getAddressEncoder } from "@solana/kit";
 import {
   combineCodec,
+  getAddressDecoder,
+  getAddressEncoder,
   getBooleanDecoder,
   getBooleanEncoder,
   getStructDecoder,
   getStructEncoder,
   getU8Decoder,
   getU8Encoder,
+  type Address,
   type Codec,
   type Decoder,
   type Encoder,
-} from "@solana/codecs";
+} from '@solana/kit';
 
 export type Creator = { address: Address; verified: boolean; share: number };
 
@@ -26,17 +28,17 @@ export type CreatorArgs = Creator;
 
 export function getCreatorEncoder(): Encoder<CreatorArgs> {
   return getStructEncoder([
-    ["address", getAddressEncoder()],
-    ["verified", getBooleanEncoder()],
-    ["share", getU8Encoder()],
+    ['address', getAddressEncoder()],
+    ['verified', getBooleanEncoder()],
+    ['share', getU8Encoder()],
   ]);
 }
 
 export function getCreatorDecoder(): Decoder<Creator> {
   return getStructDecoder([
-    ["address", getAddressDecoder()],
-    ["verified", getBooleanDecoder()],
-    ["share", getU8Decoder()],
+    ['address', getAddressDecoder()],
+    ['verified', getBooleanDecoder()],
+    ['share', getU8Decoder()],
   ]);
 }
 

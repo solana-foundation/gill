@@ -10,8 +10,12 @@ import {
   addDecoderSizePrefix,
   addEncoderSizePrefix,
   combineCodec,
+  getAddressDecoder,
+  getAddressEncoder,
   getArrayDecoder,
   getArrayEncoder,
+  getBooleanDecoder,
+  getBooleanEncoder,
   getOptionDecoder,
   getOptionEncoder,
   getStructDecoder,
@@ -22,6 +26,7 @@ import {
   getU32Encoder,
   getUtf8Decoder,
   getUtf8Encoder,
+  type Address,
   type Codec,
   type Decoder,
   type Encoder,
@@ -30,63 +35,91 @@ import {
 } from '@solana/kit';
 import {
   getCollectionDecoder,
+  getCollectionDetailsDecoder,
+  getCollectionDetailsEncoder,
   getCollectionEncoder,
   getCreatorDecoder,
   getCreatorEncoder,
+  getTokenStandardDecoder,
+  getTokenStandardEncoder,
   getUsesDecoder,
   getUsesEncoder,
   type Collection,
   type CollectionArgs,
+  type CollectionDetails,
+  type CollectionDetailsArgs,
   type Creator,
   type CreatorArgs,
+  type TokenStandard,
+  type TokenStandardArgs,
   type Uses,
   type UsesArgs,
 } from '.';
 
-export type DataV2 = {
+export type AssetData = {
   name: string;
   symbol: string;
   uri: string;
   sellerFeeBasisPoints: number;
   creators: Option<Array<Creator>>;
+  primarySaleHappened: boolean;
+  isMutable: boolean;
+  tokenStandard: TokenStandard;
   collection: Option<Collection>;
   uses: Option<Uses>;
+  collectionDetails: Option<CollectionDetails>;
+  ruleSet: Option<Address>;
 };
 
-export type DataV2Args = {
+export type AssetDataArgs = {
   name: string;
   symbol: string;
   uri: string;
   sellerFeeBasisPoints: number;
   creators: OptionOrNullable<Array<CreatorArgs>>;
+  primarySaleHappened: boolean;
+  isMutable: boolean;
+  tokenStandard: TokenStandardArgs;
   collection: OptionOrNullable<CollectionArgs>;
   uses: OptionOrNullable<UsesArgs>;
+  collectionDetails: OptionOrNullable<CollectionDetailsArgs>;
+  ruleSet: OptionOrNullable<Address>;
 };
 
-export function getDataV2Encoder(): Encoder<DataV2Args> {
+export function getAssetDataEncoder(): Encoder<AssetDataArgs> {
   return getStructEncoder([
     ['name', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
     ['symbol', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
     ['uri', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
     ['sellerFeeBasisPoints', getU16Encoder()],
     ['creators', getOptionEncoder(getArrayEncoder(getCreatorEncoder()))],
+    ['primarySaleHappened', getBooleanEncoder()],
+    ['isMutable', getBooleanEncoder()],
+    ['tokenStandard', getTokenStandardEncoder()],
     ['collection', getOptionEncoder(getCollectionEncoder())],
     ['uses', getOptionEncoder(getUsesEncoder())],
+    ['collectionDetails', getOptionEncoder(getCollectionDetailsEncoder())],
+    ['ruleSet', getOptionEncoder(getAddressEncoder())],
   ]);
 }
 
-export function getDataV2Decoder(): Decoder<DataV2> {
+export function getAssetDataDecoder(): Decoder<AssetData> {
   return getStructDecoder([
     ['name', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
     ['symbol', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
     ['uri', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
     ['sellerFeeBasisPoints', getU16Decoder()],
     ['creators', getOptionDecoder(getArrayDecoder(getCreatorDecoder()))],
+    ['primarySaleHappened', getBooleanDecoder()],
+    ['isMutable', getBooleanDecoder()],
+    ['tokenStandard', getTokenStandardDecoder()],
     ['collection', getOptionDecoder(getCollectionDecoder())],
     ['uses', getOptionDecoder(getUsesDecoder())],
+    ['collectionDetails', getOptionDecoder(getCollectionDetailsDecoder())],
+    ['ruleSet', getOptionDecoder(getAddressDecoder())],
   ]);
 }
 
-export function getDataV2Codec(): Codec<DataV2Args, DataV2> {
-  return combineCodec(getDataV2Encoder(), getDataV2Decoder());
+export function getAssetDataCodec(): Codec<AssetDataArgs, AssetData> {
+  return combineCodec(getAssetDataEncoder(), getAssetDataDecoder());
 }

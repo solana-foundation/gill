@@ -24,53 +24,75 @@ import {
   type GetDiscriminatedUnionVariant,
   type GetDiscriminatedUnionVariantContent,
   type ReadonlyUint8Array,
-} from "@solana/codecs";
+} from '@solana/kit';
 
 export type CollectionDetails =
-  | { __kind: "V1"; size: bigint }
-  | { __kind: "V2"; padding: ReadonlyUint8Array };
+  | { __kind: 'V1'; size: bigint }
+  | { __kind: 'V2'; padding: ReadonlyUint8Array };
 
 export type CollectionDetailsArgs =
-  | { __kind: "V1"; size: number | bigint }
-  | { __kind: "V2"; padding: ReadonlyUint8Array };
+  | { __kind: 'V1'; size: number | bigint }
+  | { __kind: 'V2'; padding: ReadonlyUint8Array };
 
 export function getCollectionDetailsEncoder(): Encoder<CollectionDetailsArgs> {
   return getDiscriminatedUnionEncoder([
-    ["V1", getStructEncoder([["size", getU64Encoder()]])],
-    ["V2", getStructEncoder([["padding", fixEncoderSize(getBytesEncoder(), 8)]])],
+    ['V1', getStructEncoder([['size', getU64Encoder()]])],
+    [
+      'V2',
+      getStructEncoder([['padding', fixEncoderSize(getBytesEncoder(), 8)]]),
+    ],
   ]);
 }
 
 export function getCollectionDetailsDecoder(): Decoder<CollectionDetails> {
   return getDiscriminatedUnionDecoder([
-    ["V1", getStructDecoder([["size", getU64Decoder()]])],
-    ["V2", getStructDecoder([["padding", fixDecoderSize(getBytesDecoder(), 8)]])],
+    ['V1', getStructDecoder([['size', getU64Decoder()]])],
+    [
+      'V2',
+      getStructDecoder([['padding', fixDecoderSize(getBytesDecoder(), 8)]]),
+    ],
   ]);
 }
 
-export function getCollectionDetailsCodec(): Codec<CollectionDetailsArgs, CollectionDetails> {
-  return combineCodec(getCollectionDetailsEncoder(), getCollectionDetailsDecoder());
+export function getCollectionDetailsCodec(): Codec<
+  CollectionDetailsArgs,
+  CollectionDetails
+> {
+  return combineCodec(
+    getCollectionDetailsEncoder(),
+    getCollectionDetailsDecoder()
+  );
 }
 
 // Data Enum Helpers.
 export function collectionDetails(
-  kind: "V1",
-  data: GetDiscriminatedUnionVariantContent<CollectionDetailsArgs, "__kind", "V1">,
-): GetDiscriminatedUnionVariant<CollectionDetailsArgs, "__kind", "V1">;
+  kind: 'V1',
+  data: GetDiscriminatedUnionVariantContent<
+    CollectionDetailsArgs,
+    '__kind',
+    'V1'
+  >
+): GetDiscriminatedUnionVariant<CollectionDetailsArgs, '__kind', 'V1'>;
 export function collectionDetails(
-  kind: "V2",
-  data: GetDiscriminatedUnionVariantContent<CollectionDetailsArgs, "__kind", "V2">,
-): GetDiscriminatedUnionVariant<CollectionDetailsArgs, "__kind", "V2">;
-export function collectionDetails<K extends CollectionDetailsArgs["__kind"], Data>(
-  kind: K,
-  data?: Data,
-) {
-  return Array.isArray(data) ? { __kind: kind, fields: data } : { __kind: kind, ...(data ?? {}) };
+  kind: 'V2',
+  data: GetDiscriminatedUnionVariantContent<
+    CollectionDetailsArgs,
+    '__kind',
+    'V2'
+  >
+): GetDiscriminatedUnionVariant<CollectionDetailsArgs, '__kind', 'V2'>;
+export function collectionDetails<
+  K extends CollectionDetailsArgs['__kind'],
+  Data,
+>(kind: K, data?: Data) {
+  return Array.isArray(data)
+    ? { __kind: kind, fields: data }
+    : { __kind: kind, ...(data ?? {}) };
 }
 
-export function isCollectionDetails<K extends CollectionDetails["__kind"]>(
+export function isCollectionDetails<K extends CollectionDetails['__kind']>(
   kind: K,
-  value: CollectionDetails,
+  value: CollectionDetails
 ): value is CollectionDetails & { __kind: K } {
   return value.__kind === kind;
 }

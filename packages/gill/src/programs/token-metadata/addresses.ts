@@ -1,6 +1,6 @@
 import { type Address, type KeyPairSigner, getAddressEncoder, getProgramDerivedAddress } from "@solana/kit";
 import { checkedAddress } from "../../core/utils";
-import { TOKEN_METADATA_PROGRAM_ADDRESS } from "./generated/instructions";
+import { TOKEN_METADATA_PROGRAM_ADDRESS } from "./generated";
 
 /**
  * Derive the Token Metadata address from a token's mint address

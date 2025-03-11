@@ -29,64 +29,48 @@ import {
   type OptionOrNullable,
 } from '@solana/kit';
 import {
-  getCollectionDecoder,
-  getCollectionEncoder,
   getCreatorDecoder,
   getCreatorEncoder,
-  getUsesDecoder,
-  getUsesEncoder,
-  type Collection,
-  type CollectionArgs,
   type Creator,
   type CreatorArgs,
-  type Uses,
-  type UsesArgs,
 } from '.';
 
-export type DataV2 = {
+export type Data = {
   name: string;
   symbol: string;
   uri: string;
   sellerFeeBasisPoints: number;
   creators: Option<Array<Creator>>;
-  collection: Option<Collection>;
-  uses: Option<Uses>;
 };
 
-export type DataV2Args = {
+export type DataArgs = {
   name: string;
   symbol: string;
   uri: string;
   sellerFeeBasisPoints: number;
   creators: OptionOrNullable<Array<CreatorArgs>>;
-  collection: OptionOrNullable<CollectionArgs>;
-  uses: OptionOrNullable<UsesArgs>;
 };
 
-export function getDataV2Encoder(): Encoder<DataV2Args> {
+export function getDataEncoder(): Encoder<DataArgs> {
   return getStructEncoder([
     ['name', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
     ['symbol', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
     ['uri', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
     ['sellerFeeBasisPoints', getU16Encoder()],
     ['creators', getOptionEncoder(getArrayEncoder(getCreatorEncoder()))],
-    ['collection', getOptionEncoder(getCollectionEncoder())],
-    ['uses', getOptionEncoder(getUsesEncoder())],
   ]);
 }
 
-export function getDataV2Decoder(): Decoder<DataV2> {
+export function getDataDecoder(): Decoder<Data> {
   return getStructDecoder([
     ['name', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
     ['symbol', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
     ['uri', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
     ['sellerFeeBasisPoints', getU16Decoder()],
     ['creators', getOptionDecoder(getArrayDecoder(getCreatorDecoder()))],
-    ['collection', getOptionDecoder(getCollectionDecoder())],
-    ['uses', getOptionDecoder(getUsesDecoder())],
   ]);
 }
 
-export function getDataV2Codec(): Codec<DataV2Args, DataV2> {
-  return combineCodec(getDataV2Encoder(), getDataV2Decoder());
+export function getDataCodec(): Codec<DataArgs, Data> {
+  return combineCodec(getDataEncoder(), getDataDecoder());
 }

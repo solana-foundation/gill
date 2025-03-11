@@ -7,13 +7,13 @@
  */
 
 import {
-  type Codec,
   combineCodec,
-  type Decoder,
-  type Encoder,
   getEnumDecoder,
   getEnumEncoder,
-} from "@solana/codecs";
+  type Codec,
+  type Decoder,
+  type Encoder,
+} from '@solana/kit';
 
 export enum UseMethod {
   Burn,
