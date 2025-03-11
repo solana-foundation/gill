@@ -1,21 +1,22 @@
+import { COMPUTE_BUDGET_PROGRAM_ADDRESS, getSetComputeUnitLimitInstruction } from "@solana-program/compute-budget";
+import type {
+  CompilableTransactionMessage,
+  GetLatestBlockhashApi,
+  ITransactionMessageWithFeePayer,
+  Rpc,
+  SimulateTransactionApi,
+  TransactionMessage,
+  TransactionMessageWithBlockhashLifetime,
+} from "@solana/kit";
 import {
-  COMPUTE_BUDGET_PROGRAM_ADDRESS,
-  getSetComputeUnitLimitInstruction,
-} from "@solana-program/compute-budget";
-import {
-  type CompilableTransactionMessage,
-  type ITransactionMessageWithFeePayer,
-  type TransactionMessage,
-  type TransactionMessageWithBlockhashLifetime,
   appendTransactionMessageInstruction,
   assertIsTransactionMessageWithBlockhashLifetime,
+  getComputeUnitEstimateForTransactionMessageFactory,
   setTransactionMessageLifetimeUsingBlockhash,
-} from "@solana/transaction-messages";
-import type { GetLatestBlockhashApi, Rpc, SimulateTransactionApi } from "@solana/rpc";
+} from "@solana/kit";
 import { isSetComputeLimitInstruction } from "../programs/compute-budget";
-import { getComputeUnitEstimateForTransactionMessageFactory } from "../kit";
-import { debug, isDebugEnabled } from "./debug";
 import { transactionToBase64WithSigners } from "./base64-to-transaction";
+import { debug, isDebugEnabled } from "./debug";
 
 type PrepareCompilableTransactionMessage =
   | CompilableTransactionMessage
@@ -81,9 +82,7 @@ export async function prepareTransaction<TMessage extends PrepareCompilableTrans
 
   // set a compute unit limit instruction
   if (computeBudgetIndex.limit < 0 || config.computeUnitLimitReset) {
-    const units = await getComputeUnitEstimateForTransactionMessageFactory({ rpc: config.rpc })(
-      config.transaction,
-    );
+    const units = await getComputeUnitEstimateForTransactionMessageFactory({ rpc: config.rpc })(config.transaction);
     debug(`Obtained compute units from simulation: ${units}`, "debug");
     const ix = getSetComputeUnitLimitInstruction({
       units: units * config.computeUnitLimitMultiplier,
@@ -106,10 +105,7 @@ export async function prepareTransaction<TMessage extends PrepareCompilableTrans
     const { value: latestBlockhash } = await config.rpc.getLatestBlockhash().send();
     if ("lifetimeConstraint" in config.transaction == false) {
       debug("Transaction missing latest blockhash, fetching one.", "debug");
-      config.transaction = setTransactionMessageLifetimeUsingBlockhash(
-        latestBlockhash,
-        config.transaction,
-      );
+      config.transaction = setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, config.transaction);
     } else if (config.blockhashReset) {
       debug("Auto resetting the latest blockhash.", "debug");
       config.transaction = Object.freeze({
@@ -123,10 +119,7 @@ export async function prepareTransaction<TMessage extends PrepareCompilableTrans
 
   // skip the async call if debugging is off
   if (isDebugEnabled()) {
-    debug(
-      `Transaction as base64: ${await transactionToBase64WithSigners(config.transaction)}`,
-      "debug",
-    );
+    debug(`Transaction as base64: ${await transactionToBase64WithSigners(config.transaction)}`, "debug");
   }
 
   return config.transaction;

@@ -1,19 +1,26 @@
-import type { Signature } from "@solana/keys";
-import type { GetEpochInfoApi, GetSignatureStatusesApi, Rpc, SendTransactionApi } from "@solana/rpc";
-import type { RpcSubscriptions, SignatureNotificationsApi, SlotNotificationsApi } from "@solana/rpc-subscriptions";
+import type {
+  CompilableTransactionMessage,
+  FullySignedTransaction,
+  GetEpochInfoApi,
+  GetSignatureStatusesApi,
+  Rpc,
+  RpcSubscriptions,
+  SendTransactionApi,
+  Signature,
+  SignatureNotificationsApi,
+  SlotNotificationsApi,
+  TransactionWithBlockhashLifetime,
+} from "@solana/kit";
 import {
+  Commitment,
   getBase64EncodedWireTransaction,
   getSignatureFromTransaction,
-  type FullySignedTransaction,
-  type TransactionWithBlockhashLifetime,
-} from "@solana/transactions";
-
-import type { CompilableTransactionMessage } from "@solana/transaction-messages";
-import { signTransactionMessageWithSigners } from "@solana/signers";
+  sendAndConfirmTransactionFactory,
+  signTransactionMessageWithSigners,
+} from "@solana/kit";
+import { type waitForRecentTransactionConfirmation } from "@solana/transaction-confirmation";
 import { debug } from "./debug";
 import { getExplorerLink } from "./explorer";
-import { Commitment, sendAndConfirmTransactionFactory } from "@solana/kit";
-import { type waitForRecentTransactionConfirmation } from "@solana/transaction-confirmation";
 
 interface SendAndConfirmTransactionWithBlockhashLifetimeConfig
   extends SendTransactionBaseConfig,

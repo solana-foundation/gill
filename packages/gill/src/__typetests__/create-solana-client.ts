@@ -1,19 +1,14 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
-import {
+import { sendAndConfirmDurableNonceTransactionFactory, sendAndConfirmTransactionFactory } from "@solana/kit";
+import type {
+  RequestAirdropApi,
   Rpc,
   RpcDevnet,
-  RpcTestnet,
   RpcMainnet,
+  RpcTestnet,
   SolanaRpcApi,
-  RequestAirdropApi,
   SolanaRpcApiMainnet,
 } from "@solana/rpc";
 import { createSolanaClient } from "../core";
-import {
-  sendAndConfirmDurableNonceTransactionFactory,
-  sendAndConfirmTransactionFactory,
-} from "../kit";
 
 // [DESCRIBE] createSolanaClient
 {
@@ -131,10 +126,12 @@ import {
 
     sendAndConfirmTransactionFactory({
       rpc: localnetRpc,
+      // @ts-ignore - kit does not yet support `localnet` as a cluster
       rpcSubscriptions: localnetRpcSubscriptions,
     });
     sendAndConfirmDurableNonceTransactionFactory({
       rpc: localnetRpc,
+      // @ts-ignore - kit does not yet support `localnet` as a cluster
       rpcSubscriptions: localnetRpcSubscriptions,
     });
   }
