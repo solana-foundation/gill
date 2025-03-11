@@ -16,15 +16,15 @@ import {
   type Decoder,
   type Encoder,
 } from "@solana/codecs";
-import { type Address } from "@solana/kit";
-import {
-  type IInstruction,
-  type IInstructionWithAccounts,
-  type IInstructionWithData,
-  type IAccountMeta,
-  AccountRole,
+import type {
+  Address,
+  IAccountMeta,
+  IInstruction,
+  IInstructionWithAccounts,
+  IInstructionWithData,
+  TransactionSigner,
 } from "@solana/kit";
-import { type TransactionSigner } from "@solana/kit";
+import { AccountRole } from "@solana/kit";
 import { MEMO_PROGRAM_ADDRESS } from "../programs";
 
 export type AddMemoInstruction<

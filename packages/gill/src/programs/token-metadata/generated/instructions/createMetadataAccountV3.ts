@@ -16,26 +16,27 @@ import {
   getStructEncoder,
   getU8Decoder,
   getU8Encoder,
-  type ReadonlyUint8Array,
   transformEncoder,
   type Codec,
   type Decoder,
   type Encoder,
   type Option,
   type OptionOrNullable,
+  type ReadonlyUint8Array,
 } from "@solana/codecs";
-import type { Address } from "@solana/kit";
 import type {
+  Address,
+  IAccountMeta,
+  IAccountSignerMeta,
   IInstruction,
   IInstructionWithAccounts,
   IInstructionWithData,
   ReadonlyAccount,
   ReadonlySignerAccount,
+  TransactionSigner,
   WritableAccount,
   WritableSignerAccount,
-  IAccountMeta,
 } from "@solana/kit";
-import { type IAccountSignerMeta, type TransactionSigner } from "@solana/kit";
 
 import { getAccountMetaFactory, type ResolvedAccount } from "../../../shared";
 import {

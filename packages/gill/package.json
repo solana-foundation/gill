@@ -98,25 +98,10 @@
     "@solana-program/compute-budget": "^0.7.0",
     "@solana-program/system": "^0.7.0",
     "@solana-program/token-2022": "^0.4.0",
-    "@solana/accounts": "^2.1.0",
-    "@solana/addresses": "^2.1.0",
     "@solana/assertions": "^2.1.0",
     "@solana/codecs": "^2.1.0",
-    "@solana/errors": "^2.1.0",
-    "@solana/functional": "^2.1.0",
-    "@solana/instructions": "^2.1.0",
-    "@solana/keys": "^2.1.0",
     "@solana/kit": "^2.1.0",
-    "@solana/programs": "^2.1.0",
-    "@solana/rpc": "^2.1.0",
-    "@solana/rpc-parsed-types": "^2.1.0",
-    "@solana/rpc-spec-types": "^2.1.0",
-    "@solana/rpc-subscriptions": "^2.1.0",
-    "@solana/rpc-types": "^2.1.0",
-    "@solana/signers": "^2.1.0",
-    "@solana/transaction-confirmation": "^2.1.0",
-    "@solana/transaction-messages": "^2.1.0",
-    "@solana/transactions": "^2.1.0"
+    "@solana/transaction-confirmation": "^2.1.0"
   },
   "peerDependencies": {
     "typescript": ">=5"
