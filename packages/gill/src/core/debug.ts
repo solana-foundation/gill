@@ -12,7 +12,16 @@ const GILL_LOG_LEVELS: Record<LogLevel, number> = {
 };
 
 declare global {
-  var __GILL_DEBUG__: LogLevel | boolean | undefined;
+  /**
+   * Whether or not to enable debug mode. When enabled, default log level of `info`
+   */
+  var __GILL_DEBUG__: boolean | undefined;
+  /**
+   * Set the a desired level of logs to be output in the application
+   *
+   * - Default: `info`
+   * - Options: `debug` | `info` | `warn` | `error`
+   */
   var __GILL_DEBUG_LEVEL__: LogLevel | undefined;
 }
 
