@@ -1,5 +1,4 @@
-import type { Address } from "@solana/kit";
-import type { KeyPairSigner } from "@solana/kit";
+import type { Address, KeyPairSigner } from "@solana/kit";
 import type { TOKEN_PROGRAM_ADDRESS } from "../addresses";
 import type { TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
 

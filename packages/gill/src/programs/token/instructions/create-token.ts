@@ -1,17 +1,15 @@
-import type { IInstruction } from "@solana/kit";
-import type { Address } from "@solana/kit";
-import type { KeyPairSigner } from "@solana/kit";
 import { getCreateAccountInstruction } from "@solana-program/system";
+import type { Address, IInstruction, KeyPairSigner } from "@solana/kit";
 import { checkedAddress, getMinimumBalanceForRentExemption } from "../../../core";
-import { getTokenMetadataAddress, getCreateMetadataAccountV3Instruction } from "../../token-metadata";
+import { getCreateMetadataAccountV3Instruction, getTokenMetadataAddress } from "../../token-metadata";
 
 import {
   extension,
-  getMintSize,
-  TOKEN_2022_PROGRAM_ADDRESS,
+  getInitializeMetadataPointerInstruction,
   getInitializeMintInstruction,
   getInitializeTokenMetadataInstruction,
-  getInitializeMetadataPointerInstruction,
+  getMintSize,
+  TOKEN_2022_PROGRAM_ADDRESS,
 } from "@solana-program/token-2022";
 import { checkedTokenProgramAddress } from "../addresses";
 import type { TokenInstructionBase } from "./types";
