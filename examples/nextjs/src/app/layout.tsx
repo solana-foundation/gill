@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { GillProviderClient } from "@/components/gill-provider";
-// import { GillConfigProvider } from "gill-react";
-// import { createSolanaClient } from "gill";
+import { SolanaProviderClient } from "@/components/solana-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,15 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <GillProviderClient>{children}</GillProviderClient>
-        {/* <GillConfigProvider
-          config={createSolanaClient({ urlOrMoniker: "devnet" })}
-        >
-          {children}
-        </GillConfigProvider> */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <SolanaProviderClient>{children}</SolanaProviderClient>
       </body>
     </html>
   );
