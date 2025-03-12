@@ -11,17 +11,17 @@ import { GILL_HOOK_CLIENT_KEY } from "../const";
  */
 export function useBalance(address: string | Address) {
   const { rpc } = useSolanaClient();
-  const { data: balance, ...rest } = useQuery({
-    queryKey: [GILL_HOOK_CLIENT_KEY, "balance", address],
+  const { data, ...rest } = useQuery({
+    queryKey: [GILL_HOOK_CLIENT_KEY, "getBalance", address],
     queryFn: async () => {
-      const { value: balance } = await rpc.getBalance(address as Address).send();
-      return balance;
+      const { value } = await rpc.getBalance(address as Address).send();
+      return value;
     },
     networkMode: "offlineFirst",
     enabled: !!address,
   });
   return {
     ...rest,
-    balance,
+    balance: data,
   };
 }
