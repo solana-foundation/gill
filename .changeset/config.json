@@ -9,7 +9,7 @@
     }
   ],
   "commit": false,
-  "ignore": ["gill-vue", "gill-svelte", "gill-react"],
+  "ignore": ["gill-vue", "gill-svelte"],
   "fixed": [["gill-!({build-scripts,test-*,tsconfig})"]],
   "linked": [],
   "updateInternalDependencies": "patch"
