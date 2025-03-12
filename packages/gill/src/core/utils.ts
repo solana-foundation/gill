@@ -1,6 +1,7 @@
-import type { KeyPairSigner, Address } from "@solana/kit";
+import type { Address, KeyPairSigner } from "@solana/kit";
+
 import type { SolanaClusterMoniker } from "../types";
-import { GENESIS_HASH, LAMPORTS_PER_SOL } from "./const";
+import { GENESIS_HASH } from "./const";
 
 /**
  * Determine the Solana moniker from its genesis hash
@@ -20,7 +21,7 @@ export function getMonikerFromGenesisHash(hash: string): SolanaClusterMoniker | 
   }
 }
 
-export function checkedAddress(input: KeyPairSigner | Address): Address {
+export function checkedAddress(input: Address | KeyPairSigner): Address {
   return typeof input == "string" ? input : input.address;
 }
 
@@ -28,5 +29,6 @@ export function checkedAddress(input: KeyPairSigner | Address): Address {
  * Convert a lamport number to the human readable string of a SOL value
  */
 export function lamportsToSol(lamports: bigint | number): string {
-  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 9 }).format(Number(lamports) / LAMPORTS_PER_SOL);
+  // @ts-expect-error This format is valid
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 9 }).format(`${lamports}E-9`);
 }
