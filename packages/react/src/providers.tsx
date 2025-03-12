@@ -2,7 +2,7 @@
 
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { GILL_HOOK_KEY_CONFIG } from "./const";
+import { GILL_HOOK_CLIENT_KEY } from "./const";
 import type { SolanaClient } from "gill";
 
 /**
@@ -17,6 +17,6 @@ export function SolanaProvider({
   children: React.ReactNode;
   queryClient?: QueryClient;
 }) {
-  queryClient.setQueryData([GILL_HOOK_KEY_CONFIG], client);
+  queryClient.setQueryData([GILL_HOOK_CLIENT_KEY], client);
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }
