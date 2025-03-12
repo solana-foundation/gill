@@ -5,11 +5,11 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "nickfrosty/gill"
+      "repo": "solana-foundation/gill"
     }
   ],
   "commit": false,
-  "ignore": ["gill-vue", "gill-svelte"],
+  "ignore": ["gill-vue", "gill-svelte", "gill-react"],
   "fixed": [["gill-!({build-scripts,test-*,tsconfig})"]],
   "linked": [],
   "updateInternalDependencies": "patch"

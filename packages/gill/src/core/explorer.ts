@@ -1,25 +1,24 @@
-import { GetExplorerLinkArgs } from "../types";
+import type { GetExplorerLinkArgs } from "../types";
 
 /**
  * Craft a Solana Explorer link on any cluster
  */
-export function getExplorerLink(props: GetExplorerLinkArgs): URL {
-  let url: URL | null = null;
+export function getExplorerLink(props: GetExplorerLinkArgs = {}): string {
+  let url = new URL("https://explorer.solana.com");
 
-  if (!props.cluster) props.cluster = "mainnet-beta";
+  // default to mainnet / mainnet-beta
+  if (!props.cluster || props.cluster == "mainnet") props.cluster = "mainnet-beta";
 
   if ("address" in props) {
-    url = new URL(`https://explorer.solana.com/address/${props.address}`);
+    url.pathname = `/address/${props.address}`;
   } else if ("transaction" in props) {
-    url = new URL(`https://explorer.solana.com/tx/${props.transaction}`);
+    url.pathname = `/tx/${props.transaction}`;
   } else if ("block" in props) {
-    url = new URL(`https://explorer.solana.com/block/${props.block}`);
+    url.pathname = `/block/${props.block}`;
   }
 
-  if (!url) throw new Error("Invalid Solana Explorer URL created");
-
   if (props.cluster !== "mainnet-beta") {
-    if (props.cluster === "localnet") {
+    if (props.cluster === "localnet" || props.cluster === "localhost") {
       // localnet technically isn't a cluster, so requires special handling
       url.searchParams.set("cluster", "custom");
       url.searchParams.set("customUrl", "http://localhost:8899");
@@ -28,5 +27,5 @@ export function getExplorerLink(props: GetExplorerLinkArgs): URL {
     }
   }
 
-  return url;
+  return url.toString();
 }

@@ -1,0 +1,24 @@
+{
+  "name": "gill-examples-basic",
+  "license": "MIT",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "@solana-program/compute-budget": "^0.7.0",
+    "@solana-program/memo": "^0.7.0",
+    "dotenv": "^16.4.5",
+    "fastestsmallesttextencoderdecoder": "^1.0.22",
+    "gill": "workspace:*",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
+  }
+}

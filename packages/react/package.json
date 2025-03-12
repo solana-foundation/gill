@@ -1,8 +1,10 @@
 {
   "name": "gill-react",
+  "license": "MIT",
   "version": "0.0.2",
   "description": "",
   "scripts": {
+    "clean": "rimraf dist build node_modules .turbo",
     "compile:js": "tsup --config ./tsup.config.package.ts",
     "compile:typedefs": "tsc -p ./tsconfig.declarations.json",
     "prepublishOnly": "pnpm pkg delete devDependencies",
@@ -58,9 +60,9 @@
     "web3"
   ],
   "author": "Solana Foundation DevRel <devrel@solana.org>",
-  "homepage": "https://github.com/nickfrosty/gill#readme",
+  "homepage": "https://github.com/solana-foundation/gill#readme",
   "bugs": {
-    "url": "https://github.com/nickfrosty/gill/issues"
+    "url": "https://github.com/solana-foundation/gill/issues"
   },
   "browserslist": [
     "supports bigint and not dead",
@@ -73,7 +75,6 @@
   },
   "peerDependencies": {
     "gill": "workspace:*",
-    "@solana/web3.js": "^2.0.0",
     "@tanstack/react-query": "^5.61.4",
     "@types/react-test-renderer": "^18",
     "@types/react": "^18",

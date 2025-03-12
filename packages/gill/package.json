@@ -1,8 +1,10 @@
 {
   "name": "gill",
-  "version": "0.0.4",
-  "description": "",
+  "license": "MIT",
+  "version": "0.7.0",
+  "description": "a modern javascript/typescript client library for interacting with the Solana blockchain",
   "scripts": {
+    "clean": "rimraf dist build node_modules .turbo",
     "compile:js": "tsup --config ./tsup.config.package.ts",
     "compile:typedefs": "tsc -p ./tsconfig.declarations.json",
     "prepublishOnly": "pnpm pkg delete devDependencies",
@@ -16,7 +18,6 @@
     "test:treeshakability:node": "agadoo dist/index.node.mjs && agadoo dist/node/index.node.mjs"
   },
   "exports": {
-    "./types": "./dist/index.d.ts",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.node.mjs",
@@ -37,12 +38,23 @@
       "import": "./dist/index.browser.mjs",
       "require": "./dist/index.browser.cjs"
     },
+    "./react-native": "./dist/index.native.mjs",
     "./node": {
       "types": "./dist/node/index.d.ts",
       "import": "./dist/node/index.node.mjs",
       "require": "./dist/node/index.node.cjs"
     },
-    "./react-native": "./dist/index.native.mjs"
+    "./programs/token": {
+      "types": "./dist/programs/token/index.d.ts",
+      "import": "./dist/programs/token/index.node.mjs",
+      "require": "./dist/programs/token/index.node.cjs"
+    },
+    "./programs": {
+      "types": "./dist/programs/index.d.ts",
+      "import": "./dist/programs/index.node.mjs",
+      "require": "./dist/programs/index.node.cjs"
+    },
+    "./types": "./dist/index.d.ts"
   },
   "browser": {
     "./dist/index.node.cjs": "./dist/index.browser.cjs",
@@ -60,22 +72,40 @@
   "keywords": [
     "blockchain",
     "solana",
-    "web3"
+    "web3",
+    "web3js v2",
+    "solana kit",
+    "wallet",
+    "dapps",
+    "solana helpers",
+    "@solana/web3.js",
+    "@solana/kit",
+    "@solana-developers/helpers",
+    "treeshake"
   ],
   "author": "Solana Foundation DevRel <devrel@solana.org>",
-  "homepage": "https://github.com/nickfrosty/gill#readme",
+  "homepage": "https://github.com/solana-foundation/gill#readme",
   "bugs": {
-    "url": "https://github.com/nickfrosty/gill/issues"
+    "url": "https://github.com/solana-foundation/gill/issues"
   },
   "browserslist": [
     "supports bigint and not dead",
     "maintained node versions"
   ],
-  "peerDependencies": {
-    "@solana/web3.js": "^2.0.0",
-    "typescript": ">=5"
-  },
   "engines": {
     "node": ">=20.18.0"
+  },
+  "dependencies": {
+    "@solana-program/address-lookup-table": "^0.7.0",
+    "@solana-program/compute-budget": "^0.7.0",
+    "@solana-program/system": "^0.7.0",
+    "@solana-program/token-2022": "^0.4.0",
+    "@solana/assertions": "^2.1.0",
+    "@solana/codecs": "^2.1.0",
+    "@solana/kit": "^2.1.0",
+    "@solana/transaction-confirmation": "^2.1.0"
+  },
+  "peerDependencies": {
+    "typescript": ">=5"
   }
 }

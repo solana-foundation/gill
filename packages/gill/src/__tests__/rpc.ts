@@ -1,10 +1,14 @@
 import assert from "node:assert";
 
-import { getPublicSolanaRpcUrl } from "../index";
+import { getPublicSolanaRpcUrl } from "../core";
 
 describe("getPublicSolanaRpcUrl", () => {
   test("getPublicSolanaRpcUrl returns mainnet-beta url", () => {
     const rpcUrl = getPublicSolanaRpcUrl("mainnet-beta");
+    assert.equal(rpcUrl, "https://api.mainnet-beta.solana.com");
+  });
+  test("getPublicSolanaRpcUrl returns mainnet url", () => {
+    const rpcUrl = getPublicSolanaRpcUrl("mainnet");
     assert.equal(rpcUrl, "https://api.mainnet-beta.solana.com");
   });
   test("getPublicSolanaRpcUrl returns devnet url", () => {
@@ -17,6 +21,10 @@ describe("getPublicSolanaRpcUrl", () => {
   });
   test("getPublicSolanaRpcUrl returns localnet url", () => {
     const rpcUrl = getPublicSolanaRpcUrl("localnet");
+    assert.equal(rpcUrl, "http://127.0.0.1:8899");
+  });
+  test("getPublicSolanaRpcUrl returns localhost url", () => {
+    const rpcUrl = getPublicSolanaRpcUrl("localhost");
     assert.equal(rpcUrl, "http://127.0.0.1:8899");
   });
   test("getPublicSolanaRpcUrl show throw error on unsupported moniker", () => {

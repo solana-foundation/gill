@@ -1,0 +1,25 @@
+name: Compare bundle size
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    types: [synchronize, opened, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        uses: ./.github/workflows/actions/install-dependencies
+        with:
+          version: current
+
+      - name: Build
+        run: pnpm build
+
+      - name: BundleMon
+        uses: lironer/bundlemon-action@v1

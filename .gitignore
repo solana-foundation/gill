@@ -23,10 +23,14 @@ yarn-error.log*
 
 # `solana-test-validator`
 .agave/
-test-ledger/
+.cache
+test-ledger
 
 # GitHub Pages deploy directory
 .ghpages-deploy
 
 # Codegenerated TypeDoc API
 docs/
+
+.env
+.env.local

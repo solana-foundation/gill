@@ -2,6 +2,7 @@
   "name": "@gill/test-config",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "files": [
     "test-validator-setup.js",
     "test-validator-teardown.js"

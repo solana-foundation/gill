@@ -1,4 +1,4 @@
-import type { SolanaUrlOrMoniker } from "./rpc";
+import type { SolanaClusterMoniker } from "./rpc";
 
 type ExplorerLinkAccount = {
   address: string;
@@ -11,8 +11,8 @@ type ExplorerLinkBlock = {
 };
 
 /**
- * @param cluster - Default: `mainnet-beta`
+ * @param cluster - Default: `mainnet`
  */
 export type GetExplorerLinkArgs = {
-  cluster?: SolanaUrlOrMoniker;
-} & (ExplorerLinkAccount | ExplorerLinkTransaction | ExplorerLinkBlock);
+  cluster?: SolanaClusterMoniker | "mainnet-beta" | "localhost";
+} & (ExplorerLinkAccount | ExplorerLinkTransaction | ExplorerLinkBlock | {});

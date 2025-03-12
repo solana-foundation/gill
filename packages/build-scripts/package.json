@@ -1,7 +1,8 @@
 {
   "name": "@gill/build-scripts",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
+  "license": "MIT",
   "files": [
     "register-node-globals.mjs",
     "tsup.config.library.ts",

@@ -1,14 +1,10 @@
 import { readFile } from "fs/promises";
 import jscodeshift from "jscodeshift";
-import { Options } from "tsup";
+import type { Options } from "tsup";
 
 type Loader = NonNullable<
   NonNullable<
-    Awaited<
-      NonNullable<
-        ReturnType<Parameters<Parameters<Plugin["setup"]>[0]["onLoad"]>[1]>
-      >
-    >
+    Awaited<NonNullable<ReturnType<Parameters<Parameters<Plugin["setup"]>[0]["onLoad"]>[1]>>>
   >["loader"]
 >;
 type Plugin = NonNullable<Options["esbuildPlugins"]>[number];
@@ -37,17 +33,14 @@ function replaceDev(source: string): string {
 export const DevFlagPlugin: Plugin = {
   name: "dev-flag-plugin",
   setup(build) {
-    build.onLoad(
-      { filter: /\.(t|j)sx?$/, namespace: "file" },
-      async ({ path }) => {
-        const contents = await readFile(path, "utf-8");
-        const ext = path.slice(path.lastIndexOf(".") + 1);
-        const loader = (ext.match(/(j|t)sx?$/) ? ext : "js") as Loader;
-        return {
-          contents: replaceDev(contents),
-          loader,
-        };
-      },
-    );
+    build.onLoad({ filter: /\.(t|j)sx?$/, namespace: "file" }, async ({ path }) => {
+      const contents = await readFile(path, "utf-8");
+      const ext = path.slice(path.lastIndexOf(".") + 1);
+      const loader = (ext.match(/(j|t)sx?$/) ? ext : "js") as Loader;
+      return {
+        contents: replaceDev(contents),
+        loader,
+      };
+    });
   },
 };

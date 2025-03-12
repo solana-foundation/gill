@@ -1,0 +1,14 @@
+{
+  "baseDir": "./packages",
+  "files": [
+    {
+      "friendlyName": "gill production bundle",
+      "path": "gill/dist/index.production.min.js"
+    },
+    {
+      "path": "**/dist/**/index.*.mjs"
+    }
+  ],
+  "includeCommitMessage": true,
+  "reportOutput": ["github"]
+}
