@@ -9,6 +9,7 @@ export * from "./prepare-transaction";
 export * from "./create-solana-client";
 export * from "./accounts";
 export * from "./keypairs-extractable";
+export * from "./keypairs-base58";
 export * from "./base64-to-transaction";
 export * from "./base64-from-transaction";
 export * from "./simulate-transaction";
