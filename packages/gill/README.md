@@ -18,13 +18,13 @@
 
 ## Overview
 
-Welcome to `gill`, a JavaScript/TypeScript client library for interacting with the
-[Solana](http://solana.com/) blockchain. You can use it to build Solana apps in Node, web, React
-Native, or just about any other JavaScript environment.
+Welcome to `gill`, a JavaScript/TypeScript client library for interacting with the [Solana](http://solana.com/)
+blockchain. You can use it to build Solana apps in Node, web, React Native, or just about any other JavaScript
+environment.
 
 Gill is built on top of the modern javascript libraries for Solana built by Anza and used in
-([@solana/kit](https://github.com/anza-xyz/kit) aka "web3.js v2"). By utilizing the same types and
-functions under the hood, `gill` is compatible with `kit`.
+([@solana/kit](https://github.com/anza-xyz/kit) aka "web3.js v2"). By utilizing the same types and functions under the
+hood, `gill` is compatible with `kit`.
 
 > For a comparison of using gill vs web3js v2, take a look at the
 > [comparison examples](https://github.com/solana-foundation/gill/tree/master/examples/get-started#comparison-of-gill-vs-solanakit-aka-web3js-v2).
@@ -49,8 +49,8 @@ yarn add gill
 
 > Find a collection of example code snippets using `gill` inside the
 > [`/examples` directory](https://github.com/solana-foundation/gill/tree/master/examples), including
-> [basic operations](https://github.com/solana-foundation/gill/tree/master/examples/get-started) and
-> common [token operations](https://github.com/solana-foundation/gill/tree/master/examples/tokens).
+> [basic operations](https://github.com/solana-foundation/gill/tree/master/examples/get-started) and common
+> [token operations](https://github.com/solana-foundation/gill/tree/master/examples/tokens).
 
 - [Create a Solana RPC connection](#create-a-solana-rpc-connection)
 - [Making Solana RPC calls](#making-solana-rpc-calls)
@@ -70,6 +70,7 @@ You can also find some [NodeJS specific helpers](#node-specific-imports) like:
 - [Saving a keypair to a file](#saving-a-keypair-to-a-file)
 - [Loading a keypair from an environment variable](#loading-a-keypair-from-an-environment-variable)
 - [Saving a keypair to an environment variable file](#saving-a-keypair-to-an-environment-file)
+- [Loading a bas58 keypair from an environment variable](#loading-a-base58-keypair-from-an-environment-variable)
 
 You can find [transaction builders](#transaction-builders) for common tasks, including:
 
@@ -79,14 +80,13 @@ You can find [transaction builders](#transaction-builders) for common tasks, inc
 
 For troubleshooting and debugging your Solana transactions, see [Debug mode](#debug-mode) below.
 
-> You can also consult the documentation for Anza's
-> [JavaScript client](https://github.com/anza-xyz/solana-web3.js) library for more information and
-> helpful resources.
+> You can also consult the documentation for Anza's [JavaScript client](https://github.com/anza-xyz/solana-web3.js)
+> library for more information and helpful resources.
 
 ### Generating keypairs and signers
 
-For most "signing" operations, you will need a `KeyPairSigner` instance, which can be used to sign
-transactions and messages.
+For most "signing" operations, you will need a `KeyPairSigner` instance, which can be used to sign transactions and
+messages.
 
 To generate a random `KeyPairSigner`:
 
@@ -96,15 +96,15 @@ import { generateKeyPairSigner } from "gill";
 const signer: KeyPairSigner = generateKeyPairSigner();
 ```
 
-> Note: These Signers are non-extractable, meaning there is no way to get the secret key material
-> out of the instance. This is a more secure practice and highly recommended to be used over
-> extractable keypairs, unless you REALLY need to be able to save the keypair for some reason.
+> Note: These Signers are non-extractable, meaning there is no way to get the secret key material out of the instance.
+> This is a more secure practice and highly recommended to be used over extractable keypairs, unless you REALLY need to
+> be able to save the keypair for some reason.
 
 ### Generating extractable keypairs and signers
 
-Extractable keypairs are less secure and should not be used unless you REALLY need to save the key
-for some reason. Since there are a few useful cases for saving these keypairs, gill contains a
-separate explicit function to generate these extractable keypairs.
+Extractable keypairs are less secure and should not be used unless you REALLY need to save the key for some reason.
+Since there are a few useful cases for saving these keypairs, gill contains a separate explicit function to generate
+these extractable keypairs.
 
 To generate a random, **extractable** `KeyPairSigner`:
 
@@ -114,15 +114,14 @@ import { generateExtractableKeyPairSigner } from "gill";
 const signer: KeyPairSigner = generateExtractableKeyPairSigner();
 ```
 
-> WARNING: Using **extractable** keypairs are inherently less-secure, since they allow the secret
-> key material to be extracted. Obviously. As such, they should only be used sparingly and ONLY when
-> you have an explicit reason you need extract the key material (like if you are going to save the
-> key to a file).
+> WARNING: Using **extractable** keypairs are inherently less-secure, since they allow the secret key material to be
+> extracted. Obviously. As such, they should only be used sparingly and ONLY when you have an explicit reason you need
+> extract the key material (like if you are going to save the key to a file).
 
 ### Create a Solana RPC connection
 
-Create a Solana `rpc` and `rpcSubscriptions` client for any RPC URL or standard Solana network
-moniker (i.e. `devnet`, `localnet`, `mainnet` etc).
+Create a Solana `rpc` and `rpcSubscriptions` client for any RPC URL or standard Solana network moniker (i.e. `devnet`,
+`localnet`, `mainnet` etc).
 
 ```typescript
 import { createSolanaClient } from "gill";
@@ -132,9 +131,8 @@ const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient(
 });
 ```
 
-> Using the Solana moniker will connect to the public RPC endpoints. These are subject to rate
-> limits and should not be used in production applications. Applications should find their own RPC
-> provider and the URL provided from them.
+> Using the Solana moniker will connect to the public RPC endpoints. These are subject to rate limits and should not be
+> used in production applications. Applications should find their own RPC provider and the URL provided from them.
 
 To create an RPC client for your local test validator:
 
@@ -158,8 +156,8 @@ const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient(
 
 ### Making Solana RPC calls
 
-After you have a Solana `rpc` connection, you can make all the
-[JSON RPC method](https://solana.com/docs/rpc) calls directly off of it.
+After you have a Solana `rpc` connection, you can make all the [JSON RPC method](https://solana.com/docs/rpc) calls
+directly off of it.
 
 ```typescript
 import { createSolanaClient } from "gill";
@@ -173,12 +171,11 @@ const slot = await rpc.getSlot().send();
 const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 ```
 
-> The `rpc` client requires you to call `.send()` on the RPC method in order to actually send the
-> request to your RPC provider and get a response.
+> The `rpc` client requires you to call `.send()` on the RPC method in order to actually send the request to your RPC
+> provider and get a response.
 
 You can also include custom configuration settings on your RPC calls, like using a JavaScript
-[AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController), by passing it
-into `send()`:
+[AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController), by passing it into `send()`:
 
 ```typescript
 import { createSolanaClient } from "gill";
@@ -246,8 +243,8 @@ const transaction = createTransaction(...);
 const signedTransaction = await signTransactionMessageWithSigners(transaction);
 ```
 
-If your transaction does NOT have the latest blockhash lifetime set via `createTransaction`, you
-must set the latest blockhash lifetime before (or during) the signing operation:
+If your transaction does NOT have the latest blockhash lifetime set via `createTransaction`, you must set the latest
+blockhash lifetime before (or during) the signing operation:
 
 ```typescript
 import {
@@ -269,8 +266,8 @@ const signedTransaction = await signTransactionMessageWithSigners(
 
 ### Simulating transactions
 
-To simulate a transaction on the blockchain, you can use the `simulateTransaction()` function
-initialized from `createSolanaClient()`.
+To simulate a transaction on the blockchain, you can use the `simulateTransaction()` function initialized from
+`createSolanaClient()`.
 
 ```typescript
 import { ... } from "gill";
@@ -288,8 +285,8 @@ The transaction provided to `simulateTransaction()` can either be signed or not.
 
 ### Sending and confirming transactions
 
-To send and confirm a transaction to the blockchain, you can use the `sendAndConfirmTransaction`
-function initialized from `createSolanaClient()`.
+To send and confirm a transaction to the blockchain, you can use the `sendAndConfirmTransaction` function initialized
+from `createSolanaClient()`.
 
 ```typescript
 import { ... } from "gill";
@@ -309,8 +306,8 @@ console.log(getExplorerLink({ transaction: signature }));
 await sendAndConfirmTransaction(signedTransaction)
 ```
 
-If you would like more fine grain control over the configuration of the `sendAndConfirmTransaction`
-functionality, you can include configuration settings:
+If you would like more fine grain control over the configuration of the `sendAndConfirmTransaction` functionality, you
+can include configuration settings:
 
 ```typescript
 await sendAndConfirmTransaction(signedTransaction, {
@@ -323,8 +320,7 @@ await sendAndConfirmTransaction(signedTransaction, {
 
 ### Get the signature from a signed transaction
 
-After you already have a partially or fully signed transaction, you can get the transaction
-signature as follows:
+After you already have a partially or fully signed transaction, you can get the transaction signature as follows:
 
 ```typescript
 import { getSignatureFromTransaction } from "gill";
@@ -334,10 +330,9 @@ console.log(signature);
 // Example output: 4nzNU7YxPtPsVzeg16oaZvLz4jMPtbAzavDfEFmemHNv93iYXKKYAaqBJzFCwEVxiULqTYYrbjPwQnA1d9ZCTELg
 ```
 
-> Note: After a transaction has been signed by at least one Signer, it will have a transaction
-> signature (aka transaction id). This is due to Solana transaction ids are the first item in the
-> transaction's `signatures` array. Therefore, client applications can know the signature before it
-> is even sent to the network for confirmation.
+> Note: After a transaction has been signed by at least one Signer, it will have a transaction signature (aka
+> transaction id). This is due to Solana transaction ids are the first item in the transaction's `signatures` array.
+> Therefore, client applications can know the signature before it is even sent to the network for confirmation.
 
 ### Get a Solana Explorer link for transactions, accounts, or blocks
 
@@ -353,13 +348,12 @@ To get an explorer link for a transaction's signature (aka transaction id):
 import { getExplorerLink } from "gill";
 
 const link: string = getExplorerLink({
-  transaction:
-    "4nzNU7YxPtPsVzeg16oaZvLz4jMPtbAzavDfEFmemHNv93iYXKKYAaqBJzFCwEVxiULqTYYrbjPwQnA1d9ZCTELg",
+  transaction: "4nzNU7YxPtPsVzeg16oaZvLz4jMPtbAzavDfEFmemHNv93iYXKKYAaqBJzFCwEVxiULqTYYrbjPwQnA1d9ZCTELg",
 });
 ```
 
-If you have a partially or fully signed transaction, you can get the Explorer link before even
-sending the transaction to the network:
+If you have a partially or fully signed transaction, you can get the Explorer link before even sending the transaction
+to the network:
 
 ```typescript
 import {
@@ -439,15 +433,15 @@ const rent: bigint = getMinimumBalanceForRentExemption(50 /* 50 bytes */);
 // const rent = await rpc.getMinimumBalanceForRentExemption(50n).send();
 ```
 
-> Note: At this time, the minimum rent amount for an account is calculated based on static values in
-> the Solana runtime. While you can use the `getMinimumBalanceForRentExemption` RPC call on your
-> [connection](#create-a-solana-rpc-connection) to fetch this value, it will result in a network
-> call and subject to latency.
+> Note: At this time, the minimum rent amount for an account is calculated based on static values in the Solana runtime.
+> While you can use the `getMinimumBalanceForRentExemption` RPC call on your
+> [connection](#create-a-solana-rpc-connection) to fetch this value, it will result in a network call and subject to
+> latency.
 
 ## Node specific imports
 
-The `gill` package has specific imports for use in NodeJS server backends and/or serverless
-environments which have access to Node specific APIs (like the file system via `node:fs`).
+The `gill` package has specific imports for use in NodeJS server backends and/or serverless environments which have
+access to Node specific APIs (like the file system via `node:fs`).
 
 ```typescript
 import { ... } from "gill/node"
@@ -464,8 +458,7 @@ console.log("address:", signer.address);
 ```
 
 Load a `KeyPairSigner` from a filesystem wallet json file, like those output from the
-[Solana CLI](https://solana.com/docs/intro/installation#install-the-solana-cli) (i.e. a JSON array
-of numbers).
+[Solana CLI](https://solana.com/docs/intro/installation#install-the-solana-cli) (i.e. a JSON array of numbers).
 
 By default, the keypair file loaded is the Solana CLI's default keypair: `~/.config/solana/id.json`
 
@@ -480,8 +473,7 @@ console.log("address:", signer.address);
 
 ### Saving a keypair to a file
 
-> See [`saveKeypairSignerToEnvFile`](#saving-a-keypair-to-an-environment-file) for saving to an env
-> file.
+> See [`saveKeypairSignerToEnvFile`](#saving-a-keypair-to-an-environment-file) for saving to an env file.
 
 Save an **extractable** `KeyPairSigner` to a local json file (e.g. `keypair.json`).
 
@@ -491,13 +483,11 @@ const extractableSigner = generateExtractableKeyPairSigner();
 await saveKeypairSignerToFile(extractableSigner, filePath);
 ```
 
-See [`loadKeypairSignerFromFile`](#loading-a-keypair-from-a-file) for how to load keypairs from the
-local filesystem.
+See [`loadKeypairSignerFromFile`](#loading-a-keypair-from-a-file) for how to load keypairs from the local filesystem.
 
 ### Loading a keypair from an environment variable
 
-Load a `KeyPairSigner` from the bytes stored in the environment process (e.g.
-`process.env[variableName]`)
+Load a `KeyPairSigner` from the bytes stored in the environment process (e.g. `process.env[variableName]`)
 
 ```typescript
 import { loadKeypairSignerFromEnvironment } from "gill/node";
@@ -518,29 +508,40 @@ const extractableSigner = generateExtractableKeyPairSigner();
 await saveKeypairSignerToEnvFile(extractableSigner, variableName, envPath);
 ```
 
-See [`loadKeypairSignerFromEnvironment`](#loading-a-keypair-from-an-environment-variable) for how to
-load keypairs from environment variables.
+See [`loadKeypairSignerFromEnvironment`](#loading-a-keypair-from-an-environment-variable) for how to load keypairs from
+environment variables.
+
+### Loading a base58 keypair from an environment variable
+
+Load a `KeyPairSigner` from the bytes stored in the environment process (e.g. `process.env[variableName]`)
+
+```typescript
+import { loadKeypairSignerFromEnvironmentBase58 } from "gill/node";
+
+// loads signer from base58 keypair stored at `process.env[variableName]`
+const signer = await loadKeypairSignerFromEnvironmentBase58(variableName);
+console.log("address:", signer.address);
+```
 
 ## Transaction builders
 
-To simplify the creation of common transactions, gill includes various "transaction builders" to
-help easily assemble ready-to-sign transactions for these tasks, which often interact with multiple
-programs at once.
+To simplify the creation of common transactions, gill includes various "transaction builders" to help easily assemble
+ready-to-sign transactions for these tasks, which often interact with multiple programs at once.
 
-Since each transaction builder is scoped to a single task, they can easily abstract away various
-pieces of boilerplate while also helping to create an optimized transaction, including:
+Since each transaction builder is scoped to a single task, they can easily abstract away various pieces of boilerplate
+while also helping to create an optimized transaction, including:
 
-- sets/recommends a default compute unit limit (easily overridable of course) to optimize the
-  transaction and improve landing rates
+- sets/recommends a default compute unit limit (easily overridable of course) to optimize the transaction and improve
+  landing rates
 - auto derive required address where needed
 - generally recommend safe defaults and fallback settings
 
-All of the auto-filled information can also be manually overriden to ensure you always have escape
-hatches to achieve your desired functionality.
+All of the auto-filled information can also be manually overriden to ensure you always have escape hatches to achieve
+your desired functionality.
 
-As these transaction builders may not be for everyone, gill exposes a related "instruction builder"
-function for each which is used under the hood to craft the respective transactions. Developers can
-also completely forgo these builder abstractions and manually craft the same functionality.
+As these transaction builders may not be for everyone, gill exposes a related "instruction builder" function for each
+which is used under the hood to craft the respective transactions. Developers can also completely forgo these builder
+abstractions and manually craft the same functionality.
 
 ### Create a token with metadata
 
@@ -548,10 +549,10 @@ Build a transaction that can create a token with metadata, either using the
 [original token](https://github.com/solana-program/token) or
 [token extensions (token22)](https://github.com/solana-program/token-2022) program.
 
-- Tokens created with the original token program (`TOKEN_PROGRAM_ADDRESS`, default) will use
-  Metaplex's Token Metadata program for onchain metadata
-- Tokens created with the token extensions program (`TOKEN_2022_PROGRAM_ADDRESS`) will use the
-  metadata pointer extensions
+- Tokens created with the original token program (`TOKEN_PROGRAM_ADDRESS`, default) will use Metaplex's Token Metadata
+  program for onchain metadata
+- Tokens created with the token extensions program (`TOKEN_2022_PROGRAM_ADDRESS`) will use the metadata pointer
+  extensions
 
 Related instruction builder: `getCreateTokenInstructions`
 
@@ -581,14 +582,12 @@ const createTokenTx = await buildCreateTokenTransaction({
 
 ### Mint tokens to a destination wallet
 
-Build a transaction that mints new tokens to the `destination` wallet address (raising the token's
-overall supply).
+Build a transaction that mints new tokens to the `destination` wallet address (raising the token's overall supply).
 
 - ensure you set the correct `tokenProgram` used by the `mint` itself
-- if the `destination` owner does not have an associated token account (ata) created for the `mint`,
-  one will be auto-created for them
-- ensure you take into account the `decimals` for the `mint` when setting the `amount` in this
-  transaction
+- if the `destination` owner does not have an associated token account (ata) created for the `mint`, one will be
+  auto-created for them
+- ensure you take into account the `decimals` for the `mint` when setting the `amount` in this transaction
 
 Related instruction builder: `getMintTokensInstructions`
 
@@ -615,14 +614,13 @@ const mintTokensTx = await buildMintTokensTransaction({
 
 ### Transfer tokens to a destination wallet
 
-Build a transaction that transfers tokens to the `destination` wallet address from the `source` (aka
-from `sourceAta` to `destinationAta`).
+Build a transaction that transfers tokens to the `destination` wallet address from the `source` (aka from `sourceAta` to
+`destinationAta`).
 
 - ensure you set the correct `tokenProgram` used by the `mint` itself
-- if the `destination` owner does not have an associated token account (ata) created for the `mint`,
-  one will be auto-created for them
-- ensure you take into account the `decimals` for the `mint` when setting the `amount` in this
-  transaction
+- if the `destination` owner does not have an associated token account (ata) created for the `mint`, one will be
+  auto-created for them
+- ensure you take into account the `decimals` for the `mint` when setting the `amount` in this transaction
 
 Related instruction builder: `getTransferTokensInstructions`
 
@@ -654,20 +652,19 @@ const transferTokensTx = await buildTransferTokensTransaction({
 
 ## Debug mode
 
-Within `gill`, you can enable "debug mode" to automatically log additional information that will be
-helpful in troubleshooting your transactions.
+Within `gill`, you can enable "debug mode" to automatically log additional information that will be helpful in
+troubleshooting your transactions.
 
-Debug mode is disabled by default to minimize additional logs for your application. But with its
-flexible debug controller, you can enable it from the most common places your code will be run.
-Including your code itself, NodeJS backends, serverless functions, and even the in web browser
-console itself.
+Debug mode is disabled by default to minimize additional logs for your application. But with its flexible debug
+controller, you can enable it from the most common places your code will be run. Including your code itself, NodeJS
+backends, serverless functions, and even the in web browser console itself.
 
 Some examples of the existing debug logs that `gill` has sprinkled in:
 
 - log the Solana Explorer link for transactions as you are sending them
 - log the base64 transaction string to troubleshoot via
-  [`mucho inspect`](https://github.com/solana-developers/mucho?tab=readme-ov-file#inspect) or Solana
-  Explorer's [Transaction Inspector](https://explorer.solana.com/tx/inspector)
+  [`mucho inspect`](https://github.com/solana-developers/mucho?tab=readme-ov-file#inspect) or Solana Explorer's
+  [Transaction Inspector](https://explorer.solana.com/tx/inspector)
 
 ### How to enable debug mode
 
@@ -678,8 +675,8 @@ To enable debug mode, set any of the following to `true` or `1`:
 - `window.__GILL_DEBUG__` (i.e. in your web browser's console)
 - or manually set any debug log level (see below)
 
-To set a desired level of logs to be output in your application, set the value of one of the
-following (default: `info`):
+To set a desired level of logs to be output in your application, set the value of one of the following (default:
+`info`):
 
 - `process.env.GILL_DEBUG_LEVEL`
 - `global.__GILL_DEBUG_LEVEL__`
@@ -694,8 +691,8 @@ The log levels supported (in order of priority):
 
 ### Custom debug logs
 
-Gill also exports the same debug functions it uses internally, allowing you to implement your own
-debug logic related to your Solana transactions and use the same controller for it as `gill` does.
+Gill also exports the same debug functions it uses internally, allowing you to implement your own debug logic related to
+your Solana transactions and use the same controller for it as `gill` does.
 
 - `isDebugEnabled()` - check if debug mode is enabled or not
 - `debug()` - print debug message if the set log level is reached
@@ -722,9 +719,9 @@ debug("custom message", "warn");
 
 ## Program clients
 
-With `gill` you can also import some of the most commonly used clients for popular programs. These
-are also fully tree-shakable, so if you do not import them inside your project they will be removed
-by your JavaScript bundler at build time (i.e. Webpack).
+With `gill` you can also import some of the most commonly used clients for popular programs. These are also fully
+tree-shakable, so if you do not import them inside your project they will be removed by your JavaScript bundler at build
+time (i.e. Webpack).
 
 To import any of these program clients:
 
@@ -733,39 +730,38 @@ import { ... } from "gill/programs";
 import { ... } from "gill/programs/token";
 ```
 
-> Note: Some client re-exported client program clients have a naming collision. As a result, they
-> may be re-exported under a subpath of `gill/programs`. For example, `gill/programs/token`.
+> Note: Some client re-exported client program clients have a naming collision. As a result, they may be re-exported
+> under a subpath of `gill/programs`. For example, `gill/programs/token`.
 
 The program clients included inside `gill` are:
 
-- System program - re-exported from
-  [`@solana-program/system`](https://github.com/solana-program/system)
+- System program - re-exported from [`@solana-program/system`](https://github.com/solana-program/system)
 - Compute Budget program- re-exported from
   [`@solana-program/compute-budget`](https://github.com/solana-program/compute-budget)
 - Memo program - re-exported from [`@solana-program/memo`](https://github.com/solana-program/memo)
 - Token Program and Token Extensions program (aka Token22) - re-exported from
-  [`@solana-program/token-2022`](https://github.com/solana-program/token-2022), which is a fully
-  backwards compatible client with the original Token Program
+  [`@solana-program/token-2022`](https://github.com/solana-program/token-2022), which is a fully backwards compatible
+  client with the original Token Program
 - Address Lookup Table program - re-exported from
   [`@solana-program/address-lookup-table`](https://github.com/solana-program/address-lookup-table)
 - Token Metadata program from Metaplex (only the v3 functionality) - generated via Codama their IDL
   ([source](https://github.com/metaplex-foundation/mpl-token-metadata))
 
-If one of the existing clients are not being exported from `gill/programs` or a subpath therein, you
-can of course manually add their compatible client to your repo.
+If one of the existing clients are not being exported from `gill/programs` or a subpath therein, you can of course
+manually add their compatible client to your repo.
 
-> Note: Since the Token Extensions program client is fully compatible with the original Token
-> Program client, `gill` only ships the `@solana-program/token-2022` client and the
-> `TOKEN_PROGRAM_ADDRESS` in order to remove all that redundant code from the library.
+> Note: Since the Token Extensions program client is fully compatible with the original Token Program client, `gill`
+> only ships the `@solana-program/token-2022` client and the `TOKEN_PROGRAM_ADDRESS` in order to remove all that
+> redundant code from the library.
 >
-> To use the original Token Program, simply pass the `TOKEN_PROGRAM_ADDRESS` as the the program
-> address for any instructions
+> To use the original Token Program, simply pass the `TOKEN_PROGRAM_ADDRESS` as the the program address for any
+> instructions
 
 ### Other compatible program clients
 
-From the [solana-program](https://github.com/solana-program/token) GitHub organization, formerly
-known as the Solana Program Library (SPL), you can find various other client libraries for specific
-programs. Install their respective package to use in conjunction with gill:
+From the [solana-program](https://github.com/solana-program/token) GitHub organization, formerly known as the Solana
+Program Library (SPL), you can find various other client libraries for specific programs. Install their respective
+package to use in conjunction with gill:
 
 - [Stake program](https://github.com/solana-program/stake) - `@solana-program/stake`
 - [Vote program](https://github.com/solana-program/vote) - `@solana-program/vote`
@@ -773,6 +769,5 @@ programs. Install their respective package to use in conjunction with gill:
 ### Generate a program client from an IDL
 
 If you want to easily interact with any custom program with this library, you can use
-[Codama](https://github.com/codama-idl/codama) to generate a compatible JavaScript/TypeScript client
-using its IDL. You can either store the generated client inside your repo or publish it as a NPM
-package for others to easily consume.
+[Codama](https://github.com/codama-idl/codama) to generate a compatible JavaScript/TypeScript client using its IDL. You
+can either store the generated client inside your repo or publish it as a NPM package for others to easily consume.
