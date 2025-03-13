@@ -5,7 +5,8 @@ export function getMinimumBalanceForRentExemption(space: bigint | number = 0) {
   /**
    * Default values for Rent calculations
    *
-   * Values taken from: https://github.com/anza-xyz/agave/blob/master/sdk/rent/src/lib.rs#L93-L97
+   * Values taken from: https://github.com/anza-xyz/solana-sdk/blob/c07f692e41d757057c8700211a9300cdcd6d33b1/rent/src/lib.rs#L93-L97
+   * 
    */
   const RENT = {
     /**
