@@ -1,5 +1,23 @@
 # gill
 
+## 0.8.0
+
+### Minor Changes
+
+- [#75](https://github.com/solana-foundation/gill/pull/75)
+  [`2cb27d5`](https://github.com/solana-foundation/gill/commit/2cb27d5b2450002038bf6501015c259eb4c43ee6) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - added multiple "keypair from base58" functions
+
+### Patch Changes
+
+- [#74](https://github.com/solana-foundation/gill/pull/74)
+  [`6415cd7`](https://github.com/solana-foundation/gill/commit/6415cd774ea333135756863a227613d8d075fa8a) Thanks
+  [@jim4067](https://github.com/jim4067)! - fix broken link in tsdoc comment
+
+- [#72](https://github.com/solana-foundation/gill/pull/72)
+  [`6b24c98`](https://github.com/solana-foundation/gill/commit/6b24c982a7cd00b71be82ef65753d0cce074b868) Thanks
+  [@mcintyre94](https://github.com/mcintyre94)! - Refactor `lamportsPerSol` to use scientific format
+
 ## 0.7.0
 
 ### Minor Changes
