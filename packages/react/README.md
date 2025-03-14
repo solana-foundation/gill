@@ -22,40 +22,43 @@ This React hooks library is built on top of two core libraries:
 
 ## Installation
 
-Install `gill` with your package manager of choice:
+Install `gill-react` with your package manager of choice:
 
 ```shell
-npm install gill gill-react
+npm install gill gill-react @tanstack/react-query
 ```
 
 ```shell
-pnpm add gill gill-react
+pnpm add gill gill-react @tanstack/react-query
 ```
 
 ```shell
-yarn add gill gill-react
+yarn add gill gill-react @tanstack/react-query
 ```
+
+> Note: `gill` and `@tanstack/react-query` are peer dependencies of `gill-react` so you need to explicitly install them.
+> This allows you have more/easier control over managing dependencies yourself.
 
 ## Quick start
 
-Setup and configure the `SolanaProvider`:
+Setup and configure your `SolanaProvider` to use the gill hooks:
 
 - [Wrap your React app in a context provider](#wrap-your-react-app-in-a-context-provider)
 - [Create a client-only provider for NextJs and React server components](#create-a-client-only-provider-for-nextjs-and-react-server-components)
 - [Wrap your app in the client-only provider for NextJs](#wrap-your-app-in-the-client-only-provider-for-nextjs)
 - [Using React hooks in React server component applications](#using-react-hooks-in-react-server-component-applications)
 
-Manage and use your Solana client's settings:
+Manage and use your Solana client's connections:
 
 - [`useSolanaClient`](#get-solana-client) - get the current Solana client (including `rpc` and `rpcSubscriptions`)
 - [`useUpdateSolanaClient`](#get-account-balance-in-lamports) - update the current Solana client (including `rpc` and
   `rpcSubscriptions`)
 
-Fetch data from the Solana blockchain with the hooks:
+Fetch data from the Solana blockchain with the gill hooks:
 
+- [`useAccount`](#get-account-info-and-data) - get the account info for an address
 - [`useBalance`](#get-account-balance-in-lamports) - get account balance (in lamports)
 - [`useLatestBlockhash`](#get-latest-blockhash) - get the latest blockhash
-- [`useAccount`](#get-account-info-and-data) - get the account info for an address
 
 ### Wrap your React app in a context provider
 
@@ -70,7 +73,7 @@ const client = createSolanaClient({
 });
 
 function App() {
-  return <SolanaProvider client={client}>{/** ... */}</SolanaProvider>;
+  return <SolanaProvider client={client}>{/* ... */}</SolanaProvider>;
 }
 ```
 
@@ -116,9 +119,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
 ### Using React hooks in React server component applications
 
-After you have setup your client-only provider for use with applications that use React server components (like NextJs),
-you must set the `use client` directive on any component that uses the `gill-react` library. Signifying this component
-is required to be "client only"
+After you have setup your client-only provider, you must set the `use client` directive in any component that uses the
+`gill-react` library. Signifying this component is required to be "client only".
 
 See React's [`use client` directive docs](https://react.dev/reference/rsc/use-client).
 
