@@ -2,7 +2,7 @@
   "name": "gill-react",
   "license": "MIT",
   "version": "0.0.2",
-  "description": "a Solana hooks library built on top of gill - the modern JavaScript/TypeScript library for Solana",
+  "description": "a Solana hooks library for React, built on top of gill - the modern JavaScript/TypeScript library for Solana",
   "scripts": {
     "clean": "rimraf dist build node_modules .turbo",
     "compile:js": "tsup --config ./tsup.config.package.ts",
@@ -44,6 +44,7 @@
     "solana kit",
     "wallet",
     "dapps",
+    "hooks",
     "react hooks",
     "solana hooks",
     "web3js hooks",
