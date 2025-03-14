@@ -7,8 +7,8 @@ import { GILL_HOOK_CLIENT_KEY } from "../const";
 import { useSolanaClient } from "./client";
 
 /**
- * Get an account (and it's data) the using the Solana RPC method
- * of [`getBalance`](https://solana.com/docs/rpc/http/getaccountinfo)
+ * Get the account info for an address using the Solana RPC method
+ * of [`getAccountInfo`](https://solana.com/docs/rpc/http/getaccountinfo)
  */
 export function useAccount(address: string | Address) {
   const { rpc } = useSolanaClient();

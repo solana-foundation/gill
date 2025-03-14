@@ -6,7 +6,7 @@ import { useSolanaClient } from "./client";
 import { GILL_HOOK_CLIENT_KEY } from "../const";
 
 /**
- * Get an account's balance the using the Solana RPC method
+ * Get an account's balance (in lamports) using the Solana RPC method
  * of [`getBalance`](https://solana.com/docs/rpc/http/getbalance)
  */
 export function useBalance(address: string | Address) {

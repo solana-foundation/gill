@@ -8,7 +8,7 @@ import type { GetLatestBlockhashApi } from "gill";
 type RpcMethodReturnValue = ReturnType<GetLatestBlockhashApi["getLatestBlockhash"]>["value"];
 
 /**
- * Get the latest blockhash the using the Solana RPC method
+ * Get the latest blockhash using the Solana RPC method
  * of [`getLatestBlockhash`](https://solana.com/docs/rpc/http/getlatestblockhash)
  *
  * To auto refetch the latest blockhash, provide a `refetchInterval` value
