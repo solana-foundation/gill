@@ -64,8 +64,10 @@
     "@types/react-test-renderer": "^18",
     "react": "^18"
   },
+  "dependencies": {
+    "gill": "workspace:*"
+  },
   "peerDependencies": {
-    "gill": "workspace:*",
     "@tanstack/react-query": "^5.61.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
