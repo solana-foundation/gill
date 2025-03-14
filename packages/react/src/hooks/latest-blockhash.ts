@@ -1,9 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useSolanaClient } from "./client";
+import type { GetLatestBlockhashApi, Simplify } from "gill";
 import { GILL_HOOK_CLIENT_KEY } from "../const";
-import type { GetLatestBlockhashApi } from "gill";
+import { useSolanaClient } from "./client";
+import type { OmittedUseQueryFields } from "./types";
 
 type RpcMethodReturnValue = ReturnType<GetLatestBlockhashApi["getLatestBlockhash"]>["value"];
 
@@ -11,10 +12,10 @@ type RpcMethodReturnValue = ReturnType<GetLatestBlockhashApi["getLatestBlockhash
  * Get the latest blockhash using the Solana RPC method
  * of [`getLatestBlockhash`](https://solana.com/docs/rpc/http/getlatestblockhash)
  *
- * To auto refetch the latest blockhash, provide a `refetchInterval` value
+ * To auto refetch the latest blockhash, provide a `options.refetchInterval` value
  */
 export function useLatestBlockhash(
-  options: Omit<Parameters<typeof useQuery<RpcMethodReturnValue>>[0], "queryKey" | "queryFn"> = {},
+  options: Simplify<Omit<Parameters<typeof useQuery<RpcMethodReturnValue>>[0], OmittedUseQueryFields>> = {},
 ) {
   const { rpc } = useSolanaClient();
   const { data, ...rest } = useQuery({
