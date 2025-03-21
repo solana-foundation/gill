@@ -7,9 +7,9 @@ import {
 } from "gill";
 
 /**
- * Load a keypair signer from the local filesystem
+ * Define the address to request a SOL airdrop to
  *
- * This defaults to the file path used by the Solana CLI: `~/.config/solana/id.json`
+ * Note: this address does not need to sign this transaction
  */
 const wallet = address("nick6zJc6HpW3kfBm4xS2dmbuVRyb5F3AnUvj5ymzR5");
 console.log("wallet:", wallet);
