@@ -1,12 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "noEmit": true,
-    "target": "ESNext"
-  },
-  "display": "gill-examples-tokens",
   "extends": "../../packages/tsconfig/base.json",
+  "display": "gill-examples-tokens",
   "include": ["src"]
 }
