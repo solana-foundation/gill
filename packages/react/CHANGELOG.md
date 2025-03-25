@@ -1,5 +1,23 @@
 # gill-react
 
+## 0.2.0
+
+### Minor Changes
+
+- [#82](https://github.com/solana-foundation/gill/pull/82)
+  [`05c8605`](https://github.com/solana-foundation/gill/commit/05c8605ff00d65ba04b0b6e218d540da2a164232) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - standardized hook arg inputs
+
+- [#79](https://github.com/solana-foundation/gill/pull/79)
+  [`26551ea`](https://github.com/solana-foundation/gill/commit/26551ea988eb1db8490cd0bb1003e1805c75e327) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - added `useProgramAccounts` and `useSignatureStatuses` hooks
+
+### Patch Changes
+
+- Updated dependencies
+  [[`b99ac65`](https://github.com/solana-foundation/gill/commit/b99ac65a6de6d379e5f0f65b80c1f2a1a492d061)]:
+  - gill@0.8.1
+
 ## 0.1.0
 
 ### Minor Changes

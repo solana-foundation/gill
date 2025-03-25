@@ -1,5 +1,13 @@
 # gill
 
+## 0.8.1
+
+### Patch Changes
+
+- [#83](https://github.com/solana-foundation/gill/pull/83)
+  [`b99ac65`](https://github.com/solana-foundation/gill/commit/b99ac65a6de6d379e5f0f65b80c1f2a1a492d061) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - fixed ts config module resolution
+
 ## 0.8.0
 
 ### Minor Changes
