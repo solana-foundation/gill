@@ -17,6 +17,7 @@ console.log("signer:", signer.address);
 
 const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 
+const tokenProgram = TOKEN_2022_PROGRAM_ADDRESS;
 const mint = await generateKeyPairSigner();
 console.log("mint:", mint.address);
 
@@ -33,7 +34,7 @@ const tx = await buildCreateTokenTransaction({
   mint,
   latestBlockhash,
   // defaults to `TOKEN_PROGRAM_ADDRESS`
-  tokenProgram: TOKEN_2022_PROGRAM_ADDRESS,
+  tokenProgram,
 });
 
 const signedTransaction = await signTransactionMessageWithSigners(tx);

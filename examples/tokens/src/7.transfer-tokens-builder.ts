@@ -6,9 +6,7 @@ import {
   signTransactionMessageWithSigners,
 } from "gill";
 import { loadKeypairSignerFromFile } from "gill/node";
-import { buildTransferTokensTransaction } from "gill/programs/token";
-
-const mint = address("HwxZNMkZbZMeiu9Xnmc6Rg8jYgNsJB47jwabHGUebW4F");
+import { buildTransferTokensTransaction, TOKEN_PROGRAM_ADDRESS } from "gill/programs/token";
 
 const { rpc, sendAndConfirmTransaction } = createSolanaClient({
   urlOrMoniker: "devnet",
@@ -16,9 +14,12 @@ const { rpc, sendAndConfirmTransaction } = createSolanaClient({
 
 const signer = await loadKeypairSignerFromFile();
 
-const owner = address("7sZoCrE3cGgEpNgxcPnGffDeWfTewKnk6wWdLxmYA7Cy");
-
 const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+const mint = address("HwxZNMkZbZMeiu9Xnmc6Rg8jYgNsJB47jwabHGUebW4F");
+const tokenProgram = TOKEN_PROGRAM_ADDRESS; // use the correct program for the `mint`
+
+const destination = address("7sZoCrE3cGgEpNgxcPnGffDeWfTewKnk6wWdLxmYA7Cy");
 
 const tx = await buildTransferTokensTransaction({
   feePayer: signer,
@@ -26,8 +27,9 @@ const tx = await buildTransferTokensTransaction({
   latestBlockhash,
   amount: 1_000_000,
   authority: signer,
-  destination: owner,
+  destination: destination,
   mint,
+  tokenProgram,
 });
 
 const signedTransaction = await signTransactionMessageWithSigners(tx);

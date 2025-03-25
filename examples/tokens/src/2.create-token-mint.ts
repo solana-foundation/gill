@@ -14,6 +14,7 @@ import {
   getTokenMetadataAddress,
 } from "gill/programs";
 import {
+  getCreateTokenInstructions,
   getInitializeMintInstruction,
   getMintSize,
   TOKEN_PROGRAM_ADDRESS,
@@ -28,13 +29,18 @@ console.log("signer:", signer.address);
 
 const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 
+const tokenProgram = TOKEN_PROGRAM_ADDRESS;
 const mint = await generateKeyPairSigner();
 console.log("mint:", mint.address);
 
 const space = getMintSize();
 
-const metadata = await getTokenMetadataAddress(mint);
+const metadataAddress = await getTokenMetadataAddress(mint);
 
+/**
+ * instead of manually crafting the `instructions` below and deriving addresses above:
+ * you could use the `getCreateTokenInstructions()` function to simplify this code
+ */
 const tx = createTransaction({
   feePayer: signer,
   version: "legacy",
@@ -44,7 +50,7 @@ const tx = createTransaction({
       lamports: getMinimumBalanceForRentExemption(space),
       newAccount: mint,
       payer: signer,
-      programAddress: TOKEN_PROGRAM_ADDRESS,
+      programAddress: tokenProgram,
     }),
     getInitializeMintInstruction(
       {
@@ -54,7 +60,7 @@ const tx = createTransaction({
         decimals: 9,
       },
       {
-        programAddress: TOKEN_PROGRAM_ADDRESS,
+        programAddress: tokenProgram,
       },
     ),
     getCreateMetadataAccountV3Instruction({
@@ -62,7 +68,7 @@ const tx = createTransaction({
       isMutable: true,
       updateAuthority: signer,
       mint: mint.address,
-      metadata,
+      metadata: metadataAddress,
       mintAuthority: signer,
       payer: signer,
       data: {
