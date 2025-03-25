@@ -226,7 +226,9 @@ Get the account info for an address using the Solana RPC method of
 import { useAccount } from "gill-react";
 
 export function PageClient() {
-  const { account, isLoading, isError, error } = useAccount("nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c");
+  const { account, isLoading, isError, error } = useAccount({
+    address: "nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c",
+  });
 
   // if (isLoading) { return ... }
   // if (isError) { return ... }
