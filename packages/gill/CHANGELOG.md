@@ -1,5 +1,13 @@
 # gill
 
+## 0.8.2
+
+### Patch Changes
+
+- [#84](https://github.com/solana-foundation/gill/pull/84)
+  [`93b875a`](https://github.com/solana-foundation/gill/commit/93b875a088a4830ef39e8084d3d5e6038c8a96cc) Thanks
+  [@hwsimmons17](https://github.com/hwsimmons17)! - Fix bug with converting https -> wss
+
 ## 0.8.1
 
 ### Patch Changes
