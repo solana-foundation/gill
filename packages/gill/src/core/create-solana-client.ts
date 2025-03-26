@@ -60,7 +60,7 @@ export function createSolanaClient<TCluster extends ModifiedClusterUrl>({
 
   const rpc = createSolanaRpc<TCluster>(urlOrMoniker.toString() as TCluster, rpcConfig);
 
-  if (urlOrMoniker.protocol.endsWith("s")) urlOrMoniker.protocol = "wss";
+  if (urlOrMoniker.protocol == "https:") urlOrMoniker.protocol = "wss";
   else urlOrMoniker.protocol = "ws";
 
   if (rpcSubscriptionsConfig?.port) {
