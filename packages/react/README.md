@@ -59,6 +59,8 @@ Fetch data from the Solana blockchain with the gill hooks:
 - [`useAccount`](#get-account-info-and-data) - get the account info for an address
 - [`useBalance`](#get-account-balance-in-lamports) - get account balance (in lamports)
 - [`useLatestBlockhash`](#get-latest-blockhash) - get the latest blockhash
+- [`useProgramAccounts`](#get-program-accounts-gpa) - get program accounts (GPA)
+- [`useSignatureStatuses`](#get-signature-statuses) - get signature statuses
 
 ### Wrap your React app in a context provider
 
@@ -236,6 +238,70 @@ export function PageClient() {
   return (
     <div className="">
       <pre>account: {JSON.stringify(account, null, "\t")}</pre>
+    </div>
+  );
+}
+```
+
+### Get signature statuses
+
+Get the statuses of signatures using the Solana RPC method of
+[`getSignatureStatuses`](https://solana.com/docs/rpc/http/getSignatureStatuses):
+
+```tsx
+"use client";
+
+import { useSignatureStatuses } from "gill-react";
+
+export function PageClient() {
+  const { statuses, isLoading, isError, error } = useSignatureStatuses({
+    signatures: ["5ewJmppABUbsWcDQEvThJj4GH4pRVK8NDjUtMVJXjvEndkhdy23mHjHpDmHVNNGoKsjPAsCwD4vzTQY4V2GEmvKu"],
+  });
+
+  // if (isLoading) { return ... }
+  // if (isError) { return ... }
+
+  return (
+    <div className="">
+      <pre>statuses: {JSON.stringify(statuses, null, "\t")}</pre>
+    </div>
+  );
+}
+```
+
+### Get program accounts (GPA)
+
+Get all the accounts owned by a `program` using the Solana RPC method of
+[`getProgramAccounts`](https://solana.com/docs/rpc/http/getProgramAccounts):
+
+```tsx
+"use client";
+
+import { useProgramAccounts } from "gill-react";
+
+export function PageClient() {
+  const { accounts, isLoading, isError, error } = useProgramAccounts({
+    program: "4Nd1mBQtrMJVYVfKf2PJy9NZUZdTAsp7D4xWLs4gDB4T",
+    config: {
+      filters: [
+        { dataSize: 17n },
+        {
+          memcmp: {
+            offset: 4n,
+            bytes: "3Mc6vR",
+            encoding: "base64",
+          },
+        },
+      ],
+    },
+  });
+
+  // if (isLoading) { return ... }
+  // if (isError) { return ... }
+
+  return (
+    <div className="">
+      <pre>accounts: {JSON.stringify(accounts, null, "\t")}</pre>
     </div>
   );
 }

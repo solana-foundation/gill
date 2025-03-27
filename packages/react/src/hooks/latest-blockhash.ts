@@ -13,8 +13,8 @@ type UseLatestBlockhashResponse = ReturnType<GetLatestBlockhashApi["getLatestBlo
 type UseLatestBlockhashInput<TConfig extends RpcConfig = RpcConfig> = GillUseRpcHook<TConfig>;
 
 /**
- * Get the latest blockhash using the Solana RPC method
- * of [`getLatestBlockhash`](https://solana.com/docs/rpc/http/getlatestblockhash)
+ * Get the latest blockhash using the Solana RPC method of
+ * [`getLatestBlockhash`](https://solana.com/docs/rpc/http/getlatestblockhash)
  *
  * To auto refetch the latest blockhash, provide a `options.refetchInterval` value
  */

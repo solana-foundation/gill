@@ -18,8 +18,8 @@ type UseBalanceInput<TConfig extends RpcConfig = RpcConfig> = GillUseRpcHook<TCo
 };
 
 /**
- * Get an account's balance (in lamports) using the Solana RPC method
- * of [`getBalance`](https://solana.com/docs/rpc/http/getbalance)
+ * Get an account's balance (in lamports) using the Solana RPC method of
+ * [`getBalance`](https://solana.com/docs/rpc/http/getbalance)
  */
 export function useBalance<TConfig extends RpcConfig = RpcConfig>({
   options,

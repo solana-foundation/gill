@@ -19,8 +19,8 @@ type UseSignatureStatusesInput<TConfig extends RpcConfig = RpcConfig> = GillUseR
 type UseSignatureStatusesResponse = ReturnType<GetSignatureStatusesApi["getSignatureStatuses"]>["value"];
 
 /**
- * Get the statuses of signatures using the Solana RPC method
- * of [`getSignatureStatuses`](https://solana.com/docs/rpc/http/getsignaturestatuses)
+ * Get the statuses of signatures using the Solana RPC method of
+ * [`getSignatureStatuses`](https://solana.com/docs/rpc/http/getsignaturestatuses)
  */
 export function useSignatureStatuses<TConfig extends RpcConfig = RpcConfig>({
   options,

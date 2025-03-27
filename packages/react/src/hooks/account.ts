@@ -24,8 +24,8 @@ type UseAccountInput<TConfig extends RpcConfig = RpcConfig> = GillUseRpcHook<TCo
 };
 
 /**
- * Get the account info for an address using the Solana RPC method
- * of [`getAccountInfo`](https://solana.com/docs/rpc/http/getaccountinfo)
+ * Get the account info for an address using the Solana RPC method of
+ * [`getAccountInfo`](https://solana.com/docs/rpc/http/getaccountinfo)
  */
 export function useAccount<TConfig extends RpcConfig = RpcConfig>({
   options,

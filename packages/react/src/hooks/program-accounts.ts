@@ -59,8 +59,8 @@ type UseProgramAccountsResponse<TConfig extends RpcConfig> = TConfig extends {
                   : AccountInfoWithPubkey<AccountInfoBase & AccountInfoWithBase58Bytes>[];
 
 /**
- * Get all the accounts owned by a `program` using the Solana RPC method
- * of [`getProgramAccounts`](https://solana.com/docs/rpc/http/getprogramaccounts)
+ * Get all the accounts owned by a `program` using the Solana RPC method of
+ * [`getProgramAccounts`](https://solana.com/docs/rpc/http/getprogramaccounts)
  */
 export function useProgramAccounts<TConfig extends RpcConfig = RpcConfig>({
   options,
