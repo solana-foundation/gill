@@ -283,6 +283,7 @@ export function PageClient() {
   const { accounts, isLoading, isError, error } = useProgramAccounts({
     program: "4Nd1mBQtrMJVYVfKf2PJy9NZUZdTAsp7D4xWLs4gDB4T",
     config: {
+      encoding: "base64",
       filters: [
         { dataSize: 17n },
         {
