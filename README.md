@@ -320,7 +320,8 @@ await sendAndConfirmTransaction(signedTransaction, {
 
 ### Get the signature from a signed transaction
 
-After you already have a partially or fully signed transaction, you can get the transaction signature as follows:
+After you have a transaction signed by the `feePayer` (either a partially or fully signed transaction), you can get the
+transaction signature as follows:
 
 ```typescript
 import { getSignatureFromTransaction } from "gill";
@@ -330,9 +331,9 @@ console.log(signature);
 // Example output: 4nzNU7YxPtPsVzeg16oaZvLz4jMPtbAzavDfEFmemHNv93iYXKKYAaqBJzFCwEVxiULqTYYrbjPwQnA1d9ZCTELg
 ```
 
-> Note: After a transaction has been signed by at least one Signer, it will have a transaction signature (aka
-> transaction id). This is due to Solana transaction ids are the first item in the transaction's `signatures` array.
-> Therefore, client applications can know the signature before it is even sent to the network for confirmation.
+> Note: After a transaction has been signed by the fee payer, it will have a transaction signature (aka transaction id).
+> This is due to Solana transaction ids are the first item in the transaction's `signatures` array. Therefore, client
+> applications can potentially know the signature before it is even sent to the network for confirmation.
 
 ### Get a Solana Explorer link for transactions, accounts, or blocks
 

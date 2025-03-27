@@ -68,7 +68,7 @@ console.log("signedTransaction:");
 console.log(signedTransaction);
 
 /**
- * Get the transaction signature after it has been signed by at least one signer
+ * Get the transaction signature after it has been signed by the `feePayer`
  */
 let signature = getSignatureFromTransaction(signedTransaction);
 
