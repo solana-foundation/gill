@@ -243,6 +243,33 @@ export function PageClient() {
 }
 ```
 
+You can also provide a `Decoder` for known account data structure in order to decode the `data` byte array into a typed
+object:
+
+```tsx
+"use client";
+
+import { useAccount } from "gill-react";
+import { getMintDecoder } from "gill/programs/token";
+
+export function PageClient() {
+  const { account, isLoading, isError, error } = useAccount({
+    // USDC mint account (on Solana mainnet)
+    address: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    decoder: getMintDecoder(),
+  });
+
+  // if (isLoading) { return ... }
+  // if (isError) { return ... }
+
+  return (
+    <div className="">
+      <pre>account: {JSON.stringify(account, null, "\t")}</pre>
+    </div>
+  );
+}
+```
+
 ### Get signature statuses
 
 Get the statuses of signatures using the Solana RPC method of
