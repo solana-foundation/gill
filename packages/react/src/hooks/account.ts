@@ -9,7 +9,7 @@ import type { GillUseRpcHook } from "./types";
 
 type RpcConfig = Simplify<Parameters<typeof fetchEncodedAccount>>[2];
 
-type UseAccountResponse<TData extends Uint8Array | object = Uint8Array, TAddress extends string = string> = Account<
+type UseAccountResponse<TAddress extends string = string, TData extends Uint8Array | object = Uint8Array> = Account<
   TData,
   TAddress
 > & {
@@ -55,6 +55,6 @@ export function useAccount<
   });
   return {
     ...rest,
-    account: data as UseAccountResponse<TDecodedData, TAddress>,
+    account: data as UseAccountResponse<TAddress, TDecodedData>,
   };
 }
