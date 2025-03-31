@@ -24,6 +24,7 @@ type UseBalanceInput<TConfig extends RpcConfig = RpcConfig> = GillUseRpcHook<TCo
 export function useBalance<TConfig extends RpcConfig = RpcConfig>({
   options,
   config,
+  abortSignal,
   address,
 }: UseBalanceInput<TConfig>) {
   const { rpc } = useSolanaClient();
@@ -33,7 +34,7 @@ export function useBalance<TConfig extends RpcConfig = RpcConfig>({
     enabled: !!address,
     queryKey: [GILL_HOOK_CLIENT_KEY, "getBalance", address],
     queryFn: async () => {
-      const { value } = await rpc.getBalance(address as Address, config).send();
+      const { value } = await rpc.getBalance(address as Address, config).send({ abortSignal });
       return value;
     },
   });
