@@ -1,5 +1,14 @@
 # gill
 
+## 0.8.3
+
+### Patch Changes
+
+- [#89](https://github.com/solana-foundation/gill/pull/89)
+  [`1314cda`](https://github.com/solana-foundation/gill/commit/1314cda705d9734d4cdf1a42c985f25ae3737a92) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - clarify the readme and examples on getting the signature from a singed
+  transaction
+
 ## 0.8.2
 
 ### Patch Changes
