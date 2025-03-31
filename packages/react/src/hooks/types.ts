@@ -14,4 +14,11 @@ export type GillUseRpcHook<TConfig, TOptions extends GillUseQueryDefaultOptions 
    * Options passed to the {@link useQuery} hook
    */
   options?: Simplify<TOptions>;
+  /**
+   * Signal used to abort the RPC operation
+   *
+   * See MDN docs for {@link https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal | AbortSignal}
+   * and {@link https://developer.mozilla.org/en-US/docs/Web/API/AbortController | AbortController}
+   */
+  abortSignal?: AbortSignal;
 };

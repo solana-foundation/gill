@@ -21,13 +21,14 @@ type UseLatestBlockhashInput<TConfig extends RpcConfig = RpcConfig> = GillUseRpc
 export function useLatestBlockhash<TConfig extends RpcConfig = RpcConfig>({
   options,
   config,
+  abortSignal,
 }: UseLatestBlockhashInput<TConfig> = {}) {
   const { rpc } = useSolanaClient();
   const { data, ...rest } = useQuery({
     ...options,
     queryKey: [GILL_HOOK_CLIENT_KEY, "getLatestBlockhash"],
     queryFn: async () => {
-      const { value } = await rpc.getLatestBlockhash(config).send();
+      const { value } = await rpc.getLatestBlockhash(config).send({ abortSignal });
       return value;
     },
   });

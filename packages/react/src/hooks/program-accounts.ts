@@ -65,6 +65,7 @@ type UseProgramAccountsResponse<TConfig extends RpcConfig> = TConfig extends {
 export function useProgramAccounts<TConfig extends RpcConfig = RpcConfig>({
   options,
   config,
+  abortSignal,
   program,
 }: UseProgramAccountsInput<TConfig>) {
   const { rpc } = useSolanaClient();
@@ -74,7 +75,7 @@ export function useProgramAccounts<TConfig extends RpcConfig = RpcConfig>({
     enabled: !!program,
     queryKey: [GILL_HOOK_CLIENT_KEY, "getProgramAccounts", program],
     queryFn: async () => {
-      const accounts = await rpc.getProgramAccounts(program as Address, config).send();
+      const accounts = await rpc.getProgramAccounts(program as Address, config).send({ abortSignal });
       return accounts;
     },
   });

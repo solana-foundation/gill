@@ -25,6 +25,7 @@ type UseSignatureStatusesResponse = ReturnType<GetSignatureStatusesApi["getSigna
 export function useSignatureStatuses<TConfig extends RpcConfig = RpcConfig>({
   options,
   config,
+  abortSignal,
   signatures,
 }: UseSignatureStatusesInput<TConfig>) {
   const { rpc } = useSolanaClient();
@@ -33,7 +34,7 @@ export function useSignatureStatuses<TConfig extends RpcConfig = RpcConfig>({
     enabled: signatures && signatures.length > 0,
     queryKey: [GILL_HOOK_CLIENT_KEY, "getSignatureStatuses", signatures],
     queryFn: async () => {
-      const { value } = await rpc.getSignatureStatuses(signatures as Signature[], config).send();
+      const { value } = await rpc.getSignatureStatuses(signatures as Signature[], config).send({ abortSignal });
       return value;
     },
   });
