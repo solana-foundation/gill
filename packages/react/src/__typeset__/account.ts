@@ -1,16 +1,20 @@
 import { Account, Address } from "gill";
 import { useAccount } from "../hooks";
+import { getMetadataDecoder, Metadata } from "gill/programs";
 
 // [DESCRIBE] useAccount
 {
-  const address = null as unknown as Address;
+  const address = null as unknown as Address<"12345">;
 
+  // Should use default account data type
   {
     const { account } = useAccount({ address });
     // Should have `exists=true` declared
     account satisfies { exists: true };
     // Should be a Uint8Array for the data
     account satisfies Account<Uint8Array>;
+    // Should use the address type
+    account.address satisfies Address<"12345">;
 
     // @ts-expect-error - Should not allow no argument
     useAccount();
@@ -19,6 +23,7 @@ import { useAccount } from "../hooks";
     useAccount({});
   }
 
+  // Should accept `config` input
   {
     const { account } = useAccount({
       address,
@@ -28,5 +33,15 @@ import { useAccount } from "../hooks";
     account satisfies { exists: true };
     // Should be a Uint8Array for the data
     account satisfies Account<Uint8Array>;
+  }
+
+  // Should use the decoder type
+  {
+    const { account } = useAccount({
+      address,
+      decoder: getMetadataDecoder(),
+    });
+    // Should be a `Metadata` type for the data
+    account satisfies Account<Metadata>;
   }
 }

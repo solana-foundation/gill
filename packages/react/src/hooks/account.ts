@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import type { Account, Address, Simplify } from "gill";
-import { assertAccountExists, fetchEncodedAccount } from "gill";
+import type { Account, Address, Decoder, Simplify } from "gill";
+import { assertAccountExists, decodeAccount, fetchEncodedAccount } from "gill";
 import { GILL_HOOK_CLIENT_KEY } from "../const";
 import { useSolanaClient } from "./client";
 import type { GillUseRpcHook } from "./types";
@@ -16,22 +16,30 @@ type UseAccountResponse<TData extends Uint8Array | object = Uint8Array, TAddress
   exists: true;
 };
 
-type UseAccountInput<TConfig extends RpcConfig = RpcConfig> = GillUseRpcHook<TConfig> & {
+type UseAccountInput<
+  TConfig extends RpcConfig = RpcConfig,
+  TAddress extends string = string,
+  TDecodedData extends object = Uint8Array,
+> = GillUseRpcHook<TConfig> & {
   /**
    * Address of the account to get the balance of
    */
-  address: Address | string;
+  address: TAddress | Address;
+  /**
+   * Account decoder that can decode the account's `data` byte array value
+   */
+  decoder?: Decoder<TDecodedData>;
 };
 
 /**
  * Get the account info for an address using the Solana RPC method of
  * [`getAccountInfo`](https://solana.com/docs/rpc/http/getaccountinfo)
  */
-export function useAccount<TConfig extends RpcConfig = RpcConfig>({
-  options,
-  config,
-  address,
-}: UseAccountInput<TConfig>) {
+export function useAccount<
+  TConfig extends RpcConfig = RpcConfig,
+  TAddress extends string = string,
+  TDecodedData extends object = Uint8Array,
+>({ options, config, address, decoder }: UseAccountInput<TConfig, TAddress, TDecodedData>) {
   const { rpc } = useSolanaClient();
   const { data, ...rest } = useQuery({
     networkMode: "offlineFirst",
@@ -40,12 +48,13 @@ export function useAccount<TConfig extends RpcConfig = RpcConfig>({
     queryFn: async () => {
       const account = await fetchEncodedAccount(rpc, address as Address, config);
       assertAccountExists(account);
+      if (decoder) return decodeAccount(account, decoder as Decoder<TDecodedData>);
       return account;
     },
     enabled: !!address,
   });
   return {
     ...rest,
-    account: data as UseAccountResponse,
+    account: data as UseAccountResponse<TDecodedData, TAddress>,
   };
 }
