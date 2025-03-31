@@ -1,13 +1,13 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import type { Account, Address, Decoder, Simplify } from "gill";
+import type { Account, Address, Decoder, FetchAccountConfig, Simplify } from "gill";
 import { assertAccountExists, decodeAccount, fetchEncodedAccount } from "gill";
 import { GILL_HOOK_CLIENT_KEY } from "../const";
 import { useSolanaClient } from "./client";
 import type { GillUseRpcHook } from "./types";
 
-type RpcConfig = Simplify<Parameters<typeof fetchEncodedAccount>>[2];
+type RpcConfig = Simplify<Omit<FetchAccountConfig, "abortSignal">>;
 
 type UseAccountResponse<TAddress extends string = string, TData extends Uint8Array | object = Uint8Array> = Account<
   TData,
@@ -39,8 +39,17 @@ export function useAccount<
   TConfig extends RpcConfig = RpcConfig,
   TAddress extends string = string,
   TDecodedData extends object = Uint8Array,
->({ options, config, address, decoder }: UseAccountInput<TConfig, TAddress, TDecodedData>) {
+>({ options, config, abortSignal, address, decoder }: UseAccountInput<TConfig, TAddress, TDecodedData>) {
   const { rpc } = useSolanaClient();
+
+  if (abortSignal) {
+    // @ts-expect-error we stripped the `abortSignal` from the type but are now adding it back in
+    config = {
+      ...(config || {}),
+      abortSignal,
+    };
+  }
+
   const { data, ...rest } = useQuery({
     networkMode: "offlineFirst",
     ...options,
