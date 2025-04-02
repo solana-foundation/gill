@@ -61,6 +61,7 @@ Fetch data from the Solana blockchain with the gill hooks:
 - [`useLatestBlockhash`](#get-latest-blockhash) - get the latest blockhash
 - [`useProgramAccounts`](#get-program-accounts-gpa) - get program accounts (GPA)
 - [`useSignatureStatuses`](#get-signature-statuses) - get signature statuses
+- [`useTokenAccount`](#get-token-account) - get the token account for a given mint and owner (or ATA)
 
 ### Wrap your React app in a context provider
 
@@ -333,4 +334,52 @@ export function PageClient() {
     </div>
   );
 }
+```
+
+### Get token account
+
+Get the token account for a given mint and owner (or ATA):
+
+```tsx
+"use client";
+
+import { useTokenAccount } from "gill-react";
+
+export function PageClient() {
+  const { account, isLoading, isError, error } = useTokenAccount({
+    mint: "7qzuHmauMFA9eTCsS5M7YP6y1HCoyPhkF8g5gdQ8pump",
+    owner: "nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c",
+  });
+
+  // if (isLoading) { return ... }
+  // if (isError) { return ... }
+
+  return (
+    <div className="">
+      <pre>account: {JSON.stringify(account, null, "\t")}</pre>
+    </div>
+  );
+}
+```
+
+**OR:**
+```tsx
+"use client";
+
+import { useTokenAccount } from "gill-react";
+
+export function PageClient() {
+  const { account, isLoading, isError, error } = useTokenAccount({
+    ata: "6AZXPGb5jA8w63fFSZqdpnQBE4YUQGZvXgFiZ8BXRWSE",
+  });
+
+  // if (isLoading) { return ... }
+  // if (isError) { return ... }
+
+  return (
+    <div className="">
+      <pre>account: {JSON.stringify(account, null, "\t")}</pre>
+    </div>
+  );
+} 
 ```
