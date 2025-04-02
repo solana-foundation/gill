@@ -1,9 +1,13 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import type { Account, Address, Decoder, FetchAccountConfig, Simplify } from "gill";
-import { address, assertAccountExists, decodeAccount, fetchEncodedAccount } from "gill";
-import { getAssociatedTokenAccountAddress, TOKEN_2022_PROGRAM_ADDRESS } from "gill/programs/token";
+import type { Account, Address, FetchAccountConfig, Simplify } from "gill";
+import { address, assertAccountExists, fetchEncodedAccount } from "gill";
+import {
+  checkedTokenProgramAddress,
+  getAssociatedTokenAccountAddress,
+  TokenProgramMonikers,
+} from "gill/programs/token";
 
 import { GILL_HOOK_CLIENT_KEY } from "../const";
 import { useSolanaClient } from "./client";
@@ -15,18 +19,18 @@ type UseTokenAccountResponse<TData extends Uint8Array | object = Uint8Array> = A
   exists: true;
 };
 
-type UseTokenAccountInput<
-  TConfig extends RpcConfig = RpcConfig,
-  TDecodedData extends object = Uint8Array,
-> = GillUseRpcHook<TConfig> & {
+type UseTokenATA = {
   /**
    * Optional manual ATA override (useful for multi-sig setups)
    */
-  ataOverride?: Address;
-  /**
-   * Account decoder for token account data
-   */
-  decoder?: Decoder<TDecodedData>;
+  ata: Address;
+
+  mint?: never;
+  owner?: never;
+};
+
+type UseTokenMintOwner = {
+  ata?: never;
   /**
    * Mint address of the SPL token
    */
@@ -35,59 +39,81 @@ type UseTokenAccountInput<
    * Owner of the token account
    */
   owner: Address;
-  /**
-   * Use Token-2022 instead of the default SPL Token Program
-   */
-  useToken2022?: boolean;
 };
+
+type UseTokenAccountInput<
+  TConfig extends RpcConfig = RpcConfig,
+  // TDecodedData extends object = Uint8Array,
+> = GillUseRpcHook<TConfig> & {
+  /**
+   * Token program to use for the ATA derivation
+   */
+  tokenProgram?: Address | TokenProgramMonikers;
+} & (UseTokenATA | UseTokenMintOwner);
+
+function hasATA(info: UseTokenATA | UseTokenMintOwner): info is UseTokenATA {
+  return (info as UseTokenATA).ata !== undefined;
+}
 
 /**
  * Fetch the associated token account (ATA) for a given mint & owner.
- * Supports Token-2022 via the `useToken2022` flag.
  */
-export function useTokenAccount<TConfig extends RpcConfig = RpcConfig, TDecodedData extends object = Uint8Array>({
+export function useTokenAccount<TConfig extends RpcConfig = RpcConfig>({
   options,
   config,
   abortSignal,
-  mint,
-  owner,
-  ataOverride,
-  decoder,
-  useToken2022 = false,
-}: UseTokenAccountInput<TConfig, TDecodedData>) {
+  tokenProgram,
+  ...tokenAccountOptions
+}: UseTokenAccountInput<TConfig>) {
   const { rpc } = useSolanaClient();
 
   if (abortSignal) {
-    // @ts-expect-error the `abortSignal` was stripped from the type but is now being adding back in
+    // @ts-expect-error the `abortSignal` was stripped from the type but is now being added back in
     config = {
       ...(config || {}),
       abortSignal,
     };
   }
 
-  //   Supporting Token-2022 and SPL Token Programs
-  const tokenProgram = useToken2022 ? TOKEN_2022_PROGRAM_ADDRESS : undefined;
+  tokenProgram = checkedTokenProgramAddress(tokenProgram);
 
   const { data, ...rest } = useQuery({
     networkMode: "offlineFirst",
     ...options,
-    enabled: !!mint && !!owner,
+    enabled: hasATA(tokenAccountOptions)
+      ? !!tokenAccountOptions.ata
+      : !!tokenAccountOptions.mint && !!tokenAccountOptions.owner,
     queryFn: async () => {
-      // Derive ATA if not manually provided
-      const ata = ataOverride
-        ? address(ataOverride)
-        : await getAssociatedTokenAccountAddress(address(mint), address(owner), tokenProgram);
+      let _ata: Address;
 
-      const account = await fetchEncodedAccount(rpc, ata, config);
+      if (hasATA(tokenAccountOptions)) {
+        _ata = address(tokenAccountOptions.ata);
+      } else {
+        _ata = await getAssociatedTokenAccountAddress(
+          address(tokenAccountOptions.mint),
+          address(tokenAccountOptions.owner),
+          tokenProgram,
+        );
+      }
+
+      const account = await fetchEncodedAccount(rpc, _ata, config);
       assertAccountExists(account);
 
-      return decoder ? decodeAccount(account, decoder as Decoder<TDecodedData>) : account;
+      // TODO: decode account with ATA decoder
+      return account;
     },
-    queryKey: [GILL_HOOK_CLIENT_KEY, "getTokenAccount", mint, owner, useToken2022],
+    queryKey: [
+      GILL_HOOK_CLIENT_KEY,
+      "getTokenAccount",
+      tokenAccountOptions.ata,
+      tokenAccountOptions.mint,
+      tokenAccountOptions.owner,
+      tokenProgram,
+    ],
   });
 
   return {
     ...rest,
-    account: data as UseTokenAccountResponse<TDecodedData>,
+    account: data as UseTokenAccountResponse<Uint8Array>,
   };
 }
