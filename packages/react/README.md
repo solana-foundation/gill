@@ -43,20 +43,10 @@ yarn add gill gill-react @tanstack/react-query
 
 Setup and configure your `SolanaProvider` to use the gill hooks:
 
-- [Overview](#overview)
-- [Installation](#installation)
-- [Quick start](#quick-start)
-  - [Wrap your React app in a context provider](#wrap-your-react-app-in-a-context-provider)
-  - [Create a client-only provider for NextJs and React server components](#create-a-client-only-provider-for-nextjs-and-react-server-components)
-  - [Wrap your app in the client-only provider for NextJs](#wrap-your-app-in-the-client-only-provider-for-nextjs)
-  - [Using React hooks in React server component applications](#using-react-hooks-in-react-server-component-applications)
-  - [Get your Solana client](#get-your-solana-client)
-  - [Get account balance (in lamports)](#get-account-balance-in-lamports)
-  - [Get latest blockhash](#get-latest-blockhash)
-  - [Get account info (and data)](#get-account-info-and-data)
-  - [Get signature statuses](#get-signature-statuses)
-  - [Get program accounts (GPA)](#get-program-accounts-gpa)
-  - [Get token account](#get-token-account)
+- [Wrap your React app in a context provider](#wrap-your-react-app-in-a-context-provider)
+- [Create a client-only provider for NextJs and React server components](#create-a-client-only-provider-for-nextjs-and-react-server-components)
+- [Wrap your app in the client-only provider for NextJs](#wrap-your-app-in-the-client-only-provider-for-nextjs)
+- [Using React hooks in React server component applications](#using-react-hooks-in-react-server-component-applications)
 
 Manage and use your Solana client's connections:
 
@@ -71,7 +61,6 @@ Fetch data from the Solana blockchain with the gill hooks:
 - [`useLatestBlockhash`](#get-latest-blockhash) - get the latest blockhash
 - [`useProgramAccounts`](#get-program-accounts-gpa) - get program accounts (GPA)
 - [`useSignatureStatuses`](#get-signature-statuses) - get signature statuses
-- [`useTokenAccount`](#get-token-account) - get the token account for a given mint and owner (or ATA)
 
 ### Wrap your React app in a context provider
 
