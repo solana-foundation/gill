@@ -61,6 +61,7 @@ Fetch data from the Solana blockchain with the gill hooks:
 - [`useLatestBlockhash`](#get-latest-blockhash) - get the latest blockhash
 - [`useProgramAccounts`](#get-program-accounts-gpa) - get program accounts (GPA)
 - [`useSignatureStatuses`](#get-signature-statuses) - get signature statuses
+- [`useTokenAccount`](#get-token-account) - get the token account for a given mint and owner (or ATA)
 
 ### Wrap your React app in a context provider
 
@@ -346,7 +347,7 @@ import { useTokenAccount } from "gill-react";
 
 export function PageClient() {
   const { account, isLoading, isError, error } = useTokenAccount({
-    mint: "2t1y8j6j5e8t7u9t9a9v9w9e9r9y9p9o9u9z9y9x9w9t9y9",
+    mint: "7qzuHmauMFA9eTCsS5M7YP6y1HCoyPhkF8g5gdQ8pump",
     owner: "nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c",
   });
 
@@ -369,7 +370,7 @@ import { useTokenAccount } from "gill-react";
 
 export function PageClient() {
   const { account, isLoading, isError, error } = useTokenAccount({
-    ata: "2t1y8j6j5e8t7u9t9a9v9w9e9r9y9p9o9u9z9y9x9w9t9y9",
+    ata: "6AZXPGb5jA8w63fFSZqdpnQBE4YUQGZvXgFiZ8BXRWSE",
   });
 
   // if (isLoading) { return ... }
