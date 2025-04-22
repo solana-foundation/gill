@@ -3,7 +3,7 @@ import {
   getTransferInstruction,
   TOKEN_2022_PROGRAM_ADDRESS,
 } from "@solana-program/token-2022";
-import type { Address, KeyPairSigner } from "@solana/kit";
+import { generateKeyPairSigner, type Address, type KeyPairSigner } from "@solana/kit";
 import {
   getTransferTokensInstructions,
   GetTransferTokensInstructionsArgs,
@@ -20,14 +20,23 @@ jest.mock("@solana-program/token-2022", () => ({
 }));
 
 describe("getTransferTokensInstructions", () => {
-  const mockPayer = { address: "payer" } as KeyPairSigner;
-  const mockMint = { address: "mint" } as KeyPairSigner;
-  const mockAuthority = { address: "authority" } as KeyPairSigner;
-  const mockDestination = { address: "destination" } as KeyPairSigner;
+  let mockPayer = { address: "payer" } as KeyPairSigner;
+  let mockMint = { address: "mint" } as KeyPairSigner;
+  let mockAuthority = { address: "authority" } as KeyPairSigner;
+  let mockDestination = { address: "destination" } as KeyPairSigner;
   const mockDestinationAta = "destinationAta" as Address;
   const mockSourceAta = "sourceAta" as Address;
 
   const mockAmount = BigInt(1000);
+
+  beforeAll(async () => {
+    [mockPayer, mockMint, mockAuthority, mockDestination] = await Promise.all([
+      generateKeyPairSigner(),
+      generateKeyPairSigner(),
+      generateKeyPairSigner(),
+      generateKeyPairSigner(),
+    ]);
+  });
 
   beforeEach(() => {
     (getCreateAssociatedTokenIdempotentInstruction as jest.Mock).mockReturnValue({
