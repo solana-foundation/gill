@@ -1,17 +1,17 @@
-import type { Address, IInstruction, KeyPairSigner } from "@solana/kit";
+import type { Address, IInstruction, TransactionSigner } from "@solana/kit";
 
 import { getCreateAssociatedTokenIdempotentInstruction, getTransferInstruction } from "@solana-program/token-2022";
 import { checkedAddress, checkedTransactionSigner } from "../../../core";
 import { checkedTokenProgramAddress } from "../addresses";
 import type { TokenInstructionBase } from "./types";
 
-export type GetTransferTokensInstructionsArgs = TokenInstructionBase<KeyPairSigner | Address> & {
+export type GetTransferTokensInstructionsArgs = TokenInstructionBase & {
   /**
    * The source account's owner/delegate or its multi-signature account:
-   * - this should normally by a `KeyPairSigner`
+   * - this should normally by a `TransactionSigner`
    * - only for multi-sig authorities (like Squads Protocol), should you supply an `Address`
    * */
-  authority: KeyPairSigner | Address;
+  authority: TransactionSigner | Address;
   /**
    * Associated token account (ata) address for `authority` and this `mint`
    *
@@ -24,7 +24,7 @@ export type GetTransferTokensInstructionsArgs = TokenInstructionBase<KeyPairSign
    * */
   sourceAta: Address;
   /** Wallet address to receive the tokens, via their associated token account: `destinationAta` */
-  destination: KeyPairSigner | Address;
+  destination: TransactionSigner | Address;
   /**
    * Associated token account (ata) address for `destination` and this `mint`
    *

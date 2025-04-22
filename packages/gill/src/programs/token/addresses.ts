@@ -1,5 +1,5 @@
 import { findAssociatedTokenPda, TOKEN_2022_PROGRAM_ADDRESS } from "@solana-program/token-2022";
-import { isAddress, type Address, type KeyPairSigner } from "@solana/kit";
+import { isAddress, type Address, type TransactionSigner } from "@solana/kit";
 import { checkedAddress } from "../../core/utils";
 
 export type LegacyTokenProgramMonikers = "legacy" | "token";
@@ -22,8 +22,8 @@ export const TOKEN_PROGRAM_ADDRESS =
  * - {@link TOKEN_2022_PROGRAM_ADDRESS} - the SPL Token Extensions Program (aka Token22)
  */
 export async function getAssociatedTokenAccountAddress(
-  mint: Address | KeyPairSigner,
-  owner: Address | KeyPairSigner,
+  mint: Address | TransactionSigner,
+  owner: Address | TransactionSigner,
   tokenProgram?: Address,
 ): Promise<Address> {
   return (
