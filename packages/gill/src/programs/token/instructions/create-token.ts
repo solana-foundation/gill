@@ -1,6 +1,6 @@
 import { getCreateAccountInstruction } from "@solana-program/system";
-import type { Address, IInstruction, KeyPairSigner } from "@solana/kit";
-import { checkedAddress, getMinimumBalanceForRentExemption } from "../../../core";
+import type { Address, IInstruction, KeyPairSigner, TransactionSigner } from "@solana/kit";
+import { checkedAddress, checkedTransactionSigner, getMinimumBalanceForRentExemption } from "../../../core";
 import { getCreateMetadataAccountV3Instruction, getTokenMetadataAddress } from "../../token-metadata";
 
 import {
@@ -26,20 +26,20 @@ export type GetCreateTokenInstructionsArgs = TokenInstructionBase<KeyPairSigner>
    *
    * When not provided, defaults to: `feePayer`
    **/
-  mintAuthority?: KeyPairSigner;
+  mintAuthority?: TransactionSigner;
   /**
    * Authority address that is able to freeze (and thaw) user owned token accounts.
    * When a user's token account is frozen, they will not be able to transfer their tokens.
    *
    * When not provided, defaults to: `null`
    **/
-  freezeAuthority?: Address | KeyPairSigner;
+  freezeAuthority?: Address | TransactionSigner;
   /**
    * Authority address that is allowed to update the metadata
    *
    * When not provided, defaults to: `feePayer`
    **/
-  updateAuthority?: KeyPairSigner;
+  updateAuthority?: TransactionSigner;
   /**
    * Optional (but highly recommended) metadata to attach to this token
    */
@@ -77,7 +77,9 @@ export type GetCreateTokenInstructionsArgs = TokenInstructionBase<KeyPairSigner>
  */
 export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs): IInstruction[] {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
+  args.feePayer = checkedTransactionSigner(args.feePayer);
 
+  // if (isAddress) args.feePayer =
   if (!args.decimals) args.decimals = 9;
   if (!args.mintAuthority) args.mintAuthority = args.feePayer;
   if (!args.updateAuthority) args.updateAuthority = args.feePayer;

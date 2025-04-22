@@ -33,14 +33,14 @@ export function createTransaction<TVersion extends TransactionVersion, TFeePayer
 ): FullTransaction<TVersion, ITransactionMessageWithFeePayer>;
 export function createTransaction<
   TVersion extends TransactionVersion,
-  TFeePayer extends Address,
+  TFeePayer extends Address | TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
   props: CreateTransactionInput<TVersion, TFeePayer, TLifetimeConstraint>,
 ): Simplify<FullTransaction<TVersion, ITransactionMessageWithFeePayer, TransactionMessageWithBlockhashLifetime>>;
 export function createTransaction<
   TVersion extends TransactionVersion,
-  TFeePayer extends TransactionSigner,
+  TFeePayer extends Address | TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
   props: CreateTransactionInput<TVersion, TFeePayer, TLifetimeConstraint>,
