@@ -79,7 +79,6 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
   args.feePayer = checkedTransactionSigner(args.feePayer);
 
-  // if (isAddress) args.feePayer =
   if (!args.decimals) args.decimals = 9;
   if (!args.mintAuthority) args.mintAuthority = args.feePayer;
   if (!args.updateAuthority) args.updateAuthority = args.feePayer;

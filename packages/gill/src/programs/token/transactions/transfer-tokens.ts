@@ -1,6 +1,6 @@
 import type {
   Address,
-  ITransactionMessageWithFeePayerSigner,
+  ITransactionMessageWithFeePayer,
   TransactionMessageWithBlockhashLifetime,
   TransactionSigner,
   TransactionVersion,
@@ -56,7 +56,7 @@ export async function buildTransferTokensTransaction<
   TFeePayer extends TransactionSigner = TransactionSigner,
 >(
   args: TransactionBuilderInput<TVersion, TFeePayer> & GetTransferTokensTransactionInput,
-): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayerSigner>>;
+): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer>>;
 export async function buildTransferTokensTransaction<
   TVersion extends TransactionVersion = "legacy",
   TFeePayer extends TransactionSigner = TransactionSigner,
@@ -64,7 +64,7 @@ export async function buildTransferTokensTransaction<
     TransactionMessageWithBlockhashLifetime["lifetimeConstraint"] = TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(
   args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetTransferTokensTransactionInput,
-): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayerSigner, TransactionMessageWithBlockhashLifetime>>;
+): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer, TransactionMessageWithBlockhashLifetime>>;
 export async function buildTransferTokensTransaction<
   TVersion extends TransactionVersion,
   TFeePayer extends Address | TransactionSigner,
@@ -99,7 +99,7 @@ export async function buildTransferTokensTransaction<
 
   return createTransaction(
     (({ feePayer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof args) => ({
-      feePayer: feePayer as TransactionSigner,
+      feePayer,
       version: version || "legacy",
       computeUnitLimit,
       computeUnitPrice,

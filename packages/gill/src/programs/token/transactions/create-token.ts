@@ -90,7 +90,7 @@ export async function buildCreateTokenTransaction<
 
   return createTransaction(
     (({ feePayer, version, computeUnitLimit, computeUnitPrice, latestBlockhash }: typeof args) => ({
-      feePayer: feePayer as TransactionSigner,
+      feePayer,
       version: version || "legacy",
       computeUnitLimit,
       computeUnitPrice,
