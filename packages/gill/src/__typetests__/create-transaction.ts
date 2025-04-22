@@ -73,6 +73,14 @@ import { createTransaction } from "../core";
       TransactionMessageWithBlockhashLifetime &
       ITransactionMessageWithFeePayer;
 
+    createTransaction({
+      version: "legacy",
+      feePayer: feePayer,
+      instructions: [ix],
+      latestBlockhash,
+      // @ts-expect-error Should not be a "fee payer signer"
+    }) satisfies ITransactionMessageWithFeePayerSigner;
+
     // Should be a signable transaction
     signTransactionMessageWithSigners(txSignable);
   }
@@ -127,6 +135,14 @@ import { createTransaction } from "../core";
       instructions: [ix],
       latestBlockhash,
     }) satisfies BaseTransactionMessage<0> & TransactionMessageWithBlockhashLifetime & ITransactionMessageWithFeePayer;
+
+    createTransaction({
+      version: 0,
+      feePayer: feePayer,
+      instructions: [ix],
+      latestBlockhash,
+      // @ts-expect-error Should not be a "fee payer signer"
+    }) satisfies ITransactionMessageWithFeePayerSigner;
 
     // Should be a signable transaction
     signTransactionMessageWithSigners(txSignable);
