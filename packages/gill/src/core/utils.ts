@@ -1,4 +1,10 @@
-import { createNoopSigner, isTransactionSigner, type Address, type TransactionSigner } from "@solana/kit";
+import {
+  assertIsTransactionSigner,
+  createNoopSigner,
+  isTransactionSigner,
+  type Address,
+  type TransactionSigner,
+} from "@solana/kit";
 import type { SolanaClusterMoniker } from "../types";
 import { GENESIS_HASH } from "./const";
 
@@ -20,15 +26,19 @@ export function getMonikerFromGenesisHash(hash: string): SolanaClusterMoniker | 
   }
 }
 
-export function checkedAddress(input: Address | TransactionSigner): Address {
+export function checkedAddress<TAddress extends string = string>(
+  input: Address<TAddress> | TransactionSigner<TAddress>,
+): Address<TAddress> {
   return typeof input == "string" ? input : input.address;
 }
 
-export function checkedTransactionSigner(input: Address | TransactionSigner): TransactionSigner {
-  if (typeof input === "string" || "address" in input == false) {
-    return createNoopSigner(input);
-  } else if (isTransactionSigner(input)) return input;
-  throw new Error("A signer or address is required");
+export function checkedTransactionSigner<TAddress extends string = string>(
+  input: Address<TAddress> | TransactionSigner<TAddress>,
+): TransactionSigner<TAddress> {
+  if (typeof input === "string" || "address" in input == false) input = createNoopSigner(input);
+  if (!isTransactionSigner(input)) throw new Error("A signer or address is required");
+  assertIsTransactionSigner(input);
+  return input;
 }
 
 /**
