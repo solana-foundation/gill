@@ -24,7 +24,7 @@ type UseTokenMintInput<
   /**
    * Address of the Mint account to get and decode
    */
-  address: TAddress | Address<TAddress>;
+  mint: TAddress | Address<TAddress>;
 };
 
 /**
@@ -34,7 +34,7 @@ export function useTokenMint<TConfig extends RpcConfig = RpcConfig, TAddress ext
   options,
   config,
   abortSignal,
-  address,
+  mint,
 }: UseTokenMintInput<TConfig, TAddress>) {
   const { rpc } = useSolanaClient();
 
@@ -49,10 +49,10 @@ export function useTokenMint<TConfig extends RpcConfig = RpcConfig, TAddress ext
   const { data, ...rest } = useQuery({
     networkMode: "offlineFirst",
     ...options,
-    enabled: !!address,
-    queryKey: [GILL_HOOK_CLIENT_KEY, "getMintAccount", address],
+    enabled: !!mint,
+    queryKey: [GILL_HOOK_CLIENT_KEY, "getMintAccount", mint],
     queryFn: async () => {
-      const account = await fetchEncodedAccount(rpc, address as Address<TAddress>, config);
+      const account = await fetchEncodedAccount(rpc, mint as Address<TAddress>, config);
       assertAccountExists(account);
       return decodeMint(account);
     },
