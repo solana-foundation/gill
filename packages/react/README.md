@@ -354,7 +354,7 @@ Get a decoded [Mint account](https://solana.com/docs/tokens#mint-account) for a 
 import { useSignatureStatuses } from "gill-react";
 
 export function PageClient() {
-  const { account, isLoading, isError, error } = useAccount({
+  const { account, isLoading, isError, error } = useMintAccount({
     // USDC mint account (on Solana mainnet)
     address: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
   });
