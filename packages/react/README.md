@@ -61,7 +61,7 @@ Fetch data from the Solana blockchain with the gill hooks:
 - [`useLatestBlockhash`](#get-latest-blockhash) - get the latest blockhash
 - [`useSignatureStatuses`](#get-signature-statuses) - get signature statuses
 - [`useProgramAccounts`](#get-program-accounts-gpa) - get program accounts (GPA)
-- [`useTokenMint`](#get-a-token-mint-account) - get a decoded token's Mint account
+- [`useTokenMint`](#get-token-mint-account) - get a decoded token's Mint account
 
 ### Wrap your React app in a context provider
 
@@ -342,7 +342,7 @@ export function PageClient() {
 }
 ```
 
-### Get a token Mint account
+### Get token Mint account
 
 Get a decoded [Mint account](https://solana.com/docs/tokens#mint-account) for a given token's Mint address.
 
