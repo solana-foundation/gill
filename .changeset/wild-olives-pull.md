@@ -2,4 +2,4 @@
 "gill-react": minor
 ---
 
-added `useMintAccount` hook
+added `useTokenMint` hook

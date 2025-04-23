@@ -11,13 +11,13 @@ import { decodeMint, type Mint } from "gill/programs/token";
 
 type RpcConfig = Simplify<Omit<FetchAccountConfig, "abortSignal">>;
 
-type UseMintAccountResponse<TAddress extends string = string> = Simplify<
+type UseTokenMintResponse<TAddress extends string = string> = Simplify<
   Account<Mint, TAddress> & {
     exists: true;
   }
 >;
 
-type UseMintAccountInput<
+type UseTokenMintInput<
   TConfig extends RpcConfig = RpcConfig,
   TAddress extends string = string,
 > = GillUseRpcHook<TConfig> & {
@@ -30,12 +30,12 @@ type UseMintAccountInput<
 /**
  * Get and parse a token's {@link https://solana.com/docs/tokens#mint-account | Mint account}
  */
-export function useMintAccount<TConfig extends RpcConfig = RpcConfig, TAddress extends string = string>({
+export function useTokenMint<TConfig extends RpcConfig = RpcConfig, TAddress extends string = string>({
   options,
   config,
   abortSignal,
   address,
-}: UseMintAccountInput<TConfig, TAddress>) {
+}: UseTokenMintInput<TConfig, TAddress>) {
   const { rpc } = useSolanaClient();
 
   if (abortSignal) {
@@ -59,6 +59,6 @@ export function useMintAccount<TConfig extends RpcConfig = RpcConfig, TAddress e
   });
   return {
     ...rest,
-    account: data as UseMintAccountResponse<TAddress>,
+    account: data as UseTokenMintResponse<TAddress>,
   };
 }

@@ -1,15 +1,15 @@
 import type { Account, Address } from "gill";
 
 import type { Mint } from "gill/programs/token";
-import { useMintAccount } from "../hooks";
+import { useTokenMint } from "../hooks";
 
-// [DESCRIBE] useMintAccount
+// [DESCRIBE] useTokenMint
 {
   const address = null as unknown as Address<"mint1234">;
 
   // Should use default account data type
   {
-    const { account } = useMintAccount({ address });
+    const { account } = useTokenMint({ address });
     // Should have `exists=true` declared
     account satisfies { exists: true };
     // Should be a parsed `Mint` for the data
@@ -18,15 +18,15 @@ import { useMintAccount } from "../hooks";
     account.address satisfies Address<"mint1234">;
 
     // @ts-expect-error - Should not allow no argument
-    useMintAccount();
+    useTokenMint();
 
     // @ts-expect-error - Should not allow empty argument object
-    useMintAccount({});
+    useTokenMint({});
   }
 
   // Should accept `config` input
   {
-    const { account } = useMintAccount({
+    const { account } = useTokenMint({
       address,
       config: { commitment: "confirmed" },
     });
