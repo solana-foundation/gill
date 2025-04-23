@@ -85,13 +85,11 @@ export function getCreateTokenInstructions(args: GetCreateTokenInstructionsArgs)
   if (args.freezeAuthority) args.freezeAuthority = checkedAddress(args.freezeAuthority);
 
   if (args.tokenProgram === TOKEN_2022_PROGRAM_ADDRESS) {
-    // @ts-ignore FIXME(nick): errors due to not finding the valid overload
     const metadataPointer = extension("MetadataPointer", {
       metadataAddress: args.mint.address,
       authority: args.updateAuthority.address,
     });
 
-    // @ts-ignore FIXME(nick): errors due to not finding the valid overload
     const metadataExtensionData = extension("TokenMetadata", {
       updateAuthority: args.updateAuthority.address,
       mint: args.mint.address,
