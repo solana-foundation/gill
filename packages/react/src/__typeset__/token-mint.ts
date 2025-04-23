@@ -5,11 +5,11 @@ import { useTokenMint } from "../hooks";
 
 // [DESCRIBE] useTokenMint
 {
-  const address = null as unknown as Address<"mint1234">;
+  const mint = null as unknown as Address<"mint1234">;
 
   // Should use default account data type
   {
-    const { account } = useTokenMint({ address });
+    const { account } = useTokenMint({ mint });
     // Should have `exists=true` declared
     account satisfies { exists: true };
     // Should be a parsed `Mint` for the data
@@ -27,7 +27,7 @@ import { useTokenMint } from "../hooks";
   // Should accept `config` input
   {
     const { account } = useTokenMint({
-      address,
+      mint,
       config: { commitment: "confirmed" },
     });
     // Should have `exists=true` declared
