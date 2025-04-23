@@ -70,7 +70,7 @@ You can also find some [NodeJS specific helpers](#node-specific-imports) like:
 - [Saving a keypair to a file](#saving-a-keypair-to-a-file)
 - [Loading a keypair from an environment variable](#loading-a-keypair-from-an-environment-variable)
 - [Saving a keypair to an environment variable file](#saving-a-keypair-to-an-environment-file)
-- [Loading a bas58 keypair from an environment variable](#loading-a-base58-keypair-from-an-environment-variable)
+- [Loading a base58 keypair from an environment variable](#loading-a-base58-keypair-from-an-environment-variable)
 
 You can find [transaction builders](#transaction-builders) for common tasks, including:
 
