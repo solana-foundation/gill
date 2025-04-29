@@ -231,6 +231,28 @@ describe("getCreateTokenInstructions", () => {
       );
     });
 
+    it("should allow custom decimals of 0 when provided, not the default of 9", () => {
+      const args: GetCreateTokenInstructionsArgs = {
+        feePayer: mockPayer,
+        metadataAddress: mockMetadataAddress,
+        mint: mockMint,
+        decimals: 0,
+        metadata,
+      };
+
+      getCreateTokenInstructions(args);
+
+      expect(getInitializeMintInstruction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          mint: mockMint.address,
+          decimals: 0,
+        }),
+        {
+          programAddress: TOKEN_PROGRAM_ADDRESS,
+        },
+      );
+    });
+
     it("should use custom mint and freeze authorities when provided", () => {
       const args: GetCreateTokenInstructionsArgs = {
         feePayer: mockPayer,
