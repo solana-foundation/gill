@@ -6,7 +6,9 @@ import { createKeypairFromBase58 } from "../core";
  *
  * @param variableName - environment variable name accessible via `process.env[variableName]`
  */
-export async function loadKeypairFromEnvironmentBase58(variableName: string): Promise<CryptoKeyPair> {
+export async function loadKeypairFromEnvironmentBase58<TName extends keyof NodeJS.ProcessEnv | string>(
+  variableName: TName,
+): Promise<CryptoKeyPair> {
   if (!process.env[variableName]) {
     throw new Error(`Environment variable '${variableName}' not set`);
   }
@@ -18,6 +20,8 @@ export async function loadKeypairFromEnvironmentBase58(variableName: string): Pr
  *
  * @param variableName - environment variable name accessible via `process.env[variableName]`
  */
-export async function loadKeypairSignerFromEnvironmentBase58(variableName: string): Promise<KeyPairSigner> {
+export async function loadKeypairSignerFromEnvironmentBase58<TName extends keyof NodeJS.ProcessEnv | string>(
+  variableName: TName,
+): Promise<KeyPairSigner> {
   return createSignerFromKeyPair(await loadKeypairFromEnvironmentBase58(variableName));
 }
