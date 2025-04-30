@@ -9,9 +9,6 @@ export function tokenUiAmountToAmount(uiAmount: number, decimals: number): bigin
   // This ensures we get a decimal string representation without scientific notation
   const uiAmountStr = uiAmount.toFixed(decimals);
 
-  // Convert to string to avoid floating point precision issues
-  //   const uiAmountStr = uiAmount.toString();
-
   // Find decimal point position
   const decimalPointIndex = uiAmountStr.indexOf(".");
 
@@ -34,14 +31,9 @@ export function tokenUiAmountToAmount(uiAmount: number, decimals: number): bigin
     fractionalPart = fractionalPart.padEnd(decimals, "0");
   }
 
-  // Combine and convert to BigInt
-  //   const rawAmountStr = wholeNumber + fractionalPart;
-  //   return BigInt(rawAmountStr);
   // Combine and convert to BigInt, stripping any potential leading zeros
   const rawAmountStr = wholeNumber + fractionalPart;
-  // Handle case where result is "00000"
   if (rawAmountStr.replace(/0/g, "") === "") {
-    // throw `rawAmountStr: ${rawAmountStr}`;
     return BigInt(0);
   }
   return BigInt(rawAmountStr);
