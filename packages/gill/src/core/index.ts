@@ -15,3 +15,4 @@ export * from "./base64-to-transaction";
 export * from "./base64-from-transaction";
 export * from "./simulate-transaction";
 export * from "./get-oldest-signature";
+export * from "./insert-reference-key";
