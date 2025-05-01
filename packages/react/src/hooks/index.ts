@@ -4,4 +4,5 @@ export * from "./client";
 export * from "./latest-blockhash";
 export * from "./program-accounts";
 export * from "./signature-statuses";
+export * from "./token-account";
 export * from "./token-mint";
