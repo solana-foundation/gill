@@ -24,16 +24,27 @@ type UseTokenAccountResponse<TAddress extends Address = Address> = Simplify<
 >;
 
 type TokenAccountInputWithDeclaredAta<TAddress extends Address = Address> = {
+  /**
+   * Address of the {@link https://solana.com/docs/tokens#associated-token-account | Token Account} to get and decode
+   */
   ata: TAddress;
 };
 
 type TokenAccountInputWithDerivedAtaDetails = {
+  /**
+   * Address of the {@link https://solana.com/docs/tokens#token-account | Token Account}'s `owner`
+   */
   owner: Address;
   /**
-   * Address of the Mint account to get and decode
+   * Address of the {@link https://solana.com/docs/tokens#token-account | Token Account}'s `mint`
    */
   mint: Address;
-
+  /**
+   * The {@link https://solana.com/docs/tokens#token-programs | Token Program} used to create the `mint`
+   *
+   * If no `tokenProgram` is provided, the hook will automatically fetch the
+   * {@link https://solana.com/docs/tokens#mint-account | Mint account} to retrieve the correct Token Program address
+   */
   tokenProgram?: Address;
 };
 

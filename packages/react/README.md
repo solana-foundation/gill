@@ -224,7 +224,7 @@ export function PageClient() {
 Get the account info for an address using the Solana RPC method of
 [`getAccountInfo`](https://solana.com/docs/rpc/http/getaccountinfo):
 
-> See also: [useTokenMint](#get-token-mint-account)
+> See also: [useTokenMint](#get-token-mint-account) and [`useTokenAccount`](#get-token-account)
 
 ```tsx
 "use client";
@@ -251,8 +251,9 @@ You can also provide a `Decoder` for known account data structure in order to de
 object:
 
 > ![NOTE] Some popular account types may have their own dedicated hook, like
-> [Token Mints (`useTokenMint`)](#get-token-mint-account). If a dedicated hook exists for an account type, it is highly
-> recommended to use those hooks as opposed to manually providing a `decoder` to `useAccount()`.
+> [Token Mints (`useTokenMint`)](#get-token-mint-account) and and [`useTokenAccount`](#get-token-account). If a
+> dedicated hook exists for an account type, it is highly recommended to use those hooks as opposed to manually
+> providing a `decoder` to `useAccount()`.
 
 ```tsx
 "use client";
@@ -373,7 +374,7 @@ export function PageClient() {
 
 ### Get token account
 
-Get the token account for a given mint and owner (or ATA):
+Get the token account for a given mint and owner:
 
 ```tsx
 "use client";
@@ -382,8 +383,9 @@ import { useTokenAccount } from "gill-react";
 
 export function PageClient() {
   const { account, isLoading, isError, error } = useTokenAccount({
-    mint: "7qzuHmauMFA9eTCsS5M7YP6y1HCoyPhkF8g5gdQ8pump",
-    owner: "nicktrLHhYzLmoVbuZQzHUTicd2sfP571orwo9jfc8c",
+    // token on devnet
+    mint: "HwxZNMkZbZMeiu9Xnmc6Rg8jYgNsJB47jwabHGUebW4F",
+    owner: "nick6zJc6HpW3kfBm4xS2dmbuVRyb5F3AnUvj5ymzR5",
   });
 
   // if (isLoading) { return ... }
@@ -397,7 +399,10 @@ export function PageClient() {
 }
 ```
 
-**OR:**
+If you already know the specific Associated Token Account's address (ATA), then you can get that specific token account
+by providing the `ata` address:
+
+> Note: This is most commonly used for multi-sig protocols like Squads.
 
 ```tsx
 "use client";
@@ -406,7 +411,7 @@ import { useTokenAccount } from "gill-react";
 
 export function PageClient() {
   const { account, isLoading, isError, error } = useTokenAccount({
-    ata: "6AZXPGb5jA8w63fFSZqdpnQBE4YUQGZvXgFiZ8BXRWSE",
+    ata: "CCMCWh4FudPEmY6Q1AVi5o8mQMXkHYkJUmZfzRGdcJ9P",
   });
 
   // if (isLoading) { return ... }
