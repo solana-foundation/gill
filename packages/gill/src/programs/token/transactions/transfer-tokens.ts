@@ -5,7 +5,7 @@ import type {
   TransactionSigner,
   TransactionVersion,
 } from "@solana/kit";
-import { checkedAddress, createTransaction } from "../../../core";
+import { checkedAddress, checkedTransactionSigner, createTransaction } from "../../../core";
 import type { FullTransaction, Simplify } from "../../../types";
 import { checkedTokenProgramAddress, getAssociatedTokenAccountAddress } from "../addresses";
 import { getTransferTokensInstructions, type GetTransferTokensInstructionsArgs } from "../instructions";
@@ -67,10 +67,11 @@ export async function buildTransferTokensTransaction<
 ): Promise<FullTransaction<TVersion, ITransactionMessageWithFeePayer, TransactionMessageWithBlockhashLifetime>>;
 export async function buildTransferTokensTransaction<
   TVersion extends TransactionVersion,
-  TFeePayer extends TransactionSigner,
+  TFeePayer extends Address | TransactionSigner,
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetTransferTokensTransactionInput) {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
+  args.feePayer = checkedTransactionSigner(args.feePayer);
   args.mint = checkedAddress(args.mint);
 
   [args.destinationAta, args.sourceAta] = await Promise.all([

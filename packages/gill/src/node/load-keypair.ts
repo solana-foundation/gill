@@ -35,7 +35,9 @@ export async function loadKeypairSignerFromFile(filePath: string = DEFAULT_CLI_K
  *
  * @param variableName - environment variable name accessible via `process.env[variableName]`
  */
-export async function loadKeypairFromEnvironment(variableName: string): Promise<CryptoKeyPair> {
+export async function loadKeypairFromEnvironment<TName extends keyof NodeJS.ProcessEnv | string>(
+  variableName: TName,
+): Promise<CryptoKeyPair> {
   if (!process.env[variableName]) {
     throw new Error(`Environment variable '${variableName}' not set`);
   }
@@ -50,6 +52,8 @@ export async function loadKeypairFromEnvironment(variableName: string): Promise<
  *
  * @param variableName - environment variable name accessible via `process.env[variableName]`
  */
-export async function loadKeypairSignerFromEnvironment(variableName: string): Promise<KeyPairSigner> {
+export async function loadKeypairSignerFromEnvironment<TName extends keyof NodeJS.ProcessEnv | string>(
+  variableName: TName,
+): Promise<KeyPairSigner> {
   return createSignerFromKeyPair(await loadKeypairFromEnvironment(variableName));
 }

@@ -5,7 +5,7 @@ import type {
   TransactionSigner,
   TransactionVersion,
 } from "@solana/kit";
-import { checkedAddress, createTransaction } from "../../../core";
+import { checkedAddress, checkedTransactionSigner, createTransaction } from "../../../core";
 import type { FullTransaction, Simplify } from "../../../types";
 import { checkedTokenProgramAddress, getAssociatedTokenAccountAddress } from "../addresses";
 import { getMintTokensInstructions, type GetMintTokensInstructionsArgs } from "../instructions/mint-tokens";
@@ -69,6 +69,7 @@ export async function buildMintTokensTransaction<
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput) {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
+  args.feePayer = checkedTransactionSigner(args.feePayer);
   args.mint = checkedAddress(args.mint);
 
   if (!args.ata) {

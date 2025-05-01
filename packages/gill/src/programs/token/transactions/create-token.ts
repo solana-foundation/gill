@@ -6,7 +6,7 @@ import type {
   TransactionSigner,
   TransactionVersion,
 } from "@solana/kit";
-import { createTransaction } from "../../../core";
+import { checkedTransactionSigner, createTransaction } from "../../../core";
 import type { FullTransaction, Simplify } from "../../../types";
 import { getTokenMetadataAddress } from "../../token-metadata";
 import { checkedTokenProgramAddress, TOKEN_PROGRAM_ADDRESS } from "../addresses";
@@ -67,6 +67,7 @@ export async function buildCreateTokenTransaction<
   TLifetimeConstraint extends TransactionMessageWithBlockhashLifetime["lifetimeConstraint"],
 >(args: TransactionBuilderInput<TVersion, TFeePayer, TLifetimeConstraint> & GetCreateTokenTransactionInput) {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
+  args.feePayer = checkedTransactionSigner(args.feePayer);
 
   let metadataAddress = args.mint.address;
 

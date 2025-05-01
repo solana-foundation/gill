@@ -1,20 +1,20 @@
-import type { Address, IInstruction, KeyPairSigner } from "@solana/kit";
+import type { Address, IInstruction, TransactionSigner } from "@solana/kit";
 
 import { getCreateAssociatedTokenIdempotentInstruction, getMintToInstruction } from "@solana-program/token-2022";
-import { checkedAddress } from "../../../core";
+import { checkedAddress, checkedTransactionSigner } from "../../../core";
 import { checkedTokenProgramAddress } from "../addresses";
 import type { TokenInstructionBase } from "./types";
 
-export type GetMintTokensInstructionsArgs = TokenInstructionBase<KeyPairSigner | Address> & {
+export type GetMintTokensInstructionsArgs = TokenInstructionBase & {
   /**
    * The authority address capable of authorizing minting of new tokens.
    *
-   * - this should normally by a `KeyPairSigner`
+   * - this should normally by a `TransactionSigner`
    * - only for multi-sig authorities (like Squads Protocol), should you supply an `Address`
    * */
-  mintAuthority: KeyPairSigner | Address;
+  mintAuthority: TransactionSigner | Address;
   /** Wallet address to receive the tokens being minted, via their associated token account (ata) */
-  destination: KeyPairSigner | Address;
+  destination: TransactionSigner | Address;
   /**
    * Associated token account (ata) address for `destination` and this `mint`
    *
@@ -57,6 +57,7 @@ export type GetMintTokensInstructionsArgs = TokenInstructionBase<KeyPairSigner |
  */
 export function getMintTokensInstructions(args: GetMintTokensInstructionsArgs): IInstruction[] {
   args.tokenProgram = checkedTokenProgramAddress(args.tokenProgram);
+  args.feePayer = checkedTransactionSigner(args.feePayer);
   args.mint = checkedAddress(args.mint);
 
   return [

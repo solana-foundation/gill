@@ -1,5 +1,22 @@
 # gill
 
+## 0.8.3
+
+### Patch Changes
+
+- [#101](https://github.com/solana-foundation/gill/pull/101)
+  [`6f547ff`](https://github.com/solana-foundation/gill/commit/6f547fff0731bd7530b1266f8a5c15eac2e80d32) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - fixed token builders to accept address or signer as fee payer
+
+- [#104](https://github.com/solana-foundation/gill/pull/104)
+  [`56a7af8`](https://github.com/solana-foundation/gill/commit/56a7af87878b914275f5189d99ea7c2674f45c0c) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - removed the ts-ignore on create token as it is no longer needed
+
+- [#89](https://github.com/solana-foundation/gill/pull/89)
+  [`1314cda`](https://github.com/solana-foundation/gill/commit/1314cda705d9734d4cdf1a42c985f25ae3737a92) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - clarify the readme and examples on getting the signature from a singed
+  transaction
+
 ## 0.8.2
 
 ### Patch Changes

@@ -59,8 +59,9 @@ Fetch data from the Solana blockchain with the gill hooks:
 - [`useAccount`](#get-account-info-and-data) - get the account info for an address
 - [`useBalance`](#get-account-balance-in-lamports) - get account balance (in lamports)
 - [`useLatestBlockhash`](#get-latest-blockhash) - get the latest blockhash
-- [`useProgramAccounts`](#get-program-accounts-gpa) - get program accounts (GPA)
 - [`useSignatureStatuses`](#get-signature-statuses) - get signature statuses
+- [`useProgramAccounts`](#get-program-accounts-gpa) - get program accounts (GPA)
+- [`useTokenMint`](#get-token-mint-account) - get a decoded token's Mint account
 - [`useTokenAccount`](#get-token-account) - get the token account for a given mint and owner (or ATA)
 
 ### Wrap your React app in a context provider
@@ -223,6 +224,8 @@ export function PageClient() {
 Get the account info for an address using the Solana RPC method of
 [`getAccountInfo`](https://solana.com/docs/rpc/http/getaccountinfo):
 
+> See also: [useTokenMint](#get-token-mint-account)
+
 ```tsx
 "use client";
 
@@ -246,6 +249,10 @@ export function PageClient() {
 
 You can also provide a `Decoder` for known account data structure in order to decode the `data` byte array into a typed
 object:
+
+> ![NOTE] Some popular account types may have their own dedicated hook, like
+> [Token Mints (`useTokenMint`)](#get-token-mint-account). If a dedicated hook exists for an account type, it is highly
+> recommended to use those hooks as opposed to manually providing a `decoder` to `useAccount()`.
 
 ```tsx
 "use client";
@@ -336,6 +343,34 @@ export function PageClient() {
 }
 ```
 
+### Get token Mint account
+
+Get a decoded [Mint account](https://solana.com/docs/tokens#mint-account) for a given token's Mint address.
+
+> Note: the Mint's information can be accessed via the returned `account.data` field.
+
+```tsx
+"use client";
+
+import { useTokenMint } from "gill-react";
+
+export function PageClient() {
+  const { account, isLoading, isError, error } = useTokenMint({
+    // USDC mint account (on Solana mainnet)
+    mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  });
+
+  // if (isLoading) { return ... }
+  // if (isError) { return ... }
+
+  return (
+    <div className="">
+      <pre>account: {JSON.stringify(account, null, "\t")}</pre>
+    </div>
+  );
+}
+```
+
 ### Get token account
 
 Get the token account for a given mint and owner (or ATA):
@@ -363,6 +398,7 @@ export function PageClient() {
 ```
 
 **OR:**
+
 ```tsx
 "use client";
 
@@ -381,5 +417,5 @@ export function PageClient() {
       <pre>account: {JSON.stringify(account, null, "\t")}</pre>
     </div>
   );
-} 
+}
 ```

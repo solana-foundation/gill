@@ -1,5 +1,33 @@
 # gill-react
 
+## 0.3.0
+
+### Minor Changes
+
+- [#91](https://github.com/solana-foundation/gill/pull/91)
+  [`d6d5127`](https://github.com/solana-foundation/gill/commit/d6d51274e0bd978433d39ba999ff7f6cdc15bfdb) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - add decoder support `useAccount` hook
+
+- [#103](https://github.com/solana-foundation/gill/pull/103)
+  [`dd41a56`](https://github.com/solana-foundation/gill/commit/dd41a569212f2438b174256d98bb3270fa07410d) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - added `useTokenMint` hook
+
+### Patch Changes
+
+- [#95](https://github.com/solana-foundation/gill/pull/95)
+  [`21b6688`](https://github.com/solana-foundation/gill/commit/21b6688db106d6eaf959566308824307d04a271a) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - add support for AbortSignal on existing hooks
+
+- [#86](https://github.com/solana-foundation/gill/pull/86)
+  [`193e5f3`](https://github.com/solana-foundation/gill/commit/193e5f3df84c584ff2ebbec9d41eb4c84e903d70) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - added missing hooks to readme
+
+- Updated dependencies
+  [[`6f547ff`](https://github.com/solana-foundation/gill/commit/6f547fff0731bd7530b1266f8a5c15eac2e80d32),
+  [`56a7af8`](https://github.com/solana-foundation/gill/commit/56a7af87878b914275f5189d99ea7c2674f45c0c),
+  [`1314cda`](https://github.com/solana-foundation/gill/commit/1314cda705d9734d4cdf1a42c985f25ae3737a92)]:
+  - gill@0.8.3
+
 ## 0.2.1
 
 ### Patch Changes
