@@ -6,8 +6,8 @@ offering the low level "escape hatches" when developers need (or want)
 fine-grain control.
 
 Take a look through these examples to see how gill works and even
-[how it compares](#comparison-of-gill-vs-solanakit-aka-web3js-v2) to using the vanilla web3js
-v2 library.
+[how it compares](#comparison-of-gill-vs-solanakit-aka-web3js-v2) to using the
+vanilla web3js v2 library.
 
 ## Tech stack used
 
@@ -46,6 +46,7 @@ files (in order):
 - [`intro.ts`](./src/intro.ts)
 - [`airdrop.ts`](./src/airdrop.ts)
 - [`tokens.ts`](./src/tokens.ts)
+- [`reference-keys.ts`](./src/reference-keys.ts)
 
 #### `intro.ts`
 
@@ -87,6 +88,17 @@ wallet:
 
 > For more examples interacting with Tokens on Solana, see the
 > [token examples examples here](../tokens/README.md)
+
+### `reference-keys.ts`
+
+This script demonstrates the process to add a reference key into a transaction.
+
+Adding reference keys to transactions allows developers to be able track the
+completion of transactions given to users, without knowing the signature ahead
+of time. Then, perform any desired logic after detection of the reference keyed
+transaction landing onchain.
+
+Most notably utilized within SolanaPay and Blinks.
 
 ## Comparison of gill vs @solana/kit (aka web3js v2)
 
