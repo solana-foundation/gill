@@ -1,5 +1,23 @@
 # gill-react
 
+## 0.4.0
+
+### Minor Changes
+
+- [#96](https://github.com/solana-foundation/gill/pull/96)
+  [`844bcb3`](https://github.com/solana-foundation/gill/commit/844bcb3e71937c9f4af8c93b2058d0d03f793a75) Thanks
+  [@Gift-Stack](https://github.com/Gift-Stack)! - added `useTokenAccount` hook
+
+### Patch Changes
+
+- Updated dependencies
+  [[`4bac16e`](https://github.com/solana-foundation/gill/commit/4bac16ef9d11a11ca59bf2ffa99d23ad77e8bd21),
+  [`90f7a8e`](https://github.com/solana-foundation/gill/commit/90f7a8eeb9fbce3b4dd815912438075e3c6852ac),
+  [`3f456f2`](https://github.com/solana-foundation/gill/commit/3f456f297f4a656edc6d47c2bbcaf3350fb0cdf9),
+  [`7dedc33`](https://github.com/solana-foundation/gill/commit/7dedc33397a0346a8a56344d77a719e7238ef930),
+  [`7e51f34`](https://github.com/solana-foundation/gill/commit/7e51f34002e5ac5e54bf54f2a86d4c8a0149392d)]:
+  - gill@0.9.0
+
 ## 0.3.0
 
 ### Minor Changes

@@ -1,5 +1,37 @@
 # gill
 
+## 0.9.0
+
+### Minor Changes
+
+- [#119](https://github.com/solana-foundation/gill/pull/119)
+  [`4bac16e`](https://github.com/solana-foundation/gill/commit/4bac16ef9d11a11ca59bf2ffa99d23ad77e8bd21) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - added token ui amount helpers for converting token's `amount` based on
+  the mint's `decimals`
+
+- [#106](https://github.com/solana-foundation/gill/pull/106)
+  [`3f456f2`](https://github.com/solana-foundation/gill/commit/3f456f297f4a656edc6d47c2bbcaf3350fb0cdf9) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - added the `getOldestSignatureForAddress` function
+
+- [#115](https://github.com/solana-foundation/gill/pull/115)
+  [`7dedc33`](https://github.com/solana-foundation/gill/commit/7dedc33397a0346a8a56344d77a719e7238ef930) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - added typed Node ENV variable name support for the keypair loader
+  functions
+
+- [#120](https://github.com/solana-foundation/gill/pull/120)
+  [`7e51f34`](https://github.com/solana-foundation/gill/commit/7e51f34002e5ac5e54bf54f2a86d4c8a0149392d) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - added `insertReferenceKeysToTransactionMessage` and
+  `insertReferenceKeyToTransactionMessage` functions to insert reference keys into transactions
+
+### Patch Changes
+
+- [#114](https://github.com/solana-foundation/gill/pull/114)
+  [`90f7a8e`](https://github.com/solana-foundation/gill/commit/90f7a8eeb9fbce3b4dd815912438075e3c6852ac) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - fix (and test for) creating tokens using custom `decimals` input
+
+  note: the fix was added in [PR #113](https://github.com/solana-foundation/gill/pull/113) by
+  [@0xIchigo](https://github.com/0xIchigo)
+
 ## 0.8.3
 
 ### Patch Changes
