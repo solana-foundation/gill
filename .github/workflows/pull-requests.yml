@@ -44,8 +44,7 @@ jobs:
         run: pnpm test # Don't add --concurrency here; it's already baked in
         
       - name: Install Docs Dependencies
-        working-directory: ./docs
-        run: pnpm install
+        run: cd docs && pnpm install
         
       - name: Build Docs
         working-directory: ./docs
