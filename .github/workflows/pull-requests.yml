@@ -42,3 +42,30 @@ jobs:
 
       - name: Test
         run: pnpm test # Don't add --concurrency here; it's already baked in
+
+  build-docs:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./docs
+
+    strategy:
+      matrix:
+        node:
+          - "current"
+          - "lts/*"
+          
+    name: Build Docs on Node ${{ matrix.node }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Dependencies
+      uses: ./.github/workflows/actions/install-dependencies
+      with:
+        version: ${{ matrix.node }}
+
+    - name: Build Docs
+      run: pnpm build # Don't add --concurrency here; it's already baked in
