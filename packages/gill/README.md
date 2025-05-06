@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img width="600" alt="gill" src="https://raw.githubusercontent.com/solana-foundation/gill/refs/heads/master/media/cover.png" />
+  <img width="600" alt="gill" src="https://raw.githubusercontent.com/solana-foundation/gill/refs/heads/master/docs/public/cover.png" />
 </p>
 
 ## Overview
@@ -22,9 +22,9 @@ Welcome to `gill`, a JavaScript/TypeScript client library for interacting with t
 blockchain. You can use it to build Solana apps in Node, web, React Native, or just about any other JavaScript
 environment.
 
-Gill is built on top of the modern javascript libraries for Solana built by Anza and used in
-([@solana/kit](https://github.com/anza-xyz/kit) aka "web3.js v2"). By utilizing the same types and functions under the
-hood, `gill` is compatible with `kit`.
+Gill is built on top of the modern javascript libraries for Solana built by Anza called
+[@solana/kit](https://github.com/anza-xyz/kit) (formerly known as "web3.js v2"). By utilizing the same types and
+functions under the hood, `gill` is compatible with `kit`. See [Replacing Kit with gill](#replace-kit-with-gill).
 
 > For a comparison of using gill vs web3js v2, take a look at the
 > [comparison examples](https://github.com/solana-foundation/gill/tree/master/examples/get-started#comparison-of-gill-vs-solanakit-aka-web3js-v2).
@@ -44,6 +44,13 @@ pnpm add gill
 ```shell
 yarn add gill
 ```
+
+### Replace Kit with gill
+
+All imports from the `@solana/kit` library can be directly replaces with `gill` to achieve the exact same functionality.
+Plus unlock the additional functionality only included in Gill, like `createSolanaTransaction`.
+
+Simply [install gill](#installation) and replace your imports
 
 ## Quick start
 

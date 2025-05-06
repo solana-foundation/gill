@@ -29,8 +29,5 @@ test-ledger
 # GitHub Pages deploy directory
 .ghpages-deploy
 
-# Codegenerated TypeDoc API
-docs/
-
 .env
 .env.local
