@@ -1,0 +1,40 @@
+{
+  "name": "gill-docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --turbo",
+    "start": "next start",
+    "postinstall": "fumadocs-mdx",
+    "style:fix": "prettier --write '{*,**/*}.{ts,tsx,js,jsx,css,json,md}'"
+  },
+  "dependencies": {
+    "gill": "0.9.0",
+    "gill-react": "0.4.0",
+    "fumadocs-core": "15.2.10",
+    "fumadocs-docgen": "^2.0.0",
+    "fumadocs-mdx": "11.6.1",
+    "fumadocs-twoslash": "^3.1.1",
+    "fumadocs-ui": "15.2.10",
+    "lucide-react": "^0.484.0",
+    "next": "15.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "twoslash": "^0.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.4",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "22.13.8",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "eslint": "^8",
+    "eslint-config-next": "15.3.1",
+    "postcss": "^8.5.3",
+    "prettier": "^3.3",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "pnpm@9.1.0"
+}

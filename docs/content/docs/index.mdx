@@ -1,0 +1,91 @@
+---
+title: Installation
+description: Get started with gill, the new JavaScript client for Solana developers.
+---
+
+Gill is a modern javascript/typescript client library for interacting with the [Solana](http://solana.com/) blockchain.
+You can use it to build Solana apps in Node, web, React Native, or just about any other JavaScript environment.
+
+Gill is built on top of the javascript libraries for Solana built by Anza called
+[@solana/kit](https://github.com/anza-xyz/kit) (formerly known as "web3.js v2"). By utilizing the same types and
+functions under the hood, `gill` is compatible with `kit`.
+
+## Quick start
+
+Follow these simple steps to install and get started with gill:
+
+<Steps>
+<Step>
+ 
+### Install gill
+
+Install gill using the core `gill` library:
+
+```package-install
+gill
+```
+
+<Callout title="Coming from Kit?">
+  All imports from the `@solana/kit` library can be directly replaces with `gill` to achieve the exact same
+  functionality. Plus unlock the additional functionality only included in Gill, like `createTransaction`.
+</Callout>
+
+</Step>
+
+<Step>
+
+### Create a Solana RPC connection
+
+Create a Solana `rpc` and `rpcSubscriptions` client for any RPC URL or standard Solana network moniker (i.e. `devnet`,
+`localnet`, `mainnet` etc).
+
+```typescript
+import { createSolanaClient } from "gill";
+
+const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
+  urlOrMoniker: "mainnet",
+});
+```
+
+The above snippet demonstrates how to use the public Solana RPC endpoints. These are great for quick local testing, but
+they are (rightfully) subject to heavy rate limits.
+
+When you are ready to ship your application to production, you will need to utilize a production ready RPC provider.
+
+```typescript
+import { createSolanaClient } from "gill";
+
+const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
+  urlOrMoniker: "https://private-solana-rpc-provider.com",
+});
+```
+
+</Step>
+
+<Step>
+
+### Make Solana RPC requests
+
+After you have a Solana `rpc` connection, you can make all the [JSON RPC method](https://solana.com/docs/rpc) calls
+directly off of it.
+
+```typescript
+import { createSolanaClient } from "gill";
+
+const { rpc } = createSolanaClient({ urlOrMoniker: "devnet" });
+
+// get slot
+const slot = await rpc.getSlot().send();
+
+// get the latest blockhash
+const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+```
+
+<Callout>
+  The `rpc` client requires you to call `.send()` on the RPC method in order to actually send the request to your RPC
+  provider and get a response.
+</Callout>
+
+</Step>
+
+</Steps>
