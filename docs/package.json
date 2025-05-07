@@ -9,6 +9,12 @@
     "postinstall": "fumadocs-mdx",
     "style:fix": "prettier --write '{*,**/*}.{ts,tsx,js,jsx,css,json,md}'"
   },
+  "engines": {
+    "node": ">=20.18.0",
+    "npm": "please-use-pnpm",
+    "pnpm": "^9",
+    "yarn": "please-use-pnpm"
+  },
   "dependencies": {
     "gill": "0.9.0",
     "gill-react": "0.4.0",

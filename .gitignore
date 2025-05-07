@@ -31,3 +31,4 @@ test-ledger
 
 .env
 .env.local
+.vercel

@@ -1,5 +1,5 @@
 import { siteConfig } from "@/const";
-import icon from "@/public/icon-black.svg";
+import icon from "@@/public/icon-black.svg";
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 import { BookTextIcon, MoveRightIcon, ShapesIcon } from "lucide-react";
