@@ -1,0 +1,62 @@
+---
+title: Generate a signer
+description: Create a new keypair signer
+---
+
+For most typical Solana transaction signing operations, you will be utilizing a `TransactionSigner`.
+
+The most common of which is a `KeyPairSigner`, which is able to be passed around to the various
+functions within gill to satisfies any `TransactionSigner` type requirements, like when
+[building instructions](#todo) or [creating transactions](#todo).
+
+<Callout>
+  Unless otherwise specifically noted in the gill documentation, the term "signer" refers to
+  `TransactionSigner` and usually a `KeyPairSigner`.
+</Callout>
+
+## Generating a keypair signer
+
+For most "signing" operations, you will need a `KeyPairSigner` instance, which can be used to sign
+transactions and messages.
+
+For various Solana development tasks, you may need to generate a new signer. Including when creating
+a new account, generating reference keys for transactions, or [creating tokens](#todo).
+
+To generate a random `KeyPairSigner`:
+
+```typescript twoslash
+import { generateKeyPairSigner, type KeyPairSigner } from "gill";
+
+const signer = await generateKeyPairSigner();
+```
+
+### Non-extractable by default
+
+Under the hood, a `KeyPairSigner` utilize the
+[Web Crypto APIs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) to improve
+security.
+
+These signers are non-extractable by default, meaning there is no way to get the secret key material
+out of the instance. This is a more secure practice and highly recommended to be used over
+extractable keypairs, unless you REALLY need to be able to save the keypair for some reason.
+
+## Generating extractable keypairs and signers
+
+Extractable keypairs are less secure and should not be used unless you REALLY need to save the key
+for some reason. Since there are a few useful cases for saving these keypairs, gill contains a
+separate explicit function to generate these extractable keypairs.
+
+To generate a random, **extractable** `KeyPairSigner`:
+
+```typescript twoslash
+import { generateExtractableKeyPairSigner } from "gill";
+
+const signer = await generateExtractableKeyPairSigner();
+```
+
+<Callout title="WARNING" type="error">
+  Using **extractable** keypairs are inherently less-secure, since they allow the secret key
+  material to be extracted. Obviously. As such, they should only be used sparingly and ONLY when you
+  have an explicit reason you need extract the key material (like if you are going to save the key
+  to a file).
+</Callout>
