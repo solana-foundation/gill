@@ -4,8 +4,8 @@ Documentation website for gill, built with [Fumadocs](https://github.com/fuma-na
 
 ## Install dependencies
 
-Install using the `--ignore-workspace` flag to ensure the dependencies of the documentation website are separate from
-the library dependencies.
+Install using the `--ignore-workspace` flag to ensure the dependencies of the documentation website
+are separate from the library dependencies.
 
 ```bash
 pnpm install --ignore-workspace

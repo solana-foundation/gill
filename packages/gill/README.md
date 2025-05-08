@@ -100,7 +100,7 @@ To generate a random `KeyPairSigner`:
 ```typescript
 import { generateKeyPairSigner } from "gill";
 
-const signer: KeyPairSigner = generateKeyPairSigner();
+const signer: KeyPairSigner = await generateKeyPairSigner();
 ```
 
 > Note: These Signers are non-extractable, meaning there is no way to get the secret key material out of the instance.
@@ -118,7 +118,7 @@ To generate a random, **extractable** `KeyPairSigner`:
 ```typescript
 import { generateExtractableKeyPairSigner } from "gill";
 
-const signer: KeyPairSigner = generateExtractableKeyPairSigner();
+const signer: KeyPairSigner = await generateExtractableKeyPairSigner();
 ```
 
 > WARNING: Using **extractable** keypairs are inherently less-secure, since they allow the secret key material to be
