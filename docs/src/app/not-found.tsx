@@ -13,7 +13,8 @@ export default function Page() {
 
       <section className="space-y-3 mx-auto text-center">
         <p className="text-fd-muted-foreground max-w-md">
-          The page you are looking for was not found. Instead, try exploring one of these links below.
+          The page you are looking for was not found. Instead, try exploring one of these links
+          below.
         </p>
       </section>
 
@@ -29,12 +30,18 @@ export default function Page() {
           <FileTextIcon strokeWidth={1.0} size={18} />
           Learn
         </Link> */}
-        <Link className="flex items-center gap-2 hover:underline hover:underline-offset-4" href="/docs/examples">
+        <Link
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="/examples"
+        >
           {/* <GraduationCapIcon strokeWidth={1.0} size={18} /> */}
           <ShapesIcon strokeWidth={1.0} size={18} />
           Examples
         </Link>
-        <Link className="flex items-center gap-2 hover:underline hover:underline-offset-4" href="/docs">
+        <Link
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="/docs"
+        >
           <BookTextIcon strokeWidth={1.0} size={18} />
           Docs
           <MoveRightIcon strokeWidth={1.0} />

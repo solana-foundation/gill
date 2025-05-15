@@ -17,7 +17,8 @@ export default function Page() {
 
       <section className="space-y-3 mx-auto text-center">
         <p className="text-fd-muted-foreground max-w-md">
-          gill is a modern javascript/typescript client library for interacting with the Solana blockchain
+          gill is a modern javascript/typescript client library for interacting with the Solana
+          blockchain
         </p>
         <p className="text-center inline-flex items-center gap-2 mx-auto">
           <a href="https://github.com/solana-foundation/gill/actions/workflows/publish-packages.yml">
@@ -71,12 +72,18 @@ export default function Page() {
           <FileTextIcon strokeWidth={1.0} size={18} />
           Learn
         </Link> */}
-        <Link className="flex items-center gap-2 hover:underline hover:underline-offset-4" href="/docs/examples">
+        <Link
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="/examples"
+        >
           {/* <GraduationCapIcon strokeWidth={1.0} size={18} /> */}
           <ShapesIcon strokeWidth={1.0} size={18} />
           Examples
         </Link>
-        <Link className="flex items-center gap-2 hover:underline hover:underline-offset-4" href="/docs">
+        <Link
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="/docs"
+        >
           <BookTextIcon strokeWidth={1.0} size={18} />
           Docs
           <MoveRightIcon strokeWidth={1.0} />
