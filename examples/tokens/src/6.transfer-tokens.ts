@@ -10,6 +10,7 @@ import { loadKeypairSignerFromFile } from "gill/node";
 import {
   getAssociatedTokenAccountAddress,
   getCreateAssociatedTokenIdempotentInstruction,
+  getTransferInstruction,
   TOKEN_PROGRAM_ADDRESS,
 } from "gill/programs/token";
 
@@ -26,6 +27,7 @@ const tokenProgram = TOKEN_PROGRAM_ADDRESS; // use the correct program for the `
 
 const destination = address("nick6zJc6HpW3kfBm4xS2dmbuVRyb5F3AnUvj5ymzR5");
 const destinationAta = await getAssociatedTokenAccountAddress(mint, destination, tokenProgram);
+const sourceAta = await getAssociatedTokenAccountAddress(mint, signer, tokenProgram);
 
 const transaction = createTransaction({
   feePayer: signer,
@@ -38,6 +40,12 @@ const transaction = createTransaction({
       tokenProgram,
       owner: destination,
       ata: destinationAta,
+    }),
+    getTransferInstruction({
+      source: sourceAta,
+      authority: signer,
+      destination: destinationAta,
+      amount: 1000n,
     }),
   ],
   latestBlockhash,
