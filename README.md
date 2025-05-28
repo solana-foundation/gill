@@ -108,24 +108,23 @@ import {
   validateSolanaPayURL,
   extractReferenceKeys,
   type Address,
-} from "gill";
-import { Keypair } from "@solana/web3.js";
+} from "gill/node";
 
 // Generate a unique reference for payment tracking
-const reference = Keypair.generate().publicKey.toBase58() as Address;
+const reference = "11111111111111111111111111111113" as Address;
 
-// Create a transfer request for SOL
-const paymentURL = await createTransferRequestURL({
+// Create a transfer request for SOL using decimal amounts
+const paymentURL = createTransferRequestURL({
   recipient: "11111111111111111111111111111112" as Address,
-  amount: 1000000n, // 0.001 SOL in lamports
+  amount: 0.001, // 0.001 SOL (decimal amount)
   reference: [reference],
   label: "Coffee Shop",
-  message: "Payment for 1x Latte ☕",
-  memo: "Order #12345"
+  message: "Payment for 1x Latte",
+  memo: "Order 12345"
 });
 
 console.log(paymentURL);
-// Output: solana:11111111111111111111111111111112?amount=1000000&reference=...&label=Coffee+Shop&message=Payment+for+1x+Latte+%E2%98%95&memo=Order+%2312345
+// Output: solana:11111111111111111111111111111112?amount=0.001&reference=...&label=Coffee+Shop&message=Payment+for+1x+Latte&memo=Order+12345
 ```
 
 ### Transfer Requests (Non-Interactive)
@@ -133,22 +132,22 @@ console.log(paymentURL);
 Transfer requests allow direct SOL or SPL token payments without requiring server communication:
 
 ```typescript
-import { createTransferRequestURL } from "gill";
+import { createTransferRequestURL } from "gill/node";
 
-// SOL transfer
-const solPayment = await createTransferRequestURL({
+// SOL transfer using decimal amount
+const solPayment = createTransferRequestURL({
   recipient: merchantWallet,
-  amount: 5000000n, // 0.005 SOL
+  amount: 0.005, // 0.005 SOL
   reference: [referenceKey],
   label: "Merchant Name",
   message: "Payment description",
-  memo: "Order #123"
+  memo: "Order 123"
 });
 
-// SPL token transfer (e.g., USDC)
-const usdcPayment = await createTransferRequestURL({
+// SPL token transfer (e.g., USDC) using decimal amount
+const usdcPayment = createTransferRequestURL({
   recipient: merchantWallet,
-  amount: 5000000n, // 5 USDC (6 decimals)
+  amount: 5, // 5 USDC
   splToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" as Address, // USDC mint
   reference: [referenceKey],
   label: "Merchant Name",
@@ -161,9 +160,9 @@ const usdcPayment = await createTransferRequestURL({
 Transaction requests enable complex payments that require server-side transaction creation:
 
 ```typescript
-import { createTransactionRequestURL } from "gill";
+import { createTransactionRequestURL } from "gill/node";
 
-const transactionURL = await createTransactionRequestURL({
+const transactionURL = createTransactionRequestURL({
   link: "https://merchant.com/api/solana-pay"
 });
 
@@ -176,19 +175,19 @@ console.log(transactionURL);
 Process Solana Pay URLs received from QR codes or links:
 
 ```typescript
-import { parseSolanaPayURL, validateSolanaPayURL } from "gill";
+import { parseSolanaPayURL, validateSolanaPayURL } from "gill/node";
 
 // Validate URL format
-const isValid = await validateSolanaPayURL(url);
+const isValid = validateSolanaPayURL(url);
 
 if (isValid) {
   // Parse URL to extract payment details
-  const parsed = await parseSolanaPayURL(url);
+  const parsed = parseSolanaPayURL(url);
   
   if (parsed.type === "transfer") {
     console.log("Transfer request:");
     console.log(`- Recipient: ${parsed.params.recipient}`);
-    console.log(`- Amount: ${parsed.params.amount} lamports`);
+    console.log(`- Amount: ${parsed.params.amount} SOL`);
     console.log(`- Token: ${parsed.params.splToken || "SOL"}`);
     console.log(`- Label: ${parsed.params.label}`);
     console.log(`- Message: ${parsed.params.message}`);
@@ -204,31 +203,14 @@ if (isValid) {
 Use reference keys to track and validate payments on-chain:
 
 ```typescript
-import { extractReferenceKeys, findReference, validateTransfer } from "gill";
+import { extractReferenceKeys } from "gill/node";
 
 // Extract reference keys from a payment URL
-const references = await extractReferenceKeys(paymentURL);
+const references = extractReferenceKeys(paymentURL);
 console.log("Reference keys:", references);
 
-// Monitor for payments (in a real application)
-try {
-  const signatureInfo = await findReference(connection, references[0], {
-    finality: "confirmed"
-  });
-  
-  console.log(`Payment found: ${signatureInfo.signature}`);
-  
-  // Validate the payment details
-  await validateTransfer(connection, signatureInfo.signature, {
-    recipient: merchantWallet,
-    amount: expectedAmount,
-    reference: references[0],
-  });
-  
-  console.log("Payment validated!");
-} catch (error) {
-  console.log("Payment not found or invalid");
-}
+// Note: Payment monitoring and validation would require additional
+// on-chain transaction monitoring logic specific to your application
 ```
 
 ### QR Code Generation
@@ -236,14 +218,14 @@ try {
 Generate QR codes for mobile wallet scanning:
 
 ```typescript
-import { toQRCodeURL, createSolanaPayQR } from "gill";
+import { toQRCodeURL } from "gill/node";
 
 // Get QR-friendly URL
-const qrURL = await toQRCodeURL(paymentURL);
+const qrURL = toQRCodeURL(paymentURL);
 
-// Create QR code element (browser only)
-const qrElement = await createSolanaPayQR(paymentURL, 256);
-document.getElementById('qr-container').appendChild(qrElement);
+// Use with any QR code library (example with qrcode-terminal)
+import qrcode from "qrcode-terminal";
+qrcode.generate(qrURL, { small: true });
 ```
 
 ### Error Handling
@@ -251,14 +233,10 @@ document.getElementById('qr-container').appendChild(qrElement);
 Gill provides specific error types for robust error handling:
 
 ```typescript
-import { 
-  SolanaPayError, 
-  InvalidSolanaPayURLError,
-  UnsupportedSolanaPayVersionError 
-} from "gill";
+import { SolanaPayError } from "gill/node";
 
 try {
-  const url = await createTransactionRequestURL({
+  const url = createTransactionRequestURL({
     link: "http://insecure.com/api" // HTTP not allowed
   });
 } catch (error) {
@@ -277,25 +255,27 @@ Find comprehensive examples in the [`examples/solana-pay`](https://github.com/so
 - **Transaction Request** - Interactive payment flows
 - **Merchant Integration** - Complete e-commerce payment processing
 - **Wallet Integration** - Wallet-side URL handling and validation
-- **Full Payment Flow** - End-to-end payment scenarios
 
 ```bash
 # Run the examples
 cd examples/solana-pay
 pnpm install
-pnpm run example:transfer
-pnpm run example:transaction
-pnpm run example:merchant
+pnpm run 01-basic
+pnpm run 02-transfers
+pnpm run 03-transactions
+pnpm run 04-wallet
 ```
 
 ### Key Features
 
 - ✅ **Full TypeScript Support** - Complete type safety with Gill's Address types
+- ✅ **Decimal Amount Support** - Uses decimal amounts as per Solana Pay specification
 - ✅ **Transfer & Transaction Requests** - Support for both payment types
 - ✅ **URL Validation** - Robust validation before processing
 - ✅ **QR Code Generation** - Built-in QR code support for mobile wallets
 - ✅ **Reference Tracking** - Unique payment identification and monitoring
 - ✅ **Error Handling** - Comprehensive error management
+- ✅ **Zero External Dependencies** - Built from scratch for Gill
 - ✅ **ESM/CommonJS Compatible** - Works in all JavaScript environments
 
 For more information, see the [Solana Pay documentation](https://docs.solanapay.com/) and explore the [complete examples](https://github.com/solana-foundation/gill/tree/master/examples/solana-pay).
