@@ -16,3 +16,4 @@ export * from "./base64-from-transaction";
 export * from "./simulate-transaction";
 export * from "./get-oldest-signature";
 export * from "./insert-reference-key";
+// Note: solana-pay exports moved to node/index.ts due to browser compatibility issues
