@@ -1,4 +1,4 @@
-import { examplesSource } from "@/lib/source";
+import { guidesSource } from "@/lib/source";
 import { Spread } from "@/lib/Spread";
 import { DocsPage, DocsBody, DocsDescription, DocsTitle } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
@@ -10,7 +10,7 @@ import { Popup, PopupContent, PopupTrigger } from "fumadocs-twoslash/ui";
 
 export default async function Page(props: { params: Promise<{ slug?: string[] }> }) {
   const params = await props.params;
-  const page = examplesSource.getPage(params.slug);
+  const page = guidesSource.getPage(params.slug);
   if (!page) notFound();
 
   const MDX = page.data.body;
@@ -40,7 +40,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
 }
 
 export async function generateStaticParams() {
-  return examplesSource.generateParams().filter(
+  return guidesSource.generateParams().filter(
     (params) =>
       // FIXME(#405): Build times on Vercel are so long as to make deploys impossible. For
       // now, let's let Vercel generate API reference pages as they're visited (ISR -
@@ -51,7 +51,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }) {
   const params = await props.params;
-  const page = examplesSource.getPage(params.slug);
+  const page = guidesSource.getPage(params.slug);
   if (!page) notFound();
 
   return {

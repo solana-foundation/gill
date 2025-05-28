@@ -26,6 +26,6 @@ export const docs = defineDocs({
   dir: "content/docs",
 });
 
-export const examples = defineDocs({
-  dir: "content/examples",
+export const guides = defineDocs({
+  dir: "content/guides",
 });

@@ -1,0 +1,4 @@
+{
+  "root": false,
+  "pages": ["create-token", "mint-tokens", "transfer-tokens"]
+}

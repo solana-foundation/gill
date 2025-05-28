@@ -29,8 +29,8 @@ export const baseOptions: BaseLayoutProps = {
       icon: <BookTextIcon />,
     },
     {
-      text: "Examples",
-      url: "/examples",
+      text: "Guides",
+      url: "/guides",
       active: "nested-url",
       icon: <ShapesIcon />,
     },

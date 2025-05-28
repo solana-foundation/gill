@@ -32,11 +32,11 @@ export default function Page() {
         </Link> */}
         <Link
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="/examples"
+          href="/guides"
         >
           {/* <GraduationCapIcon strokeWidth={1.0} size={18} /> */}
           <ShapesIcon strokeWidth={1.0} size={18} />
-          Examples
+          Guides
         </Link>
         <Link
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
