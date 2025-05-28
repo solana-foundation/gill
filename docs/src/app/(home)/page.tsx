@@ -1,3 +1,4 @@
+import { PackageBadges } from "@/components/package-badges";
 import { siteConfig } from "@/const";
 import icon from "@@/public/icon-black.svg";
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
@@ -20,20 +21,8 @@ export default function Page() {
           gill is a modern javascript/typescript client library for interacting with the Solana
           blockchain
         </p>
-        <p className="text-center inline-flex items-center gap-2 mx-auto">
-          <a href="https://github.com/solana-foundation/gill/actions/workflows/publish-packages.yml">
-            <img
-              alt=""
-              src="https://img.shields.io/github/actions/workflow/status/solana-foundation/gill/publish-packages.yml?logo=GitHub&label=tests"
-            />
-          </a>
-          <a href="https://www.npmjs.com/package/gill">
-            <img alt="" src="https://img.shields.io/npm/v/gill?logo=npm&color=377CC0" />
-          </a>
-          <a href="https://www.npmjs.com/package/gill">
-            <img alt="" src="https://img.shields.io/npm/dm/gill?color=377CC0" />
-          </a>
-        </p>
+
+        <PackageBadges packageName="gill" />
       </section>
 
       <Tabs items={["npm", "pnpm", "yarn", "bun"]} className="mx-auto rounded-lg max-w-md w-full">
