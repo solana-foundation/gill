@@ -1,0 +1,174 @@
+---
+title: Reference Keys
+description: "Guide on how to insert reference keys into Solana transactions."
+---
+
+On Solana, a "reference key" is a unique, single-use, non-signer address that is put inside of a
+transaction in order to track its completion on the network. This is a common technique used within
+the [Solana Pay](https://docs.solanapay.com/spec#reference) and
+[Blockchain Link (Blink)](https://solana.com/solutions/actions) specifications.
+
+Until a Solana transaction is signed by the "fee payer", it does not have a signature; making it
+difficult to determine if and when the transaction has landed on-chain. Inserting a reference key
+into the transaction allows developers to programmatically call the
+[`getSignaturesForAddress`](https://solana.com/docs/rpc/http/getsignaturesforaddress) RPC method to
+determine if the transaction has landed. Triggering any desired business logic in their application.
+
+## Add a reference key to a transaction
+
+Inserting a reference key inside of a transaction can be accomplished by adding the desired address
+as a "non-signer" account key in any supporting instruction.
+
+Within gill, there are two functions for inserting reference keys:
+
+1. `insertReferenceKeyToTransactionMessage()` - insert just one reference key
+2. `insertReferenceKeysToTransactionMessage()` - insert multiple reference keys
+
+Under the hood, these "insert reference key" functions search the instructions inside the
+transaction and manually inserts the reference key as a non-signer on the
+[first supported instruction](#program-errors-due-to-reference-keys).
+
+```ts twoslash
+// @noErrors
+import {
+  pipe,
+  createTransaction,
+  generateKeyPairSigner,
+  insertReferenceKeysToTransactionMessage,
+} from "gill";
+
+// generate a reference key address
+const { address: reference } = await generateKeyPairSigner();
+
+const transaction = pipe(
+  createTransaction({
+    version: "legacy",
+    feePayer: signer,
+    instructions: [
+      getAddMemoInstruction({
+        memo: "gm world!",
+      }),
+    ],
+    latestBlockhash,
+    // setting a CU limit ensures there is at least one non-memo instruction
+    computeUnitLimit: 5000,
+  }),
+  (tx) => insertReferenceKeysToTransactionMessage([reference], tx),
+);
+```
+
+The above transaction will have two instructions in it:
+
+1. SPL memo instruction (via the `getAddMemoInstruction` function)
+2. compute unit limit instruction (via the `computeUnitLimit` value)
+
+<Callout type="warn" title="At least one non-memo instruction is required">
+  To insert a reference key into a transaction, the transaction must have at least one non-memo
+  instruction. See [Program errors due to reference keys](#program-errors-due-to-reference-keys)
+  below for details.
+</Callout>
+
+This transaction can be signed and sent to the network. Then anyone can
+[monitor for the reference key](#monitoring-for-a-reference-key) and trigger their business logic.
+
+### Add to an existing transaction
+
+If your application is not directly creating the transaction, like when consuming external APIs, you
+can still add a reference key to the transaction.
+
+First fetch the transaction from your desired external source, then insert the reference key as
+follows:
+
+```ts twoslash
+// @noErrors
+import {
+  createTransaction,
+  generateKeyPairSigner,
+  insertReferenceKeysToTransactionMessage
+} from "gill";
+
+// note: `transaction` is mutable here so we can modify it later to insert the reference key
+let { transaction } = await fetchTransactionFromExternalSource(...);
+
+// ... [your other business logic here]
+
+// generate a reference key address
+const { address: reference } = await generateKeyPairSigner();
+
+transaction = insertReferenceKeysToTransactionMessage([reference], transaction);
+```
+
+This transaction can be signed and sent to the network. Then anyone can
+[monitor for the reference key](#monitoring-for-a-reference-key) and trigger their business logic.
+
+## Program errors due to reference keys
+
+Some programs on the Solana network do not allow adding additional non-signer accounts due to the
+way they are coded. Often times, these programs expect all provided account keys to be writable or a
+signer. If they receive additional or unexpected accounts, they will error.
+
+As such, gill's "insert reference key" functions attempt to prevent these errors by skipping
+instructions from these programs. The following programs are know to fall into this condition and
+are skipped when inserting reference keys:
+
+- `MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr` - SPL memo program
+
+<Callout title="Know of another program?">
+  If you locate another commonly used program that results in errors due to inserting additional
+  account keys, please [open an issue](https://github.com/solana-foundation/gill/issues) and share
+  with the community.
+</Callout>
+
+## Monitoring for a reference key
+
+After a reference key has been inserted into a transaction, and that transaction is expected to have
+been signed then sent to the network for confirmation, you use the
+[`getSignaturesForAddress`](https://solana.com/docs/rpc/http/getsignaturesforaddress) RPC method to
+determine if the transaction has been confirmed.
+
+Using gill's `getOldestSignatureForAddress()` function, we can fetch the oldest signature that
+includes the reference key. If the reference key is not found, it will throw an error.
+
+```ts twoslash
+// @noErrors
+import { createSolanaClient, address, getOldestSignatureForAddress } from "gill";
+
+const { rpc, sendAndConfirmTransaction } = createSolanaClient({
+  urlOrMoniker: "devnet",
+});
+
+const reference = address("...");
+
+try {
+  const oldestSignature = await getOldestSignatureForAddress(rpc, reference);
+
+  const transaction = await rpc.getTransaction(oldest.signature).send();
+
+  // ... [validate the `transaction` performed the expected actions on-chain]
+
+  // perform business logic for a successful transaction
+} catch (err) {
+  // handle errors
+}
+```
+
+<Callout type="warn">
+  While you can utilize the raw response from the `getSignaturesForAddress` RPC method, your
+  application will need to manually handle recursively fetching signatures until you locate the
+  oldest one (i.e. the only one we care about).
+</Callout>
+
+Your application can then fetch and process the transaction with the signature in `oldestSignature`,
+validating the transaction is as expected.
+
+After your application validates the oldest transaction accomplishes the expected on-chain actions
+(e.g. correct token balance changes, etc), you can proceed with any of your success business logic.
+
+<Callout type="warn" title="Reference keys can be easily spoofed in transactions">
+  Due to the architecture of Solana transactions, reference keys can be easily spoofed inside of
+  transactions. Just because your reference key was located in a confirmed transaction, does **NOT**
+  mean the transaction is what you expect it to be.
+</Callout>
+
+It is crucially important that your application validates the transaction associated with the oldest
+signature obtained. Otherwise, your application can be vulnerable to various attacks.
