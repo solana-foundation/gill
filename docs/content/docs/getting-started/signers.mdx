@@ -8,11 +8,11 @@ This object type is capable of being "attached" to instructions and transaction 
 operations.
 
 The most common of which is a `KeyPairSigner`, which is able to be passed around to the various
-functions within Gill to satisfies any `TransactionSigner` type requirements, like when building
+functions within gill to satisfies any `TransactionSigner` type requirements, like when building
 instructions or creating transactions.
 
 <Callout>
-  Unless otherwise specifically noted in the Gill documentation, the term "signer" refers to
+  Unless otherwise specifically noted in the gill documentation, the term "signer" refers to
   `TransactionSigner` and usually a `KeyPairSigner`.
 </Callout>
 
@@ -44,7 +44,7 @@ extractable keypairs, unless you REALLY need to be able to save the keypair for 
 ## Generating extractable keypairs and signers
 
 Extractable keypairs are less secure and should not be used unless you REALLY need to save the key
-for some reason. Since there are a few useful cases for saving these keypairs, Gill contains a
+for some reason. Since there are a few useful cases for saving these keypairs, gill contains a
 separate explicit function to generate these extractable keypairs.
 
 To generate a random, **extractable** `KeyPairSigner`:
