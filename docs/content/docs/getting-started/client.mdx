@@ -1,11 +1,12 @@
 ---
 title: Create a Solana client
-description: Create a client connection to the Solana blockchain
+description: Create a client connection to the Solana blockchain to perform Solana RPC requests.
 ---
 
-Setting up a client connecting to the Solana blockchain is a very important part of your
+Setting up a client connection to the Solana blockchain is a very important part of your
 application. This client connection is how your application will be sending and receiving data from
-the Solana JSON RPC layer, including [fetching accounts](#todo) and [sending transactions](#todo).
+the Solana JSON RPC layer, including [fetching accounts](#fetch-an-account) and sending
+transactions.
 
 Gill considers the "Solana client" to be (at a minimum) the following pieces:
 
@@ -23,14 +24,15 @@ Gill considers the "Solana client" to be (at a minimum) the following pieces:
 Most client applications will need to initialize the above functionality in their codebase. Within
 gill, there are two primary ways to create a Solana client:
 
-- using the [`createSolanaClient()`](#create-a-solana-rpc-connection) function (recommended in order
-  to reduce application boilerplate)
-- manually initialize them all individually
+1. using the [`createSolanaClient()`](#create-a-solana-rpc-connection) function (recommended in
+   order to reduce application boilerplate)
+2. manually initialize them all individually
 
 ## Create a Solana RPC connection
 
-Create the Solana `rpc` and `rpcSubscriptions` connections from any RPC URL or standard Solana
-network moniker (i.e. `devnet`, `localnet`, `mainnet` etc).
+Create the Solana client connections (i.e. `rpc` and `rpcSubscriptions`) from any RPC URL or
+standard Solana network moniker (i.e. `devnet`, `localnet`, `mainnet` etc) using the
+`createSolanaClient()` function.
 
 ```typescript twoslash
 import { createSolanaClient } from "gill";
@@ -42,7 +44,7 @@ const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient(
 
 Using the Solana moniker will connect to the public RPC endpoints. These are subject to rate limits
 and should not be used in production applications. Applications should find their own RPC provider
-and the URL provided from them.
+and use the URL provided by them.
 
 ### Solana client for localnet
 
@@ -99,6 +101,14 @@ const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 The `rpc` client requires you to call `.send()` on the RPC method in order to actually send the
 request to your RPC provider and get a response.
 
+#### Destructure and renaming response values
+
+Many of the Solana RPC responses will return a generic `value` attribute containing the typed
+response payload. It is a common practice to
+[destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring)
+this generic `value` into a more aptly named variable, such as `latestBlockhash` (as demonstrated in
+the example below).
+
 ### Get the latest blockhash
 
 On Solana, the latest blockhash is uses as a sort of "recent timestamp" check within the
@@ -125,9 +135,10 @@ const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 
 All the data stored on the Solana blockchain is stored in
 [accounts](https://solana.com/docs/core/accounts), including native SOL balance, tokens, and
-programs. The structure of an account's data and associated metadata is called an `AccountInfo`.
+programs. The structure of an account's data and associated metadata information is called an
+`AccountInfo`.
 
-To get the from your RPC:
+To get an account's `AccountInfo` from your RPC:
 
 ```typescript twoslash
 import { createSolanaClient, address } from "gill";
@@ -142,13 +153,13 @@ const { value: accountInfo } = await rpc.getAccountInfo(accountToFetch).send();
 
 <Callout title="" type="error">
   By default, the `getAccountInfo` RPC method will utilize the `base58` encoding for the `data`
-  within the account itself. This is fine for accounts with small bits of data stored in them, but
-  fetching accounts with larger amounts of `data` will result in an error with the `base58`
+  within the account itself. This is fine for accounts with small amounts of data stored in them,
+  but fetching accounts with larger amounts of `data` will result in an error with the `base58`
   encoding.
 </Callout>
 
-It is strongly recommended to utilize the `base64` encoding when fetching account's from the
-blockchain:
+It is **strongly** recommended to utilize `base64` encoding when fetching accounts from the
+blockchain to avoid the common errors when fetching with the default `base58` encoding.
 
 ```typescript twoslash
 import { createSolanaClient, address } from "gill";
@@ -163,7 +174,8 @@ const { value: accountInfo } = await rpc
   .send();
 ```
 
-An even better solution is to utilize the `fetchEncodedAccount()` function to fetch accounts:
+An even better solution is to utilize the `fetchEncodedAccount()` function to fetch accounts, which
+always utilizes the `base64` encoding.
 
 ```typescript twoslash
 import { createSolanaClient, address, fetchEncodedAccount } from "gill";
@@ -181,7 +193,7 @@ account's `data`.
 ### Using AbortControllers
 
 You can also include custom configuration settings on your RPC calls, like using a JavaScript
-[AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController), by passing it
+[AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController), by passing them
 into `send()`:
 
 ```typescript twoslash
