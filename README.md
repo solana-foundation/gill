@@ -85,578 +85,220 @@ You can find [transaction builders](#transaction-builders) for common tasks, inc
 - [Minting tokens to a destination wallet](#mint-tokens-to-a-destination-wallet)
 - [Transfer tokens to a destination wallet](#transfer-tokens-to-a-destination-wallet)
 
-For troubleshooting and debugging your Solana transactions, see [Debug mode](#debug-mode) below.
+For [Solana Pay](#solana-pay) integration, gill provides:
 
-> You can also consult the documentation for Anza's [JavaScript client](https://github.com/anza-xyz/solana-web3.js)
-> library for more information and helpful resources.
+- [Creating transfer requests](#transfer-requests-non-interactive) for SOL and SPL tokens
+- [Creating transaction requests](#transaction-requests-interactive) for interactive payments
+- [Parsing and validating URLs](#parsing-and-validating-urls) from QR codes or links
+- [Reference key tracking](#reference-key-tracking) for payment monitoring
+- [QR code generation](#qr-code-generation) for mobile wallets
+- [Complete examples](#complete-examples) for merchants and wallets
 
-### Generating keypairs and signers
+## Solana Pay
 
-For most "signing" operations, you will need a `KeyPairSigner` instance, which can be used to sign transactions and
-messages.
+Gill includes comprehensive support for [Solana Pay](https://docs.solanapay.com/), the open protocol for payments built on Solana. Create payment requests, handle transactions, and integrate Solana Pay into your applications with full TypeScript support.
 
-To generate a random `KeyPairSigner`:
+### Quick Start with Solana Pay
 
 ```typescript
-import { generateKeyPairSigner } from "gill";
+import {
+  createTransferRequestURL,
+  createTransactionRequestURL,
+  parseSolanaPayURL,
+  validateSolanaPayURL,
+  extractReferenceKeys,
+  type Address,
+} from "gill";
+import { Keypair } from "@solana/web3.js";
 
-const signer: KeyPairSigner = generateKeyPairSigner();
+// Generate a unique reference for payment tracking
+const reference = Keypair.generate().publicKey.toBase58() as Address;
+
+// Create a transfer request for SOL
+const paymentURL = await createTransferRequestURL({
+  recipient: "11111111111111111111111111111112" as Address,
+  amount: 1000000n, // 0.001 SOL in lamports
+  reference: [reference],
+  label: "Coffee Shop",
+  message: "Payment for 1x Latte ☕",
+  memo: "Order #12345"
+});
+
+console.log(paymentURL);
+// Output: solana:11111111111111111111111111111112?amount=1000000&reference=...&label=Coffee+Shop&message=Payment+for+1x+Latte+%E2%98%95&memo=Order+%2312345
 ```
 
-> Note: These Signers are non-extractable, meaning there is no way to get the secret key material out of the instance.
-> This is a more secure practice and highly recommended to be used over extractable keypairs, unless you REALLY need to
-> be able to save the keypair for some reason.
+### Transfer Requests (Non-Interactive)
 
-### Generating extractable keypairs and signers
-
-Extractable keypairs are less secure and should not be used unless you REALLY need to save the key for some reason.
-Since there are a few useful cases for saving these keypairs, gill contains a separate explicit function to generate
-these extractable keypairs.
-
-To generate a random, **extractable** `KeyPairSigner`:
+Transfer requests allow direct SOL or SPL token payments without requiring server communication:
 
 ```typescript
-import { generateExtractableKeyPairSigner } from "gill";
+import { createTransferRequestURL } from "gill";
 
-const signer: KeyPairSigner = generateExtractableKeyPairSigner();
-```
+// SOL transfer
+const solPayment = await createTransferRequestURL({
+  recipient: merchantWallet,
+  amount: 5000000n, // 0.005 SOL
+  reference: [referenceKey],
+  label: "Merchant Name",
+  message: "Payment description",
+  memo: "Order #123"
+});
 
-> WARNING: Using **extractable** keypairs are inherently less-secure, since they allow the secret key material to be
-> extracted. Obviously. As such, they should only be used sparingly and ONLY when you have an explicit reason you need
-> extract the key material (like if you are going to save the key to a file).
-
-### Create a Solana RPC connection
-
-Create a Solana `rpc` and `rpcSubscriptions` client for any RPC URL or standard Solana network moniker (i.e. `devnet`,
-`localnet`, `mainnet` etc).
-
-```typescript
-import { createSolanaClient } from "gill";
-
-const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
-  urlOrMoniker: "mainnet",
+// SPL token transfer (e.g., USDC)
+const usdcPayment = await createTransferRequestURL({
+  recipient: merchantWallet,
+  amount: 5000000n, // 5 USDC (6 decimals)
+  splToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" as Address, // USDC mint
+  reference: [referenceKey],
+  label: "Merchant Name",
+  message: "USDC payment",
 });
 ```
 
-> Using the Solana moniker will connect to the public RPC endpoints. These are subject to rate limits and should not be
-> used in production applications. Applications should find their own RPC provider and the URL provided from them.
+### Transaction Requests (Interactive)
 
-To create an RPC client for your local test validator:
+Transaction requests enable complex payments that require server-side transaction creation:
 
 ```typescript
-import { createSolanaClient } from "gill";
+import { createTransactionRequestURL } from "gill";
 
-const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
-  urlOrMoniker: "localnet",
+const transactionURL = await createTransactionRequestURL({
+  link: "https://merchant.com/api/solana-pay"
 });
+
+console.log(transactionURL);
+// Output: solana:https://merchant.com/api/solana-pay
 ```
 
-To create an RPC client for an custom RPC provider or service:
+### Parsing and Validating URLs
+
+Process Solana Pay URLs received from QR codes or links:
 
 ```typescript
-import { createSolanaClient } from "gill";
+import { parseSolanaPayURL, validateSolanaPayURL } from "gill";
 
-const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient({
-  urlOrMoniker: "https://private-solana-rpc-provider.com",
-});
-```
+// Validate URL format
+const isValid = await validateSolanaPayURL(url);
 
-### Making Solana RPC calls
-
-After you have a Solana `rpc` connection, you can make all the [JSON RPC method](https://solana.com/docs/rpc) calls
-directly off of it.
-
-```typescript
-import { createSolanaClient } from "gill";
-
-const { rpc } = createSolanaClient({ urlOrMoniker: "devnet" });
-
-// get slot
-const slot = await rpc.getSlot().send();
-
-// get the latest blockhash
-const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
-```
-
-> The `rpc` client requires you to call `.send()` on the RPC method in order to actually send the request to your RPC
-> provider and get a response.
-
-You can also include custom configuration settings on your RPC calls, like using a JavaScript
-[AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController), by passing it into `send()`:
-
-```typescript
-import { createSolanaClient } from "gill";
-
-const { rpc } = createSolanaClient({ urlOrMoniker: "devnet" });
-
-// Create a new AbortController.
-const abortController = new AbortController();
-
-// Abort the request when the user navigates away from the current page.
-function onUserNavigateAway() {
-  abortController.abort();
+if (isValid) {
+  // Parse URL to extract payment details
+  const parsed = await parseSolanaPayURL(url);
+  
+  if (parsed.type === "transfer") {
+    console.log("Transfer request:");
+    console.log(`- Recipient: ${parsed.params.recipient}`);
+    console.log(`- Amount: ${parsed.params.amount} lamports`);
+    console.log(`- Token: ${parsed.params.splToken || "SOL"}`);
+    console.log(`- Label: ${parsed.params.label}`);
+    console.log(`- Message: ${parsed.params.message}`);
+  } else {
+    console.log("Transaction request:");
+    console.log(`- Endpoint: ${parsed.params.link}`);
+  }
 }
-
-// The request will be aborted if and only if the user navigates away from the page.
-const slot = await rpc.getSlot().send({ abortSignal: abortController.signal });
 ```
 
-### Create a transaction
+### Reference Key Tracking
 
-Quickly create a Solana transaction:
-
-> Note: The `feePayer` can be either an `Address` or `TransactionSigner`.
+Use reference keys to track and validate payments on-chain:
 
 ```typescript
-import { createTransaction } from "gill";
+import { extractReferenceKeys, findReference, validateTransfer } from "gill";
 
-const transaction = createTransaction({
-  version,
-  feePayer,
-  instructions,
-  // the compute budget values are HIGHLY recommend to be set in order to maximize your transaction landing rate
-  // computeUnitLimit: number,
-  // computeUnitPrice: number,
-});
+// Extract reference keys from a payment URL
+const references = await extractReferenceKeys(paymentURL);
+console.log("Reference keys:", references);
+
+// Monitor for payments (in a real application)
+try {
+  const signatureInfo = await findReference(connection, references[0], {
+    finality: "confirmed"
+  });
+  
+  console.log(`Payment found: ${signatureInfo.signature}`);
+  
+  // Validate the payment details
+  await validateTransfer(connection, signatureInfo.signature, {
+    recipient: merchantWallet,
+    amount: expectedAmount,
+    reference: references[0],
+  });
+  
+  console.log("Payment validated!");
+} catch (error) {
+  console.log("Payment not found or invalid");
+}
 ```
 
-To create a transaction while setting the latest blockhash:
+### QR Code Generation
+
+Generate QR codes for mobile wallet scanning:
 
 ```typescript
-import { createTransaction } from "gill";
+import { toQRCodeURL, createSolanaPayQR } from "gill";
 
-const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+// Get QR-friendly URL
+const qrURL = await toQRCodeURL(paymentURL);
 
-const transaction = createTransaction({
-  version,
-  feePayer,
-  instructions,
-  latestBlockhash,
-  // the compute budget values are HIGHLY recommend to be set in order to maximize your transaction landing rate
-  // computeUnitLimit: number,
-  // computeUnitPrice: number,
-});
+// Create QR code element (browser only)
+const qrElement = await createSolanaPayQR(paymentURL, 256);
+document.getElementById('qr-container').appendChild(qrElement);
 ```
 
-### Signing transactions
+### Error Handling
 
-If your transaction already has the latest blockhash lifetime set via `createTransaction`:
-
-```typescript
-import { createTransaction, signTransactionMessageWithSigners } from "gill";
-
-const transaction = createTransaction(...);
-
-const signedTransaction = await signTransactionMessageWithSigners(transaction);
-```
-
-If your transaction does NOT have the latest blockhash lifetime set via `createTransaction`, you must set the latest
-blockhash lifetime before (or during) the signing operation:
+Gill provides specific error types for robust error handling:
 
 ```typescript
-import {
-  createTransaction,
-  createSolanaClient,
-  signTransactionMessageWithSigners,
-  setTransactionMessageLifetimeUsingBlockhash,
+import { 
+  SolanaPayError, 
+  InvalidSolanaPayURLError,
+  UnsupportedSolanaPayVersionError 
 } from "gill";
 
-const { rpc } = createSolanaClient(...);
-const transaction = createTransaction(...);
-
-const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
-
-const signedTransaction = await signTransactionMessageWithSigners(
-  setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, transaction),
-);
+try {
+  const url = await createTransactionRequestURL({
+    link: "http://insecure.com/api" // HTTP not allowed
+  });
+} catch (error) {
+  if (error instanceof SolanaPayError) {
+    console.log(`Solana Pay error: ${error.message}`);
+    console.log(`Error code: ${error.code}`);
+  }
+}
 ```
 
-### Simulating transactions
+### Complete Examples
 
-To simulate a transaction on the blockchain, you can use the `simulateTransaction()` function initialized from
-`createSolanaClient()`.
+Find comprehensive examples in the [`examples/solana-pay`](https://github.com/solana-foundation/gill/tree/master/examples/solana-pay) directory:
 
-```typescript
-import { ... } from "gill";
+- **Basic Transfer** - SOL and SPL token payments with QR codes
+- **Transaction Request** - Interactive payment flows
+- **Merchant Integration** - Complete e-commerce payment processing
+- **Wallet Integration** - Wallet-side URL handling and validation
+- **Full Payment Flow** - End-to-end payment scenarios
 
-const { simulateTransaction } = createSolanaClient({
-  urlOrMoniker: "mainnet",
-});
-
-const transaction = createTransaction(...);
-
-const simulation = await simulateTransaction(transaction)
+```bash
+# Run the examples
+cd examples/solana-pay
+pnpm install
+pnpm run example:transfer
+pnpm run example:transaction
+pnpm run example:merchant
 ```
 
-The transaction provided to `simulateTransaction()` can either be signed or not.
-
-### Sending and confirming transactions
-
-To send and confirm a transaction to the blockchain, you can use the `sendAndConfirmTransaction` function initialized
-from `createSolanaClient()`.
-
-```typescript
-import { ... } from "gill";
-
-const { sendAndConfirmTransaction } = createSolanaClient({
-  urlOrMoniker: "mainnet",
-});
-
-const transaction = createTransaction(...);
-
-const signedTransaction = await signTransactionMessageWithSigners(transaction);
-const signature: string = getSignatureFromTransaction(signedTransaction);
-
-console.log(getExplorerLink({ transaction: signature }));
-
-// default commitment level of `confirmed`
-await sendAndConfirmTransaction(signedTransaction)
-```
-
-If you would like more fine grain control over the configuration of the `sendAndConfirmTransaction` functionality, you
-can include configuration settings:
-
-```typescript
-await sendAndConfirmTransaction(signedTransaction, {
-  commitment: "confirmed",
-  skipPreflight: true,
-  maxRetries: 10n,
-  ...
-});
-```
-
-### Get the signature from a signed transaction
-
-After you have a transaction signed by the `feePayer` (either a partially or fully signed transaction), you can get the
-transaction signature as follows:
-
-```typescript
-import { getSignatureFromTransaction } from "gill";
-
-const signature: string = getSignatureFromTransaction(signedTransaction);
-console.log(signature);
-// Example output: 4nzNU7YxPtPsVzeg16oaZvLz4jMPtbAzavDfEFmemHNv93iYXKKYAaqBJzFCwEVxiULqTYYrbjPwQnA1d9ZCTELg
-```
-
-> Note: After a transaction has been signed by the fee payer, it will have a transaction signature (aka transaction id).
-> This is due to Solana transaction ids are the first item in the transaction's `signatures` array. Therefore, client
-> applications can potentially know the signature before it is even sent to the network for confirmation.
-
-### Get a Solana Explorer link for transactions, accounts, or blocks
-
-Craft a Solana Explorer link for transactions, accounts, or blocks on any cluster.
-
-> When no `cluster` is provided in the `getExplorerLink` function, it defaults to `mainnet`.
-
-#### Get a Solana Explorer link for a transaction
-
-To get an explorer link for a transaction's signature (aka transaction id):
-
-```typescript
-import { getExplorerLink } from "gill";
-
-const link: string = getExplorerLink({
-  transaction: "4nzNU7YxPtPsVzeg16oaZvLz4jMPtbAzavDfEFmemHNv93iYXKKYAaqBJzFCwEVxiULqTYYrbjPwQnA1d9ZCTELg",
-});
-```
-
-If you have a partially or fully signed transaction, you can get the Explorer link before even sending the transaction
-to the network:
-
-```typescript
-import {
-  getExplorerLink,
-  getSignatureFromTransaction
-  signTransactionMessageWithSigners,
-} from "gill";
-
-const signedTransaction = await signTransactionMessageWithSigners(...);
-const link: string = getExplorerLink({
-  transaction: getSignatureFromTransaction(signedTransaction),
-});
-```
-
-#### Get a Solana Explorer link for an account
-
-To get an explorer link for an account on Solana's devnet:
-
-```typescript
-import { getExplorerLink } from "gill";
-
-const link: string = getExplorerLink({
-  cluster: "devnet",
-  account: "nick6zJc6HpW3kfBm4xS2dmbuVRyb5F3AnUvj5ymzR5",
-});
-```
-
-To get an explorer link for an account on your local test validator:
-
-```typescript
-import { getExplorerLink } from "gill";
-
-const link: string = getExplorerLink({
-  cluster: "localnet",
-  account: "11111111111111111111111111111111",
-});
-```
-
-#### Get a Solana Explorer link for a block
-
-To get an explorer link for a block:
-
-```typescript
-import { getExplorerLink } from "gill";
-
-const link: string = getExplorerLink({
-  cluster: "mainnet",
-  block: "242233124",
-});
-```
-
-### Calculate minimum rent for an account
-
-To calculate the minimum rent balance for an account (aka data storage deposit fee):
-
-```typescript
-import { getMinimumBalanceForRentExemption } from "gill";
-
-// when not `space` argument is provided: defaults to `0`
-const rent: bigint = getMinimumBalanceForRentExemption();
-// Expected value: 890_880n
-
-// same as
-// getMinimumBalanceForRentExemption(0);
-
-// same as, but this requires a network call
-// const rent = await rpc.getMinimumBalanceForRentExemption(0n).send();
-```
-
-```typescript
-import { getMinimumBalanceForRentExemption } from "gill";
-
-const rent: bigint = getMinimumBalanceForRentExemption(50 /* 50 bytes */);
-// Expected value: 1_238_880n
-
-// same as, but this requires a network call
-// const rent = await rpc.getMinimumBalanceForRentExemption(50n).send();
-```
-
-> Note: At this time, the minimum rent amount for an account is calculated based on static values in the Solana runtime.
-> While you can use the `getMinimumBalanceForRentExemption` RPC call on your
-> [connection](#create-a-solana-rpc-connection) to fetch this value, it will result in a network call and subject to
-> latency.
-
-## Node specific imports
-
-The `gill` package has specific imports for use in NodeJS server backends and/or serverless environments which have
-access to Node specific APIs (like the file system via `node:fs`).
-
-```typescript
-import { ... } from "gill/node"
-```
-
-### Loading a keypair from a file
-
-```typescript
-import { loadKeypairSignerFromFile } from "gill/node";
-
-// default file path: ~/.config/solana/id.json
-const signer = await loadKeypairSignerFromFile();
-console.log("address:", signer.address);
-```
-
-Load a `KeyPairSigner` from a filesystem wallet json file, like those output from the
-[Solana CLI](https://solana.com/docs/intro/installation#install-the-solana-cli) (i.e. a JSON array of numbers).
-
-By default, the keypair file loaded is the Solana CLI's default keypair: `~/.config/solana/id.json`
-
-To load a Signer from a specific filepath:
-
-```typescript
-import { loadKeypairSignerFromFile } from "gill/node";
-
-const signer = await loadKeypairSignerFromFile("/path/to/your/keypair.json");
-console.log("address:", signer.address);
-```
-
-### Saving a keypair to a file
-
-> See [`saveKeypairSignerToEnvFile`](#saving-a-keypair-to-an-environment-file) for saving to an env file.
-
-Save an **extractable** `KeyPairSigner` to a local json file (e.g. `keypair.json`).
-
-```typescript
-import { ... } from "gill/node";
-const extractableSigner = generateExtractableKeyPairSigner();
-await saveKeypairSignerToFile(extractableSigner, filePath);
-```
-
-See [`loadKeypairSignerFromFile`](#loading-a-keypair-from-a-file) for how to load keypairs from the local filesystem.
-
-### Loading a keypair from an environment variable
-
-Load a `KeyPairSigner` from the bytes stored in the environment process (e.g. `process.env[variableName]`)
-
-```typescript
-import { loadKeypairSignerFromEnvironment } from "gill/node";
-
-// loads signer from bytes stored at `process.env[variableName]`
-const signer = await loadKeypairSignerFromEnvironment(variableName);
-console.log("address:", signer.address);
-```
-
-### Saving a keypair to an environment file
-
-Save an **extractable** `KeyPairSigner` to a local environment variable file (e.g. `.env`).
-
-```typescript
-import { ... } from "gill/node";
-const extractableSigner = generateExtractableKeyPairSigner();
-// default: envPath = `.env` (in your current working directory)
-await saveKeypairSignerToEnvFile(extractableSigner, variableName, envPath);
-```
-
-See [`loadKeypairSignerFromEnvironment`](#loading-a-keypair-from-an-environment-variable) for how to load keypairs from
-environment variables.
-
-### Loading a base58 keypair from an environment variable
-
-Load a `KeyPairSigner` from the bytes stored in the environment process (e.g. `process.env[variableName]`)
-
-```typescript
-import { loadKeypairSignerFromEnvironmentBase58 } from "gill/node";
-
-// loads signer from base58 keypair stored at `process.env[variableName]`
-const signer = await loadKeypairSignerFromEnvironmentBase58(variableName);
-console.log("address:", signer.address);
-```
-
-## Transaction builders
-
-To simplify the creation of common transactions, gill includes various "transaction builders" to help easily assemble
-ready-to-sign transactions for these tasks, which often interact with multiple programs at once.
-
-Since each transaction builder is scoped to a single task, they can easily abstract away various pieces of boilerplate
-while also helping to create an optimized transaction, including:
-
-- sets/recommends a default compute unit limit (easily overridable of course) to optimize the transaction and improve
-  landing rates
-- auto derive required address where needed
-- generally recommend safe defaults and fallback settings
-
-All of the auto-filled information can also be manually overriden to ensure you always have escape hatches to achieve
-your desired functionality.
-
-As these transaction builders may not be for everyone, gill exposes a related "instruction builder" function for each
-which is used under the hood to craft the respective transactions. Developers can also completely forgo these builder
-abstractions and manually craft the same functionality.
-
-### Create a token with metadata
-
-Build a transaction that can create a token with metadata, either using the
-[original token](https://github.com/solana-program/token) or
-[token extensions (token22)](https://github.com/solana-program/token-2022) program.
-
-- Tokens created with the original token program (`TOKEN_PROGRAM_ADDRESS`, default) will use Metaplex's Token Metadata
-  program for onchain metadata
-- Tokens created with the token extensions program (`TOKEN_2022_PROGRAM_ADDRESS`) will use the metadata pointer
-  extensions
-
-Related instruction builder: `getCreateTokenInstructions`
-
-```typescript
-import { buildCreateTokenTransaction } from "gill/programs/token";
-
-const createTokenTx = await buildCreateTokenTransaction({
-  feePayer: signer,
-  latestBlockhash,
-  mint,
-  // mintAuthority, // default=same as the `feePayer`
-  metadata: {
-    isMutable: true, // if the `updateAuthority` can change this metadata in the future
-    name: "Only Possible On Solana",
-    symbol: "OPOS",
-    uri: "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/Climate/metadata.json",
-  },
-  // updateAuthority, // default=same as the `feePayer`
-  decimals: 2, // default=9,
-  tokenProgram, // default=TOKEN_PROGRAM_ADDRESS, token22 also supported
-  // default cu limit set to be optimized, but can be overriden here
-  // computeUnitLimit?: number,
-  // obtain from your favorite priority fee api
-  // computeUnitPrice?: number, // no default set
-});
-```
-
-### Mint tokens to a destination wallet
-
-Build a transaction that mints new tokens to the `destination` wallet address (raising the token's overall supply).
-
-- ensure you set the correct `tokenProgram` used by the `mint` itself
-- if the `destination` owner does not have an associated token account (ata) created for the `mint`, one will be
-  auto-created for them
-- ensure you take into account the `decimals` for the `mint` when setting the `amount` in this transaction
-
-Related instruction builder: `getMintTokensInstructions`
-
-```typescript
-import { buildMintTokensTransaction } from "gill/programs/token";
-
-const mintTokensTx = await buildMintTokensTransaction({
-  feePayer: signer,
-  latestBlockhash,
-  mint,
-  mintAuthority: signer,
-  amount: 1000, // note: be sure to consider the mint's `decimals` value
-  // if decimals=2 => this will mint 10.00 tokens
-  // if decimals=4 => this will mint 0.100 tokens
-  destination,
-  // use the correct token program for the `mint`
-  tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
-  // default cu limit set to be optimized, but can be overriden here
-  // computeUnitLimit?: number,
-  // obtain from your favorite priority fee api
-  // computeUnitPrice?: number, // no default set
-});
-```
-
-### Transfer tokens to a destination wallet
-
-Build a transaction that transfers tokens to the `destination` wallet address from the `source` (aka from `sourceAta` to
-`destinationAta`).
-
-- ensure you set the correct `tokenProgram` used by the `mint` itself
-- if the `destination` owner does not have an associated token account (ata) created for the `mint`, one will be
-  auto-created for them
-- ensure you take into account the `decimals` for the `mint` when setting the `amount` in this transaction
-
-Related instruction builder: `getTransferTokensInstructions`
-
-```typescript
-import { buildTransferTokensTransaction } from "gill/programs/token";
-
-const transferTokensTx = await buildTransferTokensTransaction({
-  feePayer: signer,
-  latestBlockhash,
-  mint,
-  authority: signer,
-  // sourceAta, // default=derived from the `authority`.
-  /**
-   * if the `sourceAta` is not derived from the `authority` (like for multi-sig wallets),
-   * manually derive with `getAssociatedTokenAccountAddress()`
-  */
-  amount: 900, // note: be sure to consider the mint's `decimals` value
-  // if decimals=2 => this will transfer 9.00 tokens
-  // if decimals=4 => this will transfer 0.090 tokens
-  destination: address(...),
-  // use the correct token program for the `mint`
-  tokenProgram, // default=TOKEN_PROGRAM_ADDRESS
-  // default cu limit set to be optimized, but can be overriden here
-  // computeUnitLimit?: number,
-  // obtain from your favorite priority fee api
-  // computeUnitPrice?: number, // no default set
-});
-```
+### Key Features
+
+- ✅ **Full TypeScript Support** - Complete type safety with Gill's Address types
+- ✅ **Transfer & Transaction Requests** - Support for both payment types
+- ✅ **URL Validation** - Robust validation before processing
+- ✅ **QR Code Generation** - Built-in QR code support for mobile wallets
+- ✅ **Reference Tracking** - Unique payment identification and monitoring
+- ✅ **Error Handling** - Comprehensive error management
+- ✅ **ESM/CommonJS Compatible** - Works in all JavaScript environments
+
+For more information, see the [Solana Pay documentation](https://docs.solanapay.com/) and explore the [complete examples](https://github.com/solana-foundation/gill/tree/master/examples/solana-pay).
 
 ## Debug mode
 
