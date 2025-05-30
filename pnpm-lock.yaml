@@ -103,10 +103,22 @@ importers:
         version: 10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@22.9.1)(typescript@5.8.3)
       tsup:
         specifier: ^8.3.5
-        version: 8.3.5(@swc/core@1.9.3(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.7.0)
+        version: 8.3.5(@swc/core@1.9.3(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.8.0)
       turbo:
         specifier: ^2.3.1
         version: 2.3.1
+      typedoc:
+        specifier: ^0.28.4
+        version: 0.28.5(typescript@5.8.3)
+      typedoc-plugin-frontmatter:
+        specifier: ^1.3.0
+        version: 1.3.0(typedoc-plugin-markdown@4.6.3(typedoc@0.28.5(typescript@5.8.3)))
+      typedoc-plugin-markdown:
+        specifier: ^4.6.3
+        version: 4.6.3(typedoc@0.28.5(typescript@5.8.3))
+      typedoc-plugin-mdn-links:
+        specifier: ^5.0.2
+        version: 5.0.2(typedoc@0.28.5(typescript@5.8.3))
 
   examples/get-started:
     dependencies:
@@ -980,6 +992,9 @@ packages:
     resolution: {integrity: sha512-2b/g5hRmpbb1o4GnTZax9N9m0FXzz9OV42ZzI4rDDMDuHUqigAiQCEWChBWCY4ztAGVRjoWT19v0yMmc5/L5kA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@gerrit0/mini-shiki@3.4.2':
+    resolution: {integrity: sha512-3jXo5bNjvvimvdbIhKGfFxSnKCX+MA8wzHv55ptzk/cx8wOzT+BRcYgj8aFN3yTiTs+zvQQiaZFr7Jce1ZG3fw==}
+
   '@hapi/hoek@9.3.0':
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
 
@@ -1311,6 +1326,21 @@ packages:
     resolution: {integrity: sha512-vliZLrDmYKyaUoMzEbMTg2JkerfBjn03KmAw9CykO0Zzkzoyd7o3iZNam/TpyWNjNT+Cz2iO3P9Smv2wgrR+Eg==}
     cpu: [x64]
     os: [win32]
+
+  '@shikijs/engine-oniguruma@3.4.2':
+    resolution: {integrity: sha512-zcZKMnNndgRa3ORja6Iemsr3DrLtkX3cAF7lTJkdMB6v9alhlBsX9uNiCpqofNrXOvpA3h6lHcLJxgCIhVOU5Q==}
+
+  '@shikijs/langs@3.4.2':
+    resolution: {integrity: sha512-H6azIAM+OXD98yztIfs/KH5H4PU39t+SREhmM8LaNXyUrqj2mx+zVkr8MWYqjceSjDw9I1jawm1WdFqU806rMA==}
+
+  '@shikijs/themes@3.4.2':
+    resolution: {integrity: sha512-qAEuAQh+brd8Jyej2UDDf+b4V2g1Rm8aBIdvt32XhDPrHvDkEnpb7Kzc9hSuHUxz0Iuflmq7elaDuQAP9bHIhg==}
+
+  '@shikijs/types@3.4.2':
+    resolution: {integrity: sha512-zHC1l7L+eQlDXLnxvM9R91Efh2V4+rN3oMVS2swCBssbj2U/FBwybD1eeLaq8yl/iwT+zih8iUbTBCgGZOYlVg==}
+
+  '@shikijs/vscode-textmate@10.0.2':
+    resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
 
   '@sideway/address@4.1.5':
     resolution: {integrity: sha512-IqO/DUQHUkPeixNQ8n0JA6102hT9CmaljNTPmQ1u8MEhBo/R4Q8eKLN/vGZxuebwOroDB4cbpjheD4+/sKFK4Q==}
@@ -1802,6 +1832,9 @@ packages:
 
   '@types/hast@2.3.10':
     resolution: {integrity: sha512-McWspRw8xx8J9HurkVBfYj0xKoE25tOFlHGdx4MJ5xORQrMGZNqJhVQWaIbm6Oyla5kYOXtDiopzKRJzEOkwJw==}
+
+  '@types/hast@3.0.4':
+    resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
 
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
@@ -3588,6 +3621,9 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
+  linkify-it@5.0.0:
+    resolution: {integrity: sha512-5aHCbzQRADcdP+ATqnDuhhJ/MRIqDkZX5pyjFHRRysS8vZ5AbqGEoFIb6pYHPZ+L/OC2Lc+xT8uHVVR5CAK/wQ==}
+
   load-tsconfig@0.2.5:
     resolution: {integrity: sha512-IXO6OCs9yg8tMKzfPZ1YmheJbZCiEsnBdcB03l0OcfK9prKnJb96siuHCr5Fl37/yo9DnKU+TLpxzTUspw9shg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -3632,6 +3668,9 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
+  lunr@2.3.9:
+    resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
+
   make-dir@2.1.0:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==}
     engines: {node: '>=6'}
@@ -3646,9 +3685,16 @@ packages:
   makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
 
+  markdown-it@14.1.0:
+    resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
+    hasBin: true
+
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
     engines: {node: '>= 0.4'}
+
+  mdurl@2.0.0:
+    resolution: {integrity: sha512-Lf+9+2r+Tdp5wXDXC4PcIBjTDtq4UKjCPMQhKIuzpJNW0b96kVqSwW0bT7FhRSfmAiFYgP+SCRvdrDozfh0U5w==}
 
   meow@13.2.0:
     resolution: {integrity: sha512-pxQJQzB6djGPXh08dacEloMFopsOqGVRKFPYvPOt9XDZ1HasbgDZA74CJGreSU4G3Ak7EFJGoiH2auq+yXISgA==}
@@ -3967,6 +4013,10 @@ packages:
 
   psl@1.13.0:
     resolution: {integrity: sha512-BFwmFXiJoFqlUpZ5Qssolv15DMyc84gTBds1BjsV1BfXEo1UyyD7GsmN67n7J77uRhoSNW1AXtXKPLcBFQn9Aw==}
+
+  punycode.js@2.3.1:
+    resolution: {integrity: sha512-uxFIHU0YlHYhDQtV4R9J6a52SLx28BCjT+4ieh7IGbgwVJWO+km431c4yRlREUAsAmt/uMjQUyQHNEPf0M39CA==}
+    engines: {node: '>=6'}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -4414,6 +4464,29 @@ packages:
   typedarray-to-buffer@3.1.5:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
 
+  typedoc-plugin-frontmatter@1.3.0:
+    resolution: {integrity: sha512-xYQFMAecMlsRUjmf9oM/Sq2FVz4zlgcbIeVFNLdO118CHTN06gIKJNSlyExh9+Xl8sK0YhIvoQwViUURxritWA==}
+    peerDependencies:
+      typedoc-plugin-markdown: '>=4.5.0'
+
+  typedoc-plugin-markdown@4.6.3:
+    resolution: {integrity: sha512-86oODyM2zajXwLs4Wok2mwVEfCwCnp756QyhLGX2IfsdRYr1DXLCgJgnLndaMUjJD7FBhnLk2okbNE9PdLxYRw==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      typedoc: 0.28.x
+
+  typedoc-plugin-mdn-links@5.0.2:
+    resolution: {integrity: sha512-Bd3lsVWPSpDkn6NGZyPHpcK088PUvH4SRq4RD97OjA6l8PQA3yOnJhGACtjmIDdcenRTgWUosH+55ANZhx/wkw==}
+    peerDependencies:
+      typedoc: 0.27.x || 0.28.x
+
+  typedoc@0.28.5:
+    resolution: {integrity: sha512-5PzUddaA9FbaarUzIsEc4wNXCiO4Ot3bJNeMF2qKpYlTmM9TTaSHQ7162w756ERCkXER/+o2purRG6YOAv6EMA==}
+    engines: {node: '>= 18', pnpm: '>= 10'}
+    hasBin: true
+    peerDependencies:
+      typescript: 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x
+
   typescript-eslint@8.16.0:
     resolution: {integrity: sha512-wDkVmlY6O2do4V+lZd0GtRfbtXbeD0q9WygwXXSJnC1xorE8eqyC2L1tJimqpSeFrOzRlYtWnUp/uzgHQOgfBQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -4433,6 +4506,9 @@ packages:
     resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  uc.micro@2.1.0:
+    resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
 
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
@@ -4626,6 +4702,11 @@ packages:
   yaml@2.7.0:
     resolution: {integrity: sha512-+hSoy/QHluxmC9kCIJyL/uyFmLmc+e5CFR5Wa+bpIhIj85LVb9ZH2nVnqrHoSvKogwODv0ClqZkmiSSaIH5LTA==}
     engines: {node: '>= 14'}
+    hasBin: true
+
+  yaml@2.8.0:
+    resolution: {integrity: sha512-4lLa/EcQCB0cJkyts+FpIRx5G/llPxfP6VQU5KByHEhLxY3IJCH0f0Hy1MHI8sClTvsIb8qwRJ6R/ZdlDJ/leQ==}
+    engines: {node: '>= 14.6'}
     hasBin: true
 
   yargs-parser@21.1.1:
@@ -5452,6 +5533,14 @@ snapshots:
     dependencies:
       levn: 0.4.1
 
+  '@gerrit0/mini-shiki@3.4.2':
+    dependencies:
+      '@shikijs/engine-oniguruma': 3.4.2
+      '@shikijs/langs': 3.4.2
+      '@shikijs/themes': 3.4.2
+      '@shikijs/types': 3.4.2
+      '@shikijs/vscode-textmate': 10.0.2
+
   '@hapi/hoek@9.3.0': {}
 
   '@hapi/topo@5.1.0':
@@ -5903,6 +5992,26 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.27.3':
     optional: true
+
+  '@shikijs/engine-oniguruma@3.4.2':
+    dependencies:
+      '@shikijs/types': 3.4.2
+      '@shikijs/vscode-textmate': 10.0.2
+
+  '@shikijs/langs@3.4.2':
+    dependencies:
+      '@shikijs/types': 3.4.2
+
+  '@shikijs/themes@3.4.2':
+    dependencies:
+      '@shikijs/types': 3.4.2
+
+  '@shikijs/types@3.4.2':
+    dependencies:
+      '@shikijs/vscode-textmate': 10.0.2
+      '@types/hast': 3.0.4
+
+  '@shikijs/vscode-textmate@10.0.2': {}
 
   '@sideway/address@4.1.5':
     dependencies:
@@ -6509,6 +6618,10 @@ snapshots:
       '@types/node': 22.13.8
 
   '@types/hast@2.3.10':
+    dependencies:
+      '@types/unist': 2.0.11
+
+  '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 2.0.11
 
@@ -8875,6 +8988,10 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
+  linkify-it@5.0.0:
+    dependencies:
+      uc.micro: 2.1.0
+
   load-tsconfig@0.2.5: {}
 
   locate-path@3.0.0:
@@ -8916,6 +9033,8 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
+  lunr@2.3.9: {}
+
   make-dir@2.1.0:
     dependencies:
       pify: 4.0.1
@@ -8931,7 +9050,18 @@ snapshots:
     dependencies:
       tmpl: 1.0.5
 
+  markdown-it@14.1.0:
+    dependencies:
+      argparse: 2.0.1
+      entities: 4.5.0
+      linkify-it: 5.0.0
+      mdurl: 2.0.0
+      punycode.js: 2.3.1
+      uc.micro: 2.1.0
+
   math-intrinsics@1.1.0: {}
+
+  mdurl@2.0.0: {}
 
   meow@13.2.0: {}
 
@@ -9129,13 +9259,13 @@ snapshots:
     dependencies:
       find-up: 4.1.0
 
-  postcss-load-config@6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.7.0):
+  postcss-load-config@6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.8.0):
     dependencies:
       lilconfig: 3.1.2
     optionalDependencies:
       jiti: 2.4.2
       postcss: 8.5.3
-      yaml: 2.7.0
+      yaml: 2.8.0
 
   postcss@8.5.3:
     dependencies:
@@ -9182,6 +9312,8 @@ snapshots:
   psl@1.13.0:
     dependencies:
       punycode: 2.3.1
+
+  punycode.js@2.3.1: {}
 
   punycode@2.3.1: {}
 
@@ -9547,7 +9679,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsup@8.3.5(@swc/core@1.9.3(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.7.0):
+  tsup@8.3.5(@swc/core@1.9.3(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.8.0):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.24.0)
       cac: 6.7.14
@@ -9557,7 +9689,7 @@ snapshots:
       esbuild: 0.24.0
       joycon: 3.1.1
       picocolors: 1.1.1
-      postcss-load-config: 6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.7.0)
+      postcss-load-config: 6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.8.0)
       resolve-from: 5.0.0
       rollup: 4.27.3
       source-map: 0.8.0-beta.0
@@ -9619,6 +9751,28 @@ snapshots:
     dependencies:
       is-typedarray: 1.0.0
 
+  typedoc-plugin-frontmatter@1.3.0(typedoc-plugin-markdown@4.6.3(typedoc@0.28.5(typescript@5.8.3))):
+    dependencies:
+      typedoc-plugin-markdown: 4.6.3(typedoc@0.28.5(typescript@5.8.3))
+      yaml: 2.7.0
+
+  typedoc-plugin-markdown@4.6.3(typedoc@0.28.5(typescript@5.8.3)):
+    dependencies:
+      typedoc: 0.28.5(typescript@5.8.3)
+
+  typedoc-plugin-mdn-links@5.0.2(typedoc@0.28.5(typescript@5.8.3)):
+    dependencies:
+      typedoc: 0.28.5(typescript@5.8.3)
+
+  typedoc@0.28.5(typescript@5.8.3):
+    dependencies:
+      '@gerrit0/mini-shiki': 3.4.2
+      lunr: 2.3.9
+      markdown-it: 14.1.0
+      minimatch: 9.0.5
+      typescript: 5.8.3
+      yaml: 2.8.0
+
   typescript-eslint@8.16.0(eslint@9.15.0(jiti@2.4.2))(typescript@5.8.3):
     dependencies:
       '@typescript-eslint/eslint-plugin': 8.16.0(@typescript-eslint/parser@8.16.0(eslint@9.15.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.15.0(jiti@2.4.2))(typescript@5.8.3)
@@ -9633,6 +9787,8 @@ snapshots:
   typescript@5.6.3: {}
 
   typescript@5.8.3: {}
+
+  uc.micro@2.1.0: {}
 
   undici-types@6.19.8: {}
 
@@ -9804,8 +9960,9 @@ snapshots:
 
   yaml@1.10.2: {}
 
-  yaml@2.7.0:
-    optional: true
+  yaml@2.7.0: {}
+
+  yaml@2.8.0: {}
 
   yargs-parser@21.1.1: {}
 

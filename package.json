@@ -15,6 +15,7 @@
     "clean:root": "rimraf dist build node_modules .turbo",
     "prebuild": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} build --filter=gill",
     "build": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} build",
+    "compile:docs": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} compile:docs",
     "test": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} test",
     "test:treeshakability:native": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} test:treeshakability:native",
     "test:treeshakability:browser": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} test:treeshakability:browser",
@@ -62,6 +63,10 @@
     "rimraf": "5.0.10",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.5",
+    "typedoc": "^0.28.4",
+    "typedoc-plugin-frontmatter": "^1.3.0",
+    "typedoc-plugin-markdown": "^4.6.3",
+    "typedoc-plugin-mdn-links": "^5.0.2",
     "turbo": "^2.3.1"
   },
   "packageManager": "pnpm@9.1.0",

@@ -1,5 +1,5 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import { BookTextIcon, ShapesIcon } from "lucide-react";
+import { BookTextIcon, CodeXmlIcon, ShapesIcon } from "lucide-react";
 import Image from "next/image";
 
 import icon from "@@/public/icon-black.svg";
@@ -33,6 +33,12 @@ export const baseOptions: BaseLayoutProps = {
       url: "/guides",
       active: "nested-url",
       icon: <ShapesIcon />,
+    },
+    {
+      text: "API Reference",
+      url: "/api",
+      active: "nested-url",
+      icon: <CodeXmlIcon />,
     },
   ],
 };

@@ -18,6 +18,9 @@ yarn-error.log*
 # turbo
 .turbo
 
+# typedocs output
+.docs
+
 # Sapling SCM
 .sl
 

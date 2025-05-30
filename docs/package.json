@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prebuild": "./build-api-docs.sh",
     "build": "next build",
     "dev": "next dev --turbo",
     "start": "next start",
     "postinstall": "fumadocs-mdx",
-    "style:fix": "prettier --write '{*,**/*}.{ts,tsx,js,jsx,css,json,md}'"
+    "clean": "rimraf dist build node_modules .turbo .next .docs ./content/api/gill*",
+    "style:fix": "prettier --write '{*,**/*}.{ts,tsx,js,jsx,css,json,md,mdx}'"
   },
   "engines": {
     "node": ">=20.18.0",

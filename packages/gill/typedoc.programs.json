@@ -1,0 +1,14 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "extends": ["../../typedoc.json"],
+  "excludeExternals": false,
+  "entryPoints": [
+    "src/programs/compute-budget/index.ts",
+    "src/programs/system/index.ts",
+    "src/programs/address-lookup-table/index.ts",
+    "src/programs/memo/index.ts",
+    "src/programs/token/index.ts",
+    "src/programs/token-metadata/index.ts"
+  ],
+  "out": "./.docs/gill-programs"
+}

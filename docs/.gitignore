@@ -6,6 +6,12 @@
 .content-collections
 .source
 
+# api content
+.docs
+content/api/
+!./content/api/index.mdx
+!./content/api/meta.json
+
 # test & build
 /coverage
 /.next/
@@ -26,3 +32,6 @@ yarn-error.log*
 .env*.local
 .vercel
 next-env.d.ts
+
+# Turborepo
+.turbo
