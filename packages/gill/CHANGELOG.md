@@ -1,5 +1,15 @@
 # gill
 
+## 0.10.0
+
+### Minor Changes
+
+- [#133](https://github.com/solana-foundation/gill/pull/133)
+  [`c8bad44`](https://github.com/solana-foundation/gill/commit/c8bad44c54533620176fd41b366da1a3f58a4645) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - - refactor exports for `gill/programs`
+  - export the token client from `gill/programs` (instead of `gill/programs/token`)
+  - renamed the Token Metadata client's `MintArgs` type to prevent naming collision between Token Metadata and Token 22
+
 ## 0.9.0
 
 ### Minor Changes
