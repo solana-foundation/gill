@@ -25,8 +25,12 @@ Within gill, there are two functions for inserting reference keys:
 2. `insertReferenceKeysToTransactionMessage()` - insert multiple reference keys
 
 Under the hood, these "insert reference key" functions search the instructions inside the
-transaction and manually inserts the reference key as a non-signer on the
+transaction and manually inserts the reference key address as a non-signer on the
 [first supported instruction](#program-errors-due-to-reference-keys).
+
+The following is an example of constructing a transaction using the `createTransaction()` then
+inserting the reference key using the "pipe method". This is the most recommended way to perform
+this:
 
 ```ts twoslash
 // @noErrors
@@ -63,13 +67,14 @@ The above transaction will have two instructions in it:
 2. compute unit limit instruction (via the `computeUnitLimit` value)
 
 <Callout type="warn" title="At least one non-memo instruction is required">
-  To insert a reference key into a transaction, the transaction must have at least one non-memo
+  To insert a reference key into a transaction, the transaction **must** have at least one non-memo
   instruction. See [Program errors due to reference keys](#program-errors-due-to-reference-keys)
   below for details.
 </Callout>
 
 This transaction can be signed and sent to the network. Then anyone can
-[monitor for the reference key](#monitoring-for-a-reference-key) and trigger their business logic.
+[monitor for the reference key](#monitoring-for-a-reference-key) and trigger their desired business
+logic.
 
 ### Add to an existing transaction
 
@@ -98,8 +103,16 @@ const { address: reference } = await generateKeyPairSigner();
 transaction = insertReferenceKeysToTransactionMessage([reference], transaction);
 ```
 
+<Callout type="warn" title="Notice for already signed transactions">
+  If the transaction obtained from an external source or API is already signed, you cannot modify
+  the transaction to insert a reference key. Your only option is to wipe the existing signatures,
+  insert the reference key, and resign. Or encourage your external API provider to accept a
+  reference key input to their API endpoints that return signed transactions.
+</Callout>
+
 This transaction can be signed and sent to the network. Then anyone can
-[monitor for the reference key](#monitoring-for-a-reference-key) and trigger their business logic.
+[monitor for the reference key](#monitoring-for-a-reference-key) and trigger their desired business
+logic.
 
 ## Program errors due to reference keys
 
@@ -108,7 +121,7 @@ way they are coded. Often times, these programs expect all provided account keys
 signer. If they receive additional or unexpected accounts, they will error.
 
 As such, gill's "insert reference key" functions attempt to prevent these errors by skipping
-instructions from these programs. The following programs are know to fall into this condition and
+instructions from these programs. The following programs are known to fall into this condition and
 are skipped when inserting reference keys:
 
 - `MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr` - SPL memo program
@@ -126,8 +139,8 @@ been signed then sent to the network for confirmation, you use the
 [`getSignaturesForAddress`](https://solana.com/docs/rpc/http/getsignaturesforaddress) RPC method to
 determine if the transaction has been confirmed.
 
-Using gill's `getOldestSignatureForAddress()` function, we can fetch the oldest signature that
-includes the reference key. If the reference key is not found, it will throw an error.
+Using gill's `getOldestSignatureForAddress()` function, we can easily fetch the oldest signature
+that includes the reference key. If the reference key is not found, it will throw an error.
 
 ```ts twoslash
 // @noErrors
@@ -140,9 +153,9 @@ const { rpc, sendAndConfirmTransaction } = createSolanaClient({
 const reference = address("...");
 
 try {
-  const oldestSignature = await getOldestSignatureForAddress(rpc, reference);
+  const { signature } = await getOldestSignatureForAddress(rpc, reference);
 
-  const transaction = await rpc.getTransaction(oldest.signature).send();
+  const transaction = await rpc.getTransaction(signature).send();
 
   // ... [validate the `transaction` performed the expected actions on-chain]
 
@@ -158,16 +171,19 @@ try {
   oldest one (i.e. the only one we care about).
 </Callout>
 
-Your application can then fetch and process the transaction with the signature in `oldestSignature`,
-validating the transaction is as expected.
+Your application can then fetch and process the transaction with the signature returned by
+`getOldestSignatureForAddress()`, validating the transaction is as expected.
 
 After your application validates the oldest transaction accomplishes the expected on-chain actions
-(e.g. correct token balance changes, etc), you can proceed with any of your success business logic.
+(e.g. correct token balance changes, etc), you can proceed with any of your "success case" business
+logic and handle errors accordingly.
 
-<Callout type="warn" title="Reference keys can be easily spoofed in transactions">
+### Security concerns
+
+<Callout type="error" title="Reference keys can be easily spoofed in transactions">
   Due to the architecture of Solana transactions, reference keys can be easily spoofed inside of
-  transactions. Just because your reference key was located in a confirmed transaction, does **NOT**
-  mean the transaction is what you expect it to be.
+  transactions (i.e. anyone can insert them into transactions). Just because your reference key was
+  located in a confirmed transaction, does **NOT** mean the transaction is what you expect it to be.
 </Callout>
 
 It is crucially important that your application validates the transaction associated with the oldest
