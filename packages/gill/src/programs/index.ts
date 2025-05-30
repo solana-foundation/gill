@@ -7,10 +7,11 @@
 export * from "./address-lookup-table";
 export * from "./compute-budget";
 export * from "./system";
+export * from "./token";
 
 /**
  * Codama generated clients, stored internally in this package
  * (and associated helpers for them)
  */
-export * from "./memo"; // vendored in from @solana-program/memo
+export * from "./memo"; // generated vice reexported from @solana-program/memo
 export * from "./token-metadata";
