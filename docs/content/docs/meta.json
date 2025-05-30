@@ -2,5 +2,12 @@
   "title": "Documentation",
   "defaultOpen": true,
   "root": true,
-  "pages": ["...", "getting-started", "concepts"]
+  "pages": [
+    "index",
+    "---Getting Started---",
+    "...getting-started",
+    "---Guides---",
+    "...guides",
+    "..."
+  ]
 }
