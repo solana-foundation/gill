@@ -3,4 +3,39 @@ title: API Reference
 # description: ""
 ---
 
-TODO: document the api references
+## Install gill
+
+Install gill using the core `gill` library:
+
+```package-install
+gill
+```
+
+## Importing from gill
+
+The `gill` library has a few different import paths to help segment the code within library and
+improve compatibility in different environments (e.g. browser vs server).
+
+To utilize the core functionality, you can import directly from `gill`:
+
+```ts
+import { ... } from "gill"
+```
+
+### Import program clients
+
+To utilize the the Solana program clients that gill provides with, you can import from
+`gill/programs`:
+
+```ts
+import { ... } from "gill/programs"
+```
+
+### Import server only utilities
+
+To utilize the the JavaScript server (e.g. NodeJS, bun, etc) specific functionality gill provides,
+you can import from `gill/node`:
+
+```ts
+import { ... } from "gill/node"
+```
