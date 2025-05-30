@@ -1,6 +1,8 @@
 ---
 title: API Reference
-# description: ""
+description:
+  "Explore the functions, variables, types, and more that are included within the gill library, the
+  new Solana developer JavaScript SDK."
 ---
 
 ## Install gill
@@ -14,9 +16,10 @@ gill
 ## Importing from gill
 
 The `gill` library has a few different import paths to help segment the code within library and
-improve compatibility in different environments (e.g. browser vs server).
+improve compatibility in different environments (i.e. browser vs server).
 
-To utilize the core functionality, you can import directly from `gill`:
+To utilize the core functionality in either browser or server environments, you can import directly
+from `gill` as expected:
 
 ```ts
 import { ... } from "gill"
@@ -24,8 +27,9 @@ import { ... } from "gill"
 
 ### Import program clients
 
-To utilize the the Solana program clients that gill provides with, you can import from
-`gill/programs`:
+The `gill` package includes several Solana program clients including Token/Token22, System, Compute
+Budget, and several others. The available program clients can be imported from the `gill/programs`
+path as follows:
 
 ```ts
 import { ... } from "gill/programs"
@@ -33,8 +37,9 @@ import { ... } from "gill/programs"
 
 ### Import server only utilities
 
-To utilize the the JavaScript server (e.g. NodeJS, bun, etc) specific functionality gill provides,
-you can import from `gill/node`:
+The `gill` package includes some "server only" functionality that is only usable in JavaScript
+server runtimes like NodeJs and Bun. To utilize this specific functionality, you can import from
+`gill/node` as follows:
 
 ```ts
 import { ... } from "gill/node"
