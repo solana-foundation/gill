@@ -1,4 +1,4 @@
 {
-  "root": true,
+  "title": "Guides",
   "pages": ["!index", "tokens", "..."]
 }
