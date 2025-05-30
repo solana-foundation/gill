@@ -1,5 +1,13 @@
 # gill-react
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies
+  [[`c8bad44`](https://github.com/solana-foundation/gill/commit/c8bad44c54533620176fd41b366da1a3f58a4645)]:
+  - gill@0.10.0
+
 ## 0.4.0
 
 ### Minor Changes
