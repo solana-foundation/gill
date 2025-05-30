@@ -4,23 +4,25 @@ description: Get started with gill, the new JavaScript client for Solana develop
 ---
 
 Gill is a modern javascript/typescript client library for interacting with the
-[Solana](http://solana.com/) blockchain. You can use it to build Solana apps in Node, web, React
-Native, or just about any other JavaScript environment.
+[Solana](http://solana.com/) blockchain. You can use it to build Solana apps in NodeJS, web
+browsers, React Native, and just about any other JavaScript environment.
 
-Gill is built on top of the javascript libraries for Solana built by Anza called
+Gill is built on top of the Solana JavaScript libraries built by Anza:
 [@solana/kit](https://github.com/anza-xyz/kit) (formerly known as "web3.js v2"). By utilizing the
-same types and functions under the hood, `gill` is compatible with `kit`.
+same types and functions under the hood, `gill` is compatible with `@solana/kit`. All `@solana/kit`
+imports can even be directly replaced with `gill` for one-to-one compatibility, plus unlocking the
+various quality-of-life improvements that gill provides.
 
 ## Quick start
 
-Follow these simple steps to install and get started with gill:
+Follow these simple steps to install and get started with the `gill` library:
 
 <Steps>
 <Step>
  
 ### Install gill
 
-Install gill using the core `gill` library:
+Install the core `gill` library in your project:
 
 ```package-install
 gill
@@ -38,8 +40,8 @@ gill
 
 ### Create a Solana RPC connection
 
-Create a Solana `rpc` and `rpcSubscriptions` client for any RPC URL or standard Solana network
-moniker (i.e. `devnet`, `localnet`, `mainnet` etc).
+Create a Solana `rpc` and `rpcSubscriptions` client connection from any RPC URL or standard Solana
+network moniker (i.e. `devnet`, `localnet`, `mainnet` etc).
 
 ```typescript
 import { createSolanaClient } from "gill";
