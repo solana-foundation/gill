@@ -66,13 +66,13 @@ const tx = pipe(
 const signedTransaction = await signTransactionMessageWithSigners(tx);
 
 try {
-  const signature = getSignatureFromTransaction(signedTransaction);
+  const sig = getSignatureFromTransaction(signedTransaction);
 
   console.log(
     "Sending transaction:",
     getExplorerLink({
       cluster: "devnet",
-      transaction: signature,
+      transaction: sig,
     }),
   );
 
@@ -80,12 +80,12 @@ try {
 
   console.log("Transaction confirmed!");
 
-  const oldest = await getOldestSignatureForAddress(rpc, reference);
+  const { signature } = await getOldestSignatureForAddress(rpc, reference);
 
-  console.log("oldest signature:", oldest.signature);
+  console.log("oldest signature:", signature);
   console.log(
     "does the oldest signature match the original signature:",
-    oldest.signature === signature,
+    sig === signature,
   );
 } catch (err) {
   console.error("Unable to send and confirm the transaction");
