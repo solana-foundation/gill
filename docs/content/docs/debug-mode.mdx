@@ -1,0 +1,95 @@
+---
+title: Debug Mode
+description:
+  "Understand how to use gill's debug mode to more easily debug your Solana applications."
+---
+
+Within `gill`, you can enable "debug mode" to automatically log additional information that will be
+helpful in troubleshooting your Solana applications (especially failing transactions).
+
+[Debug mode](./debug-mode) is disabled by default to minimize additional logs for your application.
+But with its flexible debug controller, you can enable it from the most common places your code will
+be run. Including your code itself, NodeJS backends, serverless functions, and even the in web
+browser console itself.
+
+Some examples of the existing debug logs that `gill` has sprinkled in:
+
+- log the Solana Explorer link for transactions as you are sending them via
+  `sendAndConfirmTransaction`
+- log the base64 transaction string for further troubleshooting using
+  [`mucho inspect`](https://github.com/solana-developers/mucho?tab=readme-ov-file#inspect) or the
+  Solana Explorer's [Transaction Inspector](https://explorer.solana.com/tx/inspector)
+
+## How to enable debug mode
+
+To enable debug mode, set any of the following to `true` or `1`:
+
+- `process.env.GILL_DEBUG`
+- `global.__GILL_DEBUG__`
+- `window.__GILL_DEBUG__` (i.e. in your web browser's console)
+- or manually set any debug log level (see below)
+
+```ts
+import { ... } from "gill"
+
+/** Turn on debug mode */
+global.__GILL_DEBUG__ = true;
+```
+
+<Callout title="Pro Tip">
+  Set the `GILL_DEBUG` environment variable in your applications' preview/staging environments to
+  improve your logging and troubleshooting workflows.
+</Callout>
+
+## How to set a debug level
+
+To set a desired level of logs to be output in your application, set the value of one of the
+following (default: `info`):
+
+- `process.env.GILL_DEBUG_LEVEL`
+- `global.__GILL_DEBUG_LEVEL__`
+- `window.__GILL_DEBUG_LEVEL__` (i.e. in your web browser's console)
+
+```ts
+import { ... } from "gill"
+
+/** Set the debug mode log level (default: `info`) */
+global.__GILL_DEBUG_LEVEL__ = "debug";
+```
+
+The log levels supported (in order of priority):
+
+1. `debug` (lowest)
+2. `info` (default)
+3. `warn`
+4. `error`
+
+## Custom debug logs
+
+Gill also exports the same debug functions it uses internally, allowing you to implement your own
+debug logic related to your Solana application and use the same controller for it as `gill` does.
+
+These functions include:
+
+- `isDebugEnabled()` - check if debug mode is enabled or not
+- `debug()` - print debug message if the set log level is reached
+
+```typescript
+import { debug, isDebugEnabled } from "gill";
+
+if (isDebugEnabled()) {
+  // your custom logic
+}
+
+// log this message if the "info" or above log level is enabled
+debug("custom message");
+
+// log this message if the "debug" or above log level is enabled
+debug("custom message", "debug");
+
+// log this message if the "warn" or above log level is enabled
+debug("custom message", "warn");
+
+// log this message if the "warn" or above log level is enabled
+debug("custom message", "warn");
+```
