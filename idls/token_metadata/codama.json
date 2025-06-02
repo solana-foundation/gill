@@ -1,0 +1,10 @@
+{
+  "idl": "idl.json",
+  "before": [],
+  "scripts": {
+    "js": {
+      "from": "@codama/renderers-js",
+      "args": ["packages/gill/src/programs/token-metadata/generated"]
+    }
+  }
+}
