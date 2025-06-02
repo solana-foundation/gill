@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "@solana-program/compute-budget": "^0.7.0",
+    "@solana-program/compute-budget": "^0.8.0",
     "@solana-program/memo": "^0.7.0",
     "@solana/kit": "^2.1.1",
     "dotenv": "^16.4.5",
