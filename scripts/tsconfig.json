@@ -1,6 +1,0 @@
-{
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "../packages/tsconfig/base.json",
-  "display": "gill-scripts",
-  "include": ["src"]
-}
