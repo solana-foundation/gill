@@ -61,3 +61,26 @@ const signer = await generateExtractableKeyPairSigner();
   have an explicit reason you need extract the key material (like if you are going to save the key
   to a file or environment variable).
 </Callout>
+
+## Create a signer without the secret key
+
+If your Solana application allows users to sign transaction's by way of connecting their wallet
+(e.g. Backpack, Phantom, Solflare, etc) to your app, you will not have access to their secret key
+material.
+
+You will need to create a "noop signer" in order to satisfy the `TransactionSigner` type, such as
+the `createTransaction()` functions's `feePayer`:
+
+```typescript twoslash
+import { createNoopSigner, type Address, createTransaction } from "gill";
+
+const wallet = "nick6zJc6HpW3kfBm4xS2dmbuVRyb5F3AnUvj5ymzR5" as Address;
+
+const signer = createNoopSigner(wallet);
+
+const transaction = createTransaction({
+  version: "legacy",
+  feePayer: signer,
+  instructions: [],
+});
+```

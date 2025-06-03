@@ -3,11 +3,13 @@
   "defaultOpen": true,
   "root": true,
   "pages": [
+    "---Introduction---",
     "index",
     "---Getting Started---",
     "...getting-started",
     "---Guides---",
     "...guides",
+    "---Miscellaneous---",
     "..."
   ]
 }

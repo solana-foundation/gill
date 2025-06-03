@@ -13,14 +13,7 @@ same types and functions under the hood, `gill` is compatible with `@solana/kit`
 imports can even be directly replaced with `gill` for one-to-one compatibility, plus unlocking the
 various quality-of-life improvements that gill provides.
 
-## Quick start
-
-Follow these simple steps to install and get started with the `gill` library:
-
-<Steps>
-<Step>
- 
-### Install gill
+## Install gill
 
 Install the core `gill` library in your project:
 
@@ -34,7 +27,12 @@ gill
   `createTransaction`.
 </Callout>
 
-</Step>
+## Quick start
+
+After [installing gill](#install-gill), follow these simple steps to install and get started with
+the `gill` library:
+
+<Steps>
 
 <Step>
 
@@ -93,4 +91,171 @@ const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 
 </Step>
 
+<Step>
+
+### Create a transaction
+
+You can easily create transactions using the `createTransaction()` function. It accepts a single
+object argument that is fully typed for all the required (and optional) pieces of a Solana
+transaction.
+
+When creating a Solana transaction, you will need several pieces of information:
+
+- version - `legacy` works well for every task, unless you need Address Lookup Tables (then use `0`)
+- latest blockhash - This is like a recent timestamp check that the blockchain uses. Simply request
+  it from your `rpc`.
+- instructions - Instructs the Solana runtime which programs and logic to execute onchain.
+- fee payer - The signer that will cover the small fee collected by the network to execute the
+  transaction.
+
+<Callout>
+  For simplicity, the following examples utilize `loadKeypairSignerFromFile()` to load a Solana
+  keypair file from the local file system. Specifically the Solana CLI's default file path:
+  `~/.config/solana/id.json`. This can work well for running local scripts, but not for frontend
+  applications where users will need to sign using their wallets. See [Creating a signer without a
+  secret key](/docs/getting-started/signers#create-a-signer-without-the-secret-key) for details.
+</Callout>
+
+```ts twoslash
+import { createTransaction, createSolanaClient } from "gill";
+import { loadKeypairSignerFromFile } from "gill/node";
+import { getAddMemoInstruction } from "gill/programs";
+
+/**
+ * load the Solana CLI's default keypair file (`~/.config/solana/id.json`)
+ * as a signer into your script
+ */
+const signer = await loadKeypairSignerFromFile();
+
+const { rpc } = createSolanaClient({ urlOrMoniker: "devnet" });
+const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+const transaction = createTransaction({
+  version: "legacy", // or `0` if using address lookup tables
+  feePayer: signer,
+  instructions: [
+    getAddMemoInstruction({
+      memo: "gm world!",
+    }),
+  ],
+  latestBlockhash,
+  // computeUnitLimit, // optional, but highly recommend to set
+  // computeUnitPrice, // optional, but highly recommend to set
+});
+```
+
+In the example above, we are loading a signer from the local file system to act as our fee payer and
+only signer. The transaction itself has a single "memo instruction" in it to log a simple message
+onchain.
+
+You can now [sign the transaction](#signing-transactions) and send it to the blockchain for
+confirmation.
+
+<Callout title="Optimizing transactions">
+  You can (and should) optimize your Solana transactions by including a compute unit limit and
+  compute unit price instructions within your transaction. The `createTransaction()` function
+  supports easily adding these instructions via the `computeUnitLimit` and `computeUnitPrice`
+  arguments.
+</Callout>
+
+</Step>
+
+<Step>
+
+### Signing transactions
+
+Once you have a transaction that is ready to be signed, you can call
+`signTransactionMessageWithSigners()` to perform the signing operations with all the available
+signers. This function will also assert that the transaction is fully signed.
+
+<Callout type="warn">
+  If your transaction cannot be fully signed at this time (because you only have some of the signers
+  available and attached), you can call `partiallySignTransactionMessageWithSigners()` to partially
+  sign the transaction. Then the remaining signatures can be added later.
+</Callout>
+
+```ts twoslash
+// @noErrors
+import {
+  createTransaction,
+  createSolanaClient,
+  signTransactionMessageWithSigners,
+} from "gill";
+
+const { rpc, sendAndConfirmTransaction } = createSolanaClient({
+  urlOrMoniker: "devnet",
+});
+
+// ... [other business logic here]
+
+const transaction = createTransaction({...});
+
+const signedTransaction = await signTransactionMessageWithSigners(transaction);
+
+const signature = getSignatureFromTransaction(signedTransaction);
+```
+
+After a transaction has been signed by the `feePayer`, you can obtain its transaction signature
+using the `getSignatureFromTransaction()` function (yes, even before sending it to the network).
+
+Once you have a fully signed transaction, `signedTransaction` in the example above, you can now send
+it to the blockchain network for confirmation.
+
+</Step>
+
+<Step>
+
+### Send and confirm transactions
+
+When your transaction is ready and signed, you can send it to the network via your RPC provider
+using the `sendAndConfirmTransaction()` function initialized via gill's `createSolanaClient()`:
+
+```ts twoslash
+// @noErrors
+import {
+  createTransaction,
+  createSolanaClient,
+  signTransactionMessageWithSigners,
+} from "gill";
+
+const { rpc, sendAndConfirmTransaction } = createSolanaClient({
+  urlOrMoniker: "devnet",
+});
+
+// ... [other business logic here]
+
+const transaction = createTransaction({...});
+
+const signedTransaction = await signTransactionMessageWithSigners(transaction);
+
+const signature = getSignatureFromTransaction(signedTransaction);
+
+try {
+  console.log("Sending transaction:", signature);
+
+  await sendAndConfirmTransaction(signedTransaction);
+
+  console.log("Transaction confirmed!");
+} catch (err) {
+  console.error("Unable to send and confirm the transaction");
+  console.error(err);
+}
+```
+
+<Callout>
+  The `sendAndConfirmTransaction()` function performs a check to ensure all required signatures are
+  present (aka the transactions is "fully signed") before attempting to send it to the network. If
+  any signatures are missing, it will throw an error.
+</Callout>
+
+</Step>
+
 </Steps>
+
+Congratulations! You now understand the basics of using the `gill` library to perform create and
+send Solana transactions.
+
+## Example source code
+
+You can find the well-commented source code file for the above code snippets in gill's open source
+repo here: https://github.com/solana-foundation/gill/blob/master/examples/get-started/src/intro.ts

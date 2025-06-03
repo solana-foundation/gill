@@ -18,8 +18,8 @@
     "yarn": "please-use-pnpm"
   },
   "dependencies": {
-    "gill": "0.9.0",
-    "gill-react": "0.4.0",
+    "gill": "0.10.0",
+    "gill-react": "0.4.1",
     "fumadocs-core": "15.2.10",
     "fumadocs-docgen": "^2.0.0",
     "fumadocs-mdx": "11.6.1",
