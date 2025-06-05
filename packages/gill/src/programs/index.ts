@@ -2,7 +2,7 @@
  * Re-export the most common program clients compatible with this library
  */
 
-export * from "@solana-program/system";
+export * from "./system";
 
 export * from "@solana-program/address-lookup-table";
 export * from "@solana-program/compute-budget";
