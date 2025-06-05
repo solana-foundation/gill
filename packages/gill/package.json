@@ -6,11 +6,13 @@
   "scripts": {
     "clean": "rimraf dist build node_modules .turbo .docs",
     "clean:docs": "rimraf ../../docs/content/api/gill*",
+    "generate-reexports": "npx esrun ./generate-reexports.ts",
     "compile:docs-core": "typedoc --options typedoc.core.json",
     "compile:docs-node": "typedoc --options typedoc.node.json",
     "compile:docs-programs": "typedoc --options typedoc.programs.json",
     "compile:docs": "pnpm compile:docs-core && pnpm compile:docs-node && pnpm compile:docs-programs && pnpm move:docs",
     "move:docs": "pnpm clean:docs && cp -rf ./.docs/* ../../docs/content/api/",
+    "prebuild": "rimraf dist",
     "compile:js": "tsup --config ./tsup.config.package.ts",
     "compile:typedefs": "tsc -p ./tsconfig.declarations.json",
     "prepublishOnly": "pnpm pkg delete devDependencies",
