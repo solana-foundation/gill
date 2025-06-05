@@ -1,5 +1,17 @@
 # gill
 
+## 0.9.1
+
+### Patch Changes
+
+- [#140](https://github.com/solana-foundation/gill/pull/140)
+  [`537c26d`](https://github.com/solana-foundation/gill/commit/537c26daa62519f9061891103862e902e1605a25) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - bump @solana/kit and @solana-program/\*
+
+- [#142](https://github.com/solana-foundation/gill/pull/142)
+  [`ebbc4d6`](https://github.com/solana-foundation/gill/commit/ebbc4d6f5b8e616d600fd3542226a201a5d5df40) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - manually add to declarations
+
 ## 0.9.0
 
 ### Minor Changes
