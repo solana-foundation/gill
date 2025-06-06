@@ -2,6 +2,7 @@
   "name": "gill-e2e",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "version": "0.1.0",
   "scripts": {
     "test:unit:node": "TERM_OVERRIDE=\"${TURBO_HASH:+dumb}\" TERM=${TERM_OVERRIDE:-$TERM} pnpm start:tsx && pnpm start:node",
