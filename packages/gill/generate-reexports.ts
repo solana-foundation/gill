@@ -34,6 +34,7 @@ async function generateExports() {
         exports += `export {\n`;
         exports += exportNames.map((name) => `  ${name},`).join("\n");
         exports += `\n} from "${pkg.package}";\n\n`;
+        exports += `export type * from "${pkg.package}";\n`;
       }
 
       // Write to output file

@@ -6,64 +6,64 @@
  * SPL System program client
  */
 import { SYSTEM_PROGRAM_ADDRESS } from "gill/programs";
-console.log(SYSTEM_PROGRAM_ADDRESS);
+SYSTEM_PROGRAM_ADDRESS;
 
 import { getTransferSolInstruction } from "gill/programs";
-console.log(getTransferSolInstruction);
+getTransferSolInstruction;
 
 /**
  * SPL Address Lookup Table program client
  */
 import { ADDRESS_LOOKUP_TABLE_PROGRAM_ADDRESS } from "gill/programs";
-console.log(ADDRESS_LOOKUP_TABLE_PROGRAM_ADDRESS);
+ADDRESS_LOOKUP_TABLE_PROGRAM_ADDRESS;
 
 import { getAddressLookupTableDecoder } from "gill/programs";
-console.log(getAddressLookupTableDecoder);
+getAddressLookupTableDecoder;
 
 /**
  * SPL Compute Budget program client
  */
 import { COMPUTE_BUDGET_PROGRAM_ADDRESS } from "gill/programs";
-console.log(COMPUTE_BUDGET_PROGRAM_ADDRESS);
+COMPUTE_BUDGET_PROGRAM_ADDRESS;
 
 import { getSetComputeUnitLimitInstruction } from "gill/programs";
-console.log(getSetComputeUnitLimitInstruction);
+getSetComputeUnitLimitInstruction;
 
 // !this is a custom symbol that gill provides
 import { isSetComputeLimitInstruction } from "gill/programs";
-console.log(isSetComputeLimitInstruction);
+isSetComputeLimitInstruction;
 
 /**
  * !SPL Memo program is generated and vendored in
  */
 import { MEMO_PROGRAM_ADDRESS } from "gill/programs";
-console.log(MEMO_PROGRAM_ADDRESS);
+MEMO_PROGRAM_ADDRESS;
 
 import { getAddMemoInstruction } from "gill/programs";
-console.log(getAddMemoInstruction);
+getAddMemoInstruction;
 
 /**
  * ! Metaplex's Token Metadata client is generated and vendored in
  */
 import { TOKEN_METADATA_PROGRAM_ADDRESS } from "gill/programs";
-console.log(TOKEN_METADATA_PROGRAM_ADDRESS);
+TOKEN_METADATA_PROGRAM_ADDRESS;
 
 import { getMetadataCodec } from "gill/programs";
-console.log(getMetadataCodec);
+getMetadataCodec;
 
 /**
  * SPL Token 2022 program client
  */
 import { TOKEN_2022_PROGRAM_ADDRESS } from "gill/programs/token";
-console.log(TOKEN_2022_PROGRAM_ADDRESS);
+TOKEN_2022_PROGRAM_ADDRESS;
 
 import { getMintToInstruction } from "gill/programs/token";
-console.log(getMintToInstruction);
+getMintToInstruction;
 
 // !this is a custom symbol that gill provides
 import { getAssociatedTokenAccountAddress } from "gill/programs/token";
-console.log(getAssociatedTokenAccountAddress);
+getAssociatedTokenAccountAddress;
 
 // !this is a custom symbol that gill provides
 import { TOKEN_PROGRAM_ADDRESS } from "gill/programs/token";
-console.log(TOKEN_PROGRAM_ADDRESS);
+TOKEN_PROGRAM_ADDRESS;

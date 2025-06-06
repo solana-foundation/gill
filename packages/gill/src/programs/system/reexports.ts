@@ -125,3 +125,4 @@ export {
   parseWithdrawNonceAccountInstruction,
 } from "@solana-program/system";
 
+export type * from "@solana-program/system";
