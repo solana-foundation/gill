@@ -5,6 +5,7 @@
   "pages": [
     "---Introduction---",
     "index",
+    "typescript",
     "---Getting Started---",
     "...getting-started",
     "---Guides---",

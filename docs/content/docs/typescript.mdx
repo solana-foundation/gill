@@ -1,0 +1,96 @@
+---
+title: TypeScript
+description:
+  The gill library is TypeScript first and heavily typed to improve your Solana developer
+  experience.
+---
+
+Gill is a heavily typed library to improve developer experience. After completing the
+[simple installation guide](/docs#install-gill) to get your Solana application setup, everything
+_should_ work out of the box for most common application configurations.
+
+However, there may be some configuration your codebase may require in order to utilize the gill
+library and avoid TypeScript issues, either in your editor, runtime, or build time.
+
+<Callout title="Having TypeScript issues?">
+  If your codebase is experiencing TypeScript related issues not covered by this document, please
+  [open an issue here](https://github.com/solana-foundation/gill/issues/new) to describe your
+  scenario. Please also include a simple reproduction to aid in troubleshooting by this library's
+  maintainers.
+</Callout>
+
+## Running \*.ts files with NodeJS
+
+More recent versions of NodeJS support TypeScript natively, either out of the box or requiring using
+the `--experimental-strip-types` flag. Allowing you to run `.ts` files using the `node` command.
+
+```shell
+node --version
+# output: v24.1.0
+node ./file.ts
+```
+
+However, due to the differences in how NodeJS handles these types you may experience runtime errors
+when attempting to run `.ts` files. The following is an example error message you may experience:
+
+```
+file:///home/gill/code/file.ts:22
+  SolanaClusterMoniker,
+  ^^^^^^^^^^^^^^^^^^^^
+SyntaxError: The requested module 'gill' does not provide an export named 'SolanaClusterMoniker'
+```
+
+### Solution
+
+<Steps>
+
+<Step>
+
+Update your project's `tsconfig.json` file to utilize the
+[verbatimModuleSyntax](https://www.typescriptlang.org/tsconfig/#verbatimModuleSyntax) compiler
+option. This will ensure your editor and build system will correctly show errors when codes does not
+explicitly annotate imported types/interfaces with the `type` keyword.
+
+```ts
+{
+  "compilerOptions": {
+    "verbatimModuleSyntax": true,
+  }
+}
+```
+
+</Step>
+
+<Step>
+
+You will then need to update all your `import` statements to annotate which imported symbols are
+types by explicitly using the `type` keyword. This is required for all TypeScript types **AND**
+interfaces.
+
+For example, `SolanaClusterMoniker` is a type export from `gill`:
+
+```ts
+import { createSolanaClient, SolanaClusterMoniker } from "gill";
+```
+
+It should be updated to be explicitly imported as a `type` (for both TypeScript's types and
+interfaces):
+
+```ts tab="Option 1 (recommended)"
+import { createSolanaClient } from "gill";
+import type { SolanaClusterMoniker } from "gill";
+```
+
+```ts tab="Option 2"
+import { createSolanaClient, type SolanaClusterMoniker } from "gill";
+```
+
+<Callout title="Pro Tip">
+  If you declare two different imports from the same library, one with the `type` keyword and one
+  without. Most code editors will correct import new types into the "type import" statement when
+  performing tab completion. Making it so you do not have to manually add the `type` annotation to
+  each individual imported type.
+</Callout>
+
+</Step>
+</Steps>
