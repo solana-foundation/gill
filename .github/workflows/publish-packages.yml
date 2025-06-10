@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     branches:
       - master
+    paths-ignore:
+      - 'docs/**'
   push:
     branches:
       - master
+    paths-ignore:
+      - 'docs/**'
 
 env:
   # Among other things, opts out of Turborepo telemetry
