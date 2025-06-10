@@ -1,13 +1,30 @@
 # gill-react
 
+## 0.4.3
+
+### Patch Changes
+
+- Updated dependencies
+  [[`c3f7b64`](https://github.com/solana-foundation/gill/commit/c3f7b64ce7e2c2ed045ede39885e36c054fa1403),
+  [`2571cec`](https://github.com/solana-foundation/gill/commit/2571ceca9efab70fbe8b7e451a3be35db106dfd6)]:
+  - gill@0.10.1
+
+## 0.4.2
+
+### Patch Changes
+
+- Updated dependencies
+  [[`0be650e`](https://github.com/solana-foundation/gill/commit/0be650e92c1f8de1011e6fdbde0a66aaf07cc120)]:
+  - gill@0.9.2
+
 ## 0.4.1
 
 ### Patch Changes
 
 - Updated dependencies
-  [[`0e4e85f`](https://github.com/solana-foundation/gill/commit/0e4e85f0f0d8c77dc708a9a82175c232d67e033f),
-  [`c8bad44`](https://github.com/solana-foundation/gill/commit/c8bad44c54533620176fd41b366da1a3f58a4645)]:
-  - gill@0.10.0
+  [[`537c26d`](https://github.com/solana-foundation/gill/commit/537c26daa62519f9061891103862e902e1605a25),
+  [`ebbc4d6`](https://github.com/solana-foundation/gill/commit/ebbc4d6f5b8e616d600fd3542226a201a5d5df40)]:
+  - gill@0.9.1
 
 ## 0.4.0
 

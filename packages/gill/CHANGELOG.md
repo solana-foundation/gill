@@ -1,20 +1,37 @@
 # gill
 
-## 0.10.0
-
-### Minor Changes
-
-- [#133](https://github.com/solana-foundation/gill/pull/133)
-  [`c8bad44`](https://github.com/solana-foundation/gill/commit/c8bad44c54533620176fd41b366da1a3f58a4645) Thanks
-  [@nickfrosty](https://github.com/nickfrosty)! - - refactor exports for `gill/programs`
-  - export the token client from `gill/programs` (instead of `gill/programs/token`)
-  - renamed the Token Metadata client's `MintArgs` type to prevent naming collision between Token Metadata and Token 22
+## 0.10.1
 
 ### Patch Changes
 
-- [#136](https://github.com/solana-foundation/gill/pull/136)
-  [`0e4e85f`](https://github.com/solana-foundation/gill/commit/0e4e85f0f0d8c77dc708a9a82175c232d67e033f) Thanks
+- [#149](https://github.com/solana-foundation/gill/pull/149)
+  [`c3f7b64`](https://github.com/solana-foundation/gill/commit/c3f7b64ce7e2c2ed045ede39885e36c054fa1403) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - manually fix gill version to deprecate the broken gill@0.10.0 version
+  see https://github.com/solana-foundation/gill/pull/140
+
+- [#145](https://github.com/solana-foundation/gill/pull/145)
+  [`2571cec`](https://github.com/solana-foundation/gill/commit/2571ceca9efab70fbe8b7e451a3be35db106dfd6) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - rename token metadata mint args and fixed type reexports
+
+## 0.9.2
+
+### Patch Changes
+
+- [#143](https://github.com/solana-foundation/gill/pull/143)
+  [`0be650e`](https://github.com/solana-foundation/gill/commit/0be650e92c1f8de1011e6fdbde0a66aaf07cc120) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - refactor system program reexports
+
+## 0.9.1
+
+### Patch Changes
+
+- [#140](https://github.com/solana-foundation/gill/pull/140)
+  [`537c26d`](https://github.com/solana-foundation/gill/commit/537c26daa62519f9061891103862e902e1605a25) Thanks
   [@nickfrosty](https://github.com/nickfrosty)! - bump @solana/kit and @solana-program/\*
+
+- [#142](https://github.com/solana-foundation/gill/pull/142)
+  [`ebbc4d6`](https://github.com/solana-foundation/gill/commit/ebbc4d6f5b8e616d600fd3542226a201a5d5df40) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - manually add to declarations
 
 ## 0.9.0
 
