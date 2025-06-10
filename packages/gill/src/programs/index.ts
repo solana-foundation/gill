@@ -5,7 +5,6 @@
 export * from "./system";
 
 export * from "@solana-program/address-lookup-table";
-export * from "@solana-program/compute-budget";
 export * from "./compute-budget";
 
 /**
