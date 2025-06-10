@@ -19,6 +19,10 @@ const packages: ReexportSettings[] = [
     package: "@solana-program/compute-budget",
     outputFile: "./src/programs/compute-budget/reexports.ts",
   },
+  {
+    package: "@solana-program/token-2022",
+    outputFile: "./src/programs/token/reexports.ts",
+  },
 ];
 
 async function generateExports() {
