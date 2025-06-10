@@ -3,9 +3,8 @@
  */
 
 export * from "./system";
-
-export * from "@solana-program/address-lookup-table";
 export * from "./compute-budget";
+export * from "./address-lookup-table";
 
 /**
  * Codama generated clients, stored internally in this package
