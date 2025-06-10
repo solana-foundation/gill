@@ -2,6 +2,8 @@ name: Pull requests
 
 on:
   pull_request:
+    paths-ignore:
+      - 'docs/**'
 
 env:
   # Among other things, opts out of Turborepo telemetry
