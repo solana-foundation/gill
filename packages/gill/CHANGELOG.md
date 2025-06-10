@@ -1,5 +1,18 @@
 # gill
 
+## 0.10.1
+
+### Patch Changes
+
+- [#149](https://github.com/solana-foundation/gill/pull/149)
+  [`c3f7b64`](https://github.com/solana-foundation/gill/commit/c3f7b64ce7e2c2ed045ede39885e36c054fa1403) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - manually fix gill version to deprecate the broken gill@0.10.0 version
+  see https://github.com/solana-foundation/gill/pull/140
+
+- [#145](https://github.com/solana-foundation/gill/pull/145)
+  [`2571cec`](https://github.com/solana-foundation/gill/commit/2571ceca9efab70fbe8b7e451a3be35db106dfd6) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - rename token metadata mint args and fixed type reexports
+
 ## 0.9.2
 
 ### Patch Changes
