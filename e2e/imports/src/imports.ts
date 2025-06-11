@@ -70,19 +70,39 @@ getMetadataCodec;
 /**
  * SPL Token 2022 program client
  */
-import { TOKEN_2022_PROGRAM_ADDRESS } from "gill/programs/token";
+import { TOKEN_2022_PROGRAM_ADDRESS as TOKEN_2022_PROGRAM_ADDRESS_token } from "gill/programs/token";
+TOKEN_2022_PROGRAM_ADDRESS_token;
+
+import { getMintToInstruction as getMintToInstruction_token } from "gill/programs/token";
+getMintToInstruction_token;
+
+import type { ParsedToken2022Instruction as ParsedToken2022Instruction_token } from "gill/programs/token";
+null as unknown as ParsedToken2022Instruction_token;
+
+// !this is a custom symbol that gill provides
+import { getAssociatedTokenAccountAddress as getAssociatedTokenAccountAddress_token } from "gill/programs/token";
+getAssociatedTokenAccountAddress_token;
+
+// !this is a custom symbol that gill provides
+import { TOKEN_PROGRAM_ADDRESS as TOKEN_PROGRAM_ADDRESS_token } from "gill/programs/token";
+TOKEN_PROGRAM_ADDRESS_token;
+
+/**
+ * SPL Token 2022 program client
+ */
+import { TOKEN_2022_PROGRAM_ADDRESS } from "gill/programs";
 TOKEN_2022_PROGRAM_ADDRESS;
 
-import { getMintToInstruction } from "gill/programs/token";
+import { getMintToInstruction } from "gill/programs";
 getMintToInstruction;
 
-import type { ParsedToken2022Instruction } from "gill/programs/token";
+import type { ParsedToken2022Instruction } from "gill/programs";
 null as unknown as ParsedToken2022Instruction;
 
 // !this is a custom symbol that gill provides
-import { getAssociatedTokenAccountAddress } from "gill/programs/token";
+import { getAssociatedTokenAccountAddress } from "gill/programs";
 getAssociatedTokenAccountAddress;
 
 // !this is a custom symbol that gill provides
-import { TOKEN_PROGRAM_ADDRESS } from "gill/programs/token";
+import { TOKEN_PROGRAM_ADDRESS } from "gill/programs";
 TOKEN_PROGRAM_ADDRESS;

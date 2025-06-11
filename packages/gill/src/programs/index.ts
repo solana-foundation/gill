@@ -5,6 +5,7 @@
 export * from "./system";
 export * from "./compute-budget";
 export * from "./address-lookup-table";
+export * from "./token";
 
 /**
  * Codama generated clients, stored internally in this package
