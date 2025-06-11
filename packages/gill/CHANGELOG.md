@@ -1,5 +1,13 @@
 # gill
 
+## 0.10.2
+
+### Patch Changes
+
+- [#153](https://github.com/solana-foundation/gill/pull/153)
+  [`29b0b02`](https://github.com/solana-foundation/gill/commit/29b0b0260b03ad2434a2e838204d248061e0fdfa) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - refactor program client exports to be explicit
+
 ## 0.10.1
 
 ### Patch Changes
