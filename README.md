@@ -243,11 +243,11 @@ const transaction = createTransaction({
 If your transaction already has the latest blockhash lifetime set via `createTransaction`:
 
 ```typescript
-import { createTransaction, signTransactionMessageWithSigners } from "gill";
+import { createTransaction, signAndSendTransactionMessageWithSigners } from "gill";
 
 const transaction = createTransaction(...);
 
-const signedTransaction = await signTransactionMessageWithSigners(transaction);
+const signedTransaction = await signAndSendTransactionMessageWithSigners(transaction);
 ```
 
 If your transaction does NOT have the latest blockhash lifetime set via `createTransaction`, you must set the latest
@@ -257,7 +257,7 @@ blockhash lifetime before (or during) the signing operation:
 import {
   createTransaction,
   createSolanaClient,
-  signTransactionMessageWithSigners,
+  signAndSendTransactionMessageWithSigners,
   setTransactionMessageLifetimeUsingBlockhash,
 } from "gill";
 
@@ -266,7 +266,7 @@ const transaction = createTransaction(...);
 
 const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 
-const signedTransaction = await signTransactionMessageWithSigners(
+const signedTransaction = await signAndSendTransactionMessageWithSigners(
   setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, transaction),
 );
 ```
@@ -304,7 +304,7 @@ const { sendAndConfirmTransaction } = createSolanaClient({
 
 const transaction = createTransaction(...);
 
-const signedTransaction = await signTransactionMessageWithSigners(transaction);
+const signedTransaction = await signAndSendTransactionMessageWithSigners(transaction);
 const signature: string = getSignatureFromTransaction(signedTransaction);
 
 console.log(getExplorerLink({ transaction: signature }));
