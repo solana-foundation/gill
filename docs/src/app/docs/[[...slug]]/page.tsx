@@ -8,20 +8,36 @@ import { Step, Steps } from "fumadocs-ui/components/steps";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   return docsSource.generateParams();
 }
 
-export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }) {
-  const params = await props.params;
-  const page = docsSource.getPage(params.slug);
+export async function generateMetadata(props: {
+  params: Promise<{ slug?: string[] }>;
+}): Promise<Metadata> {
+  let { slug = [""] } = await props.params;
+  const page = docsSource.getPage(slug);
   if (!page) notFound();
+
+  const image = {
+    url: ["/docs/og", ...slug, "image.png"].join("/") + `?ref=${Date.now()}`,
+    width: 1200,
+    height: 630,
+  };
 
   return {
     title: page.data.title,
     description: page.data.description,
+    openGraph: {
+      url: `/docs/${page.slugs.join("/")}`,
+      images: [image],
+    },
+    twitter: {
+      images: [image],
+    },
   };
 }
 
