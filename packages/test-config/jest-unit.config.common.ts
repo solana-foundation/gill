@@ -10,6 +10,14 @@ const config: Partial<Config.InitialProjectOptions> = {
     path.resolve(__dirname, "setup-define-version-constant.ts"),
     path.resolve(__dirname, "setup-webcrypto.ts"),
   ],
+  coveragePathIgnorePatterns: [
+    // comment for better diffs
+    "node_modules",
+    ".turbo",
+    ".next",
+    ".*generated.*",
+    ".*reexports|index.ts",
+  ],
   testPathIgnorePatterns: ["__setup__.ts"],
   transform: {
     "^.+\\.(ts|js)x?$": [

@@ -12,8 +12,9 @@
   },
   "scripts": {
     "clean": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} clean && pnpm clean:root",
-    "clean:root": "rimraf dist build node_modules .turbo",
+    "clean:root": "rimraf coverage dist build node_modules .turbo",
     "prebuild": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} build --filter=gill",
+    "coverage": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} coverage:open",
     "build": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} build",
     "codama:generate": "./idls/build-codama-clients.sh",
     "compile:docs": "turbo run --concurrency=${TURBO_CONCURRENCY:-95.84%} compile:docs",

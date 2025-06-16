@@ -16,6 +16,13 @@
       "dependsOn": ["build", "test:typecheck", "test:unit:browser", "test:unit:node"],
       "outputs": ["dist/**"]
     },
+    "coverage": {
+      "cache": false
+    },
+    "coverage:open": {
+      "dependsOn": ["coverage"],
+      "cache": false
+    },
     "publish-packages": {
       "cache": false,
       "dependsOn": ["build", "test"],

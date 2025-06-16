@@ -29,6 +29,9 @@ yarn-error.log*
 .cache
 test-ledger
 
+# coverage reports
+coverage
+
 # GitHub Pages deploy directory
 .ghpages-deploy
 
