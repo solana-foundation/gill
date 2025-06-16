@@ -13,6 +13,7 @@ import { siteConfig } from "@/const";
  * Docs Layout: app/docs/layout.tsx
  */
 export const baseOptions: BaseLayoutProps = {
+  githubUrl: siteConfig.links.github,
   nav: {
     title: (
       <>
