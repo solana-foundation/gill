@@ -19,7 +19,7 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: {
   params: Promise<{ slug?: string[] }>;
 }): Promise<Metadata> {
-  let { slug = [""] } = await props.params;
+  const { slug = [""] } = await props.params;
   const page = apiSource.getPage(slug);
   if (!page) notFound();
 
