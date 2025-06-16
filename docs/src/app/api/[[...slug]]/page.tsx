@@ -6,6 +6,7 @@ import { Step, Steps } from "fumadocs-ui/components/steps";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { apiSource } from "@/lib/source";
@@ -15,14 +16,29 @@ export async function generateStaticParams() {
   return apiSource.generateParams();
 }
 
-export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }) {
-  const params = await props.params;
-  const page = apiSource.getPage(params.slug);
+export async function generateMetadata(props: {
+  params: Promise<{ slug?: string[] }>;
+}): Promise<Metadata> {
+  let { slug = [""] } = await props.params;
+  const page = apiSource.getPage(slug);
   if (!page) notFound();
+
+  const image = {
+    url: `/images/og/api_references.png`,
+    width: 1200,
+    height: 630,
+  };
 
   return {
     title: page.data.title,
     description: page.data.description,
+    openGraph: {
+      url: `/api/${page.slugs.join("/")}`,
+      images: [image],
+    },
+    twitter: {
+      images: [image],
+    },
   };
 }
 

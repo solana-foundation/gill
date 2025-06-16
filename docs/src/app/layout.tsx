@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   openGraph: {
     images: {
-      url: "/og.png",
+      url: "/cover.png",
     },
   },
   twitter: {
