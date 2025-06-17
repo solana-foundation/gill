@@ -1,3 +1,6 @@
+/**
+ * Codama dependency map to utilize gill imports
+ */
 export const GILL_EXTERNAL_MODULE_MAP: Record<string, string> = {
   solanaAccounts: "gill",
   solanaAddresses: "gill",
@@ -13,6 +16,20 @@ export const GILL_EXTERNAL_MODULE_MAP: Record<string, string> = {
   solanaSigners: "gill",
 };
 
+/**
+ * Create a Codama CLI configuration to generate a program client from an IDL.
+ * Normally saved to `codama.js`.
+ *
+ * @example
+ * ```ts
+ * import { createCodamaConfig } from "gill";
+ *
+ * export default createCodamaConfig({
+ *  idl: "program/idl.json",
+ *  clientJs: "clients/js/src/generated",
+ * });
+ * ```
+ */
 export function createCodamaConfig({
   clientJs,
   dependencyMap = GILL_EXTERNAL_MODULE_MAP,
