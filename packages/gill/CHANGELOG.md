@@ -1,5 +1,13 @@
 # gill
 
+## 0.10.3
+
+### Patch Changes
+
+- [#164](https://github.com/solana-foundation/gill/pull/164)
+  [`e1c47e9`](https://github.com/solana-foundation/gill/commit/e1c47e9a84340bed35d5b33298c600a3b23628ff) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - added typedoc comment to createCodamaConfig
+
 ## 0.10.2
 
 ### Patch Changes
