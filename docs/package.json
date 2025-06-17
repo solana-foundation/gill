@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "update:gill": "pnpm add gill@latest gill-react@latest",
     "prebuild": "./build-api-docs.sh",
     "build": "next build",
     "dev": "next dev --turbo",
@@ -23,8 +24,8 @@
     "fumadocs-mdx": "11.6.1",
     "fumadocs-twoslash": "^3.1.1",
     "fumadocs-ui": "15.2.10",
-    "gill": "0.10.1",
-    "gill-react": "0.4.3",
+    "gill": "0.10.2",
+    "gill-react": "0.4.4",
     "lucide-react": "^0.513.0",
     "next": "15.3.1",
     "react": "^19.0.0",
