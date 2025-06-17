@@ -1,7 +1,7 @@
 ---
 title: Generate Solana program clients with Codama
 description:
-  "This guide demonstrates how to use Codama to generate a Solana program client from its IDL."
+  "Step-by-step guide on how to use Codama to generate a Solana program client from an IDL."
 ---
 
 [Codama](https://github.com/codama-idl/codama) is a tool that allows developers to take a Solana
@@ -51,14 +51,107 @@ pnpm codama --version
 ```
 
 </Step>
+
 <Step>
 
-## Initialize the Codama config
+## Create a Codama config
 
-The Codama CLI utilize a config file (`codama.json`) to declare which renderers should be used and
-other assorted logic.
+The Codama CLI utilizes a config file to declare which "renderers" should be used and other assorted
+logic. Gill provides the `createCodamaConfig()` helper function to simplify this setup.
 
-Run the Codama `init` command and follow the prompts to scaffold your Codama config file:
+<Callout>
+  Utilizing a JavaScript Codama config file (e.g. `codama.js`) is recommended for use with gill. If
+  you need more control, you can always fallback to [manually initializing your Codama
+  config](#manually-initialize-a-codama-config) using a JSON file.
+</Callout>
+
+Create a `codama.js` file to utilize the `createCodamaConfig()` function, providing your program
+specific configuration:
+
+```ts
+import { createCodamaConfig } from "gill";
+
+export default createCodamaConfig({
+  idl: "program/idl.json",
+  clientJs: "clients/js/src/generated",
+});
+```
+
+- `idl` - should be the relative path to your program's IDL JSON file
+- `clientJs` - should be the relative path to where your generated program client should be stored
+  within your repo
+
+<Callout>
+  It's recommended to store your generated program client in a `generated` directory. This will
+  allow you to easily co-locate other manually crafted functions. See [this
+  example](https://github.com/solana-program/token-2022/tree/main/clients/js/src) of the SPL Token
+  Extension program client doing exactly this.
+</Callout>
+
+</Step>
+
+<Step>
+
+## Generate your program client with Codama
+
+With your Codama config file setup, you can use the `run` command to generate your
+JavaScript/TypeScript client, storing the generated output in your configured destination:
+
+```shell
+pnpm codama run js
+```
+
+You can now import your newly generated client library from anywhere in your code base or publish as
+an installable package for any application to easily consume and interact with your program.
+
+</Step>
+
+</Steps>
+
+## Multiple program clients in a single repo
+
+At the time of writing this guide, the latest Codama CLI (`v1.1.1`) does not support multiple
+program clients in a single Codama config file.
+
+If you have multiple Solana program IDLs in a single repo, you will need to create a separate config
+file for each. We recommend creating a shell script to generate all the program clients with a
+single command.
+
+For example, the gill library itself utilizes a shell script similar to this one:
+
+```shell
+#!/usr/bin/env bash
+set -euo pipefail
+
+# generate all the codama clients (per their respective config files)
+pnpm codama run js --config ./idls/token_metadata/codama.js
+pnpm codama run js --config ./idls/another_program/codama.js
+
+# run the repo's prettier settings on the generated files
+pnpm prettier --write './packages/gill/src/programs/**/generated/{*,**/*}.{ts,js}'
+```
+
+This script will execute the `codama run js` command for each program by explicitly passing in the
+config file to each. Then you can easily execute any additional commands you desire, like performing
+your standard prettier formatting operations.
+
+<Callout title="Use gill's source code as a reference">
+  You can find the [exact shell
+  script](https://github.com/solana-foundation/gill/blob/master/idls/build-codama-clients.sh) that
+  gill uses in our repo to ship some of the program clients gill includes.
+</Callout>
+
+## Manually initialize a Codama config
+
+For more complex scenarios, you may desire to have more control over the Codama config file. In this
+case, use the `codama.json` file and manually configure it to your needs.
+
+<Steps>
+<Step>
+
+### Create a codama.json file
+
+Run the Codama `init` command and follow the prompts to scaffold your `codama.json` config file:
 
 ```shell
 pnpm codama init
@@ -102,7 +195,7 @@ Your newly created `codama.json` config file should look something like this:
 </Step>
 <Step>
 
-## Replace @solana/kit imports with gill
+### Replace @solana/kit imports with gill
 
 By default, Codama will utilize the `@solana/kit` package for the imported symbols within the
 generated client. Since the gill library includes Kit (so you do not have to manually install it),
@@ -143,53 +236,5 @@ the following object as the **second value** of the JavaScript renderer's `args`
 ```
 
 </Step>
-<Step>
-
-## Generate your program client with Codama
-
-With your `codama.json` config file setup, you can use the `run` command to generate your
-JavaScript/TypeScript client, storing the generated output in your configured destination:
-
-```shell
-pnpm codama run js
-```
-
-You can now import your newly generated client library from anywhere in your code base or publish as
-an installable package for any application to easily consume and interact with your program.
-
-</Step>
 
 </Steps>
-
-## Multiple program clients in a single repo
-
-At the time of writing this guide, the latest Codama CLI (`v1.1.1`) does not support multiple
-program clients in a single `codama.json` config file.
-
-If you have multiple Solana program IDLs in a single repo, you will need to create a separate config
-file for each. We recommend creating a shell script to generate all the program clients with a
-single command.
-
-For example, the gill library itself utilizes a shell script similar to this one:
-
-```shell
-#!/usr/bin/env bash
-set -euo pipefail
-
-# generate all the codama clients (per their respective config files)
-pnpm codama run js --config ./idls/token_metadata/codama.json
-pnpm codama run js --config ./idls/another_program/codama.json
-
-# run the repo's prettier settings on the generated files
-pnpm prettier --write './packages/gill/src/programs/**/generated/{*,**/*}.{ts,js}'
-```
-
-This script will execute the `codama run js` command for each program by explicitly passing in the
-config file to each. Then you can easily execute any additional commands you desire, like performing
-your standard prettier formatting operations.
-
-<Callout title="Use gill's source code as a reference">
-  You can find the [exact shell
-  script](https://github.com/solana-foundation/gill/blob/master/idls/build-codama-clients.sh) that
-  gill uses in our repo to ship some of the program clients gill includes.
-</Callout>
