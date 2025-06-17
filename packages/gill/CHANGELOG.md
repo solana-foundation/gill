@@ -1,5 +1,17 @@
 # gill
 
+## 0.10.2
+
+### Patch Changes
+
+- [#153](https://github.com/solana-foundation/gill/pull/153)
+  [`29b0b02`](https://github.com/solana-foundation/gill/commit/29b0b0260b03ad2434a2e838204d248061e0fdfa) Thanks
+  [@nickfrosty](https://github.com/nickfrosty)! - refactor program client exports to be explicit
+
+- [#161](https://github.com/solana-foundation/gill/pull/161)
+  [`81c6bed`](https://github.com/solana-foundation/gill/commit/81c6beddc314a98b75180e5241c7808da16c4f42) Thanks
+  [@beeman](https://github.com/beeman)! - add create-codama-config function
+
 ## 0.10.1
 
 ### Patch Changes
