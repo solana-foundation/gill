@@ -31,9 +31,9 @@ accomplishing the same task.
 ## Connecting to the blockchain
 
 Every application will need to create a connection to the blockchain. A complete and usable
-connection consists of the following minimum three parts:
+connection consists of the following three parts (at a minimum):
 
-1. `rpc` - used to make [Solana RPC](https://solana.com/docs/rpc) requests over HTTP (the most
+1. `rpc` - used to send [Solana RPC](https://solana.com/docs/rpc) requests over HTTP (the most
    common way)
 2. `rpcSubscriptions` - used to make certain RPC requests over websockets
 3. `sendAndConfirmTransaction` - function used to actually send a complete transaction to the
@@ -86,9 +86,9 @@ const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 There are many different ways to obtain a keypair that is capable of performing the Solana specific
 signing operations (aka a "signer"). This will look different for frontend and backend applications.
 
-For local scripts, JavaScript server runtimes (like NodeJS and Bun), and backend applications its
-common to load a keypair file from either a file or an ENV variable. The following is how to
-accomplish this for both libraries:
+For local scripts, JavaScript server runtimes (like NodeJS and Bun), and backend applications it's
+common to load a keypair from the file system or an ENV variable. The following is how to accomplish
+this for both libraries:
 
 ```ts tab="gill"
 import { loadKeypairSignerFromFile } from "gill/node";
@@ -116,9 +116,9 @@ variables, so developers must implement the file/ENV reading operations themselv
 
 Whereas gill includes multiple functions to handle these very scenarios:
 
-- `loadKeypairSignerFromFile()`
-- `loadKeypairFromEnvironment()`
-- `loadKeypairFromEnvironmentBase58()`
+- [`loadKeypairSignerFromFile()`](/api/gill-node/functions/loadKeypairSignerFromFile)
+- [`loadKeypairSignerFromEnvironment()`](/api/gill-node/functions/loadKeypairSignerFromEnvironment)
+- [`loadKeypairSignerFromEnvironmentBase58()`](/api/gill-node/functions/loadKeypairSignerFromEnvironmentBase58)
 
 <Callout>
   The `loadKeypairSignerFromFile()` function defaults to the Solana CLI's keypair path
