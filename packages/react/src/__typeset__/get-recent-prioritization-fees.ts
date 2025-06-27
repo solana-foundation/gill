@@ -1,15 +1,15 @@
 import { Address, GetRecentPrioritizationFeesApi } from "gill";
-import { useGetRecentPrioritizationFees } from "../hooks";
+import { useRecentPrioritizationFees } from "../hooks";
 
 // [DESCRIBE] useGetRecentPrioritizationFees
 {
   {
-    const { fees } = useGetRecentPrioritizationFees({ addresses: [] });
+    const { fees } = useRecentPrioritizationFees({ addresses: [] });
     fees satisfies ReturnType<GetRecentPrioritizationFeesApi["getRecentPrioritizationFees"]>;
   }
 
   {
-    const { fees } = useGetRecentPrioritizationFees({
+    const { fees } = useRecentPrioritizationFees({
       addresses: ["123" as Address],
       options: {
         refetchInterval: 1000,
@@ -19,7 +19,7 @@ import { useGetRecentPrioritizationFees } from "../hooks";
   }
 
   {
-    const { fees } = useGetRecentPrioritizationFees({
+    const { fees } = useRecentPrioritizationFees({
       addresses: ["123" as Address],
       abortSignal: new AbortController().signal,
     });
