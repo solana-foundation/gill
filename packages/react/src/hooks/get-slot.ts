@@ -18,7 +18,7 @@ type UseGetSlotInput<TConfig extends RpcConfig = RpcConfig> = GillUseRpcHook<TCo
  *
  * To auto refetch the slot, provide a `options.refetchInterval` value
  */
-export function useGetSlot<TConfig extends RpcConfig = RpcConfig>({
+export function useSlot<TConfig extends RpcConfig = RpcConfig>({
   options,
   config,
   abortSignal,
