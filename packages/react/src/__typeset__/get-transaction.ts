@@ -1,15 +1,15 @@
 import { GetTransactionApi, Signature } from "gill";
-import { useGetTransaction } from "../hooks";
+import { useTransaction } from "../hooks";
 
 // [DESCRIBE] useGetTransaction
 {
   {
-    const { transaction } = useGetTransaction({ signature: "123" as Signature });
+    const { transaction } = useTransaction({ signature: "123" as Signature });
     transaction satisfies ReturnType<GetTransactionApi["getTransaction"]>;
   }
 
   {
-    const { transaction } = useGetTransaction({
+    const { transaction } = useTransaction({
       signature: "123" as Signature,
       config: {
         commitment: "confirmed",
@@ -19,7 +19,7 @@ import { useGetTransaction } from "../hooks";
     transaction satisfies ReturnType<GetTransactionApi["getTransaction"]>;
   }
   {
-    const { transaction } = useGetTransaction({
+    const { transaction } = useTransaction({
       signature: "123" as Signature,
       options: {
         refetchInterval: 1000,
@@ -29,7 +29,7 @@ import { useGetTransaction } from "../hooks";
   }
 
   {
-    const { transaction } = useGetTransaction({
+    const { transaction } = useTransaction({
       signature: "123" as Signature,
       abortSignal: new AbortController().signal,
     });
