@@ -27,6 +27,7 @@ export const GILL_EXTERNAL_MODULE_MAP: Record<string, string> = {
  * export default createCodamaConfig({
  *  idl: "program/idl.json",
  *  clientJs: "clients/js/src/generated",
+ *  // clientRust: "clients/rust/src/generated",
  * });
  * ```
  */
