@@ -8,9 +8,9 @@ import type { GillUseRpcHook } from "./types";
 
 type RpcConfig = Simplify<Parameters<GetSlotApi["getSlot"]>>[0];
 
-type UseGetSlotResponse = ReturnType<GetSlotApi["getSlot"]>;
+type UseSlotResponse = ReturnType<GetSlotApi["getSlot"]>;
 
-type UseGetSlotInput<TConfig extends RpcConfig = RpcConfig> = GillUseRpcHook<TConfig>;
+type UseSlotInput<TConfig extends RpcConfig = RpcConfig> = GillUseRpcHook<TConfig>;
 
 /**
  * Get the current slot using the Solana RPC method of
@@ -22,7 +22,7 @@ export function useSlot<TConfig extends RpcConfig = RpcConfig>({
   options,
   config,
   abortSignal,
-}: UseGetSlotInput<TConfig> = {}) {
+}: UseSlotInput<TConfig> = {}) {
   const { rpc } = useSolanaClient();
 
   const { data, ...rest } = useQuery({
@@ -36,6 +36,6 @@ export function useSlot<TConfig extends RpcConfig = RpcConfig>({
 
   return {
     ...rest,
-    slot: data as UseGetSlotResponse,
+    slot: data as UseSlotResponse,
   };
 }
